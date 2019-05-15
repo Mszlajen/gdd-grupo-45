@@ -33,10 +33,12 @@
             this.button1 = new System.Windows.Forms.Button();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.quitar = new System.Windows.Forms.DataGridViewButtonColumn();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
+            this.precio = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.parada = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.quitar = new System.Windows.Forms.DataGridViewButtonColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -55,12 +57,12 @@
             this.textBox1.Location = new System.Drawing.Point(16, 30);
             this.textBox1.Name = "textBox1";
             this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(175, 20);
+            this.textBox1.Size = new System.Drawing.Size(306, 20);
             this.textBox1.TabIndex = 2;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(197, 30);
+            this.button1.Location = new System.Drawing.Point(328, 30);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 3;
@@ -83,26 +85,21 @@
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.precio,
+            this.parada,
             this.quitar});
             this.dataGridView1.Location = new System.Drawing.Point(16, 102);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(240, 150);
+            this.dataGridView1.Size = new System.Drawing.Size(387, 150);
             this.dataGridView1.TabIndex = 5;
-            // 
-            // quitar
-            // 
-            this.quitar.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.quitar.HeaderText = "Quitar";
-            this.quitar.Name = "quitar";
-            this.quitar.ReadOnly = true;
-            this.quitar.Width = 41;
+            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // button2
             // 
             this.button2.Location = new System.Drawing.Point(16, 258);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(240, 23);
+            this.button2.Size = new System.Drawing.Size(387, 23);
             this.button2.TabIndex = 6;
             this.button2.Text = "Agregar puerto";
             this.button2.UseVisualStyleBackColor = true;
@@ -126,11 +123,33 @@
             this.label2.TabIndex = 8;
             this.label2.Text = "Paradas";
             // 
+            // precio
+            // 
+            this.precio.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.precio.HeaderText = "Precio de tramo";
+            this.precio.Name = "precio";
+            this.precio.ReadOnly = true;
+            this.precio.Width = 74;
+            // 
+            // parada
+            // 
+            this.parada.HeaderText = "Parada";
+            this.parada.Name = "parada";
+            this.parada.ReadOnly = true;
+            // 
+            // quitar
+            // 
+            this.quitar.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.quitar.HeaderText = "Quitar";
+            this.quitar.Name = "quitar";
+            this.quitar.ReadOnly = true;
+            this.quitar.Width = 41;
+            // 
             // Formulario
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 333);
+            this.ClientSize = new System.Drawing.Size(415, 333);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
@@ -154,9 +173,11 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewButtonColumn quitar;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn precio;
+        private System.Windows.Forms.DataGridViewTextBoxColumn parada;
+        private System.Windows.Forms.DataGridViewButtonColumn quitar;
     }
 }

@@ -26,5 +26,10 @@ namespace FrbaCrucero.AbmRecorrido
         {
 
         }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }
