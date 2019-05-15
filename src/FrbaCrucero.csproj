@@ -44,11 +44,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbmCrucero\AltaCabina.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmCrucero\AltaCabina.Designer.cs">
+      <DependentUpon>AltaCabina.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmCrucero\AltaCrucero.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmCrucero\AltaCrucero.Designer.cs">
+      <DependentUpon>AltaCrucero.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmCrucero\AltaTipoCabina.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmCrucero\AltaTipoCabina.Designer.cs">
+      <DependentUpon>AltaTipoCabina.cs</DependentUpon>
+    </Compile>
     <Compile Include="AbmCrucero\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AbmCrucero\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmCrucero\ModificacionCrucero.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmCrucero\ModificacionCrucero.Designer.cs">
+      <DependentUpon>ModificacionCrucero.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmPuerto\Form1.cs">
       <SubType>Form</SubType>
@@ -56,17 +80,35 @@
     <Compile Include="AbmPuerto\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmRecorrido\Form1.cs">
+    <Compile Include="AbmRecorrido\Formulario.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmRecorrido\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="AbmRecorrido\Formulario.Designer.cs">
+      <DependentUpon>Formulario.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmRol\Form1.cs">
+    <Compile Include="AbmRecorrido\SeleccionPuerto.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmRol\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="AbmRecorrido\SeleccionPuerto.Designer.cs">
+      <DependentUpon>SeleccionPuerto.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRecorrido\Selector.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRecorrido\Selector.Designer.cs">
+      <DependentUpon>Selector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRol\Formulario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRol\Formulario.Designer.cs">
+      <DependentUpon>Formulario.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmRol\Seleccion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmRol\Seleccion.Designer.cs">
+      <DependentUpon>Seleccion.cs</DependentUpon>
     </Compile>
     <Compile Include="CompraReservaPasaje\Form1.cs">
       <SubType>Form</SubType>
@@ -86,11 +128,23 @@
     <Compile Include="GeneracionViaje\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="InicioDeSesion\InicioDeSesion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InicioDeSesion\InicioDeSesion.Designer.cs">
+      <DependentUpon>InicioDeSesion.cs</DependentUpon>
+    </Compile>
     <Compile Include="ListadoEstadistico\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="ListadoEstadistico\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Menu\Menu.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Menu\Menu.Designer.cs">
+      <DependentUpon>Menu.cs</DependentUpon>
     </Compile>
     <Compile Include="PagoReserva\Form1.cs">
       <SubType>Form</SubType>
@@ -100,6 +154,39 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="AbmCrucero\AltaCabina.resx">
+      <DependentUpon>AltaCabina.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmCrucero\AltaCrucero.resx">
+      <DependentUpon>AltaCrucero.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmCrucero\AltaTipoCabina.resx">
+      <DependentUpon>AltaTipoCabina.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmCrucero\ModificacionCrucero.resx">
+      <DependentUpon>ModificacionCrucero.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRecorrido\Formulario.resx">
+      <DependentUpon>Formulario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRecorrido\SeleccionPuerto.resx">
+      <DependentUpon>SeleccionPuerto.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRecorrido\Selector.resx">
+      <DependentUpon>Selector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRol\Formulario.resx">
+      <DependentUpon>Formulario.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmRol\Seleccion.resx">
+      <DependentUpon>Seleccion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InicioDeSesion\InicioDeSesion.resx">
+      <DependentUpon>InicioDeSesion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Menu\Menu.resx">
+      <DependentUpon>Menu.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
