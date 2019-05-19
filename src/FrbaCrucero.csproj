@@ -122,11 +122,11 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="GeneracionViaje\Form1.cs">
+    <Compile Include="GeneracionViaje\GenerarViaje.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GeneracionViaje\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="GeneracionViaje\GenerarViaje.Designer.cs">
+      <DependentUpon>GenerarViaje.cs</DependentUpon>
     </Compile>
     <Compile Include="InicioDeSesion\InicioDeSesion.cs">
       <SubType>Form</SubType>
@@ -180,6 +180,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRol\Seleccion.resx">
       <DependentUpon>Seleccion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GeneracionViaje\GenerarViaje.resx">
+      <DependentUpon>GenerarViaje.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InicioDeSesion\InicioDeSesion.resx">
       <DependentUpon>InicioDeSesion.cs</DependentUpon>
