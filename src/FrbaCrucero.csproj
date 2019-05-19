@@ -134,11 +134,11 @@
     <Compile Include="InicioDeSesion\InicioDeSesion.Designer.cs">
       <DependentUpon>InicioDeSesion.cs</DependentUpon>
     </Compile>
-    <Compile Include="ListadoEstadistico\Form1.cs">
+    <Compile Include="ListadoEstadistico\ListadoTop5.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ListadoEstadistico\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="ListadoEstadistico\ListadoTop5.Designer.cs">
+      <DependentUpon>ListadoTop5.cs</DependentUpon>
     </Compile>
     <Compile Include="Menu\Menu.cs">
       <SubType>Form</SubType>
@@ -183,6 +183,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="InicioDeSesion\InicioDeSesion.resx">
       <DependentUpon>InicioDeSesion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ListadoEstadistico\ListadoTop5.resx">
+      <DependentUpon>ListadoTop5.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Menu\Menu.resx">
       <DependentUpon>Menu.cs</DependentUpon>
