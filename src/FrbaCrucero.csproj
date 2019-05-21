@@ -110,11 +110,47 @@
     <Compile Include="AbmRol\Seleccion.Designer.cs">
       <DependentUpon>Seleccion.cs</DependentUpon>
     </Compile>
-    <Compile Include="CompraReservaPasaje\Form1.cs">
+    <Compile Include="CompraReservaPasaje\Busqueda.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CompraReservaPasaje\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="CompraReservaPasaje\Busqueda.Designer.cs">
+      <DependentUpon>Busqueda.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CompraReservaPasaje\Cabinas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CompraReservaPasaje\Cabinas.Designer.cs">
+      <DependentUpon>Cabinas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CompraReservaPasaje\DatosCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CompraReservaPasaje\DatosCliente.Designer.cs">
+      <DependentUpon>DatosCliente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CompraReservaPasaje\DNI.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CompraReservaPasaje\DNI.Designer.cs">
+      <DependentUpon>DNI.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CompraReservaPasaje\Pago.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CompraReservaPasaje\Pago.Designer.cs">
+      <DependentUpon>Pago.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CompraReservaPasaje\PantallaFinal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CompraReservaPasaje\PantallaFinal.Designer.cs">
+      <DependentUpon>PantallaFinal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CompraReservaPasaje\SeleccionCliente.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CompraReservaPasaje\SeleccionCliente.Designer.cs">
+      <DependentUpon>SeleccionCliente.cs</DependentUpon>
     </Compile>
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -192,6 +228,27 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRol\Seleccion.resx">
       <DependentUpon>Seleccion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CompraReservaPasaje\Busqueda.resx">
+      <DependentUpon>Busqueda.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CompraReservaPasaje\Cabinas.resx">
+      <DependentUpon>Cabinas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CompraReservaPasaje\DatosCliente.resx">
+      <DependentUpon>DatosCliente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CompraReservaPasaje\DNI.resx">
+      <DependentUpon>DNI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CompraReservaPasaje\Pago.resx">
+      <DependentUpon>Pago.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CompraReservaPasaje\PantallaFinal.resx">
+      <DependentUpon>PantallaFinal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CompraReservaPasaje\SeleccionCliente.resx">
+      <DependentUpon>SeleccionCliente.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GeneracionViaje\GenerarViaje.resx">
       <DependentUpon>GenerarViaje.cs</DependentUpon>
