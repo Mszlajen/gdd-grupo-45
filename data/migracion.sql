@@ -16,6 +16,24 @@ INSERT INTO MLJ.fabricantes
 SELECT DISTINCT CRU_FABRICANTE
 FROM gd_esquema.Maestra
 
+-- Coloco en una tabla temporal todos los puertos que aparecen (de salida y de llegada)
+SELECT DISTINCT PUERTO_DESDE puerto
+INTO #PuertosConRepeticiones
+FROM gd_esquema.Maestra
+
+INSERT INTO #PuertosConRepeticiones
+SELECT DISTINCT PUERTO_HASTA
+FROM gd_esquema.Maestra
+
+-- Migro los puertos ignorando las repeticiones
+INSERT INTO MLJ.puertos
+(nombre, habilitado)
+SELECT DISTINCT puerto, 1
+FROM #PuertosConRepeticiones
+
+--Me deshago de la tabla temporal usada para migrar los puertos
+DROP TABLE #PuertosConRepeticiones	
+
 -- Migro la información de los clientes, para recuperar a uno hay que usar el DNI + Apellido
 INSERT INTO MLJ.clientes
 (nombre, apellido, dni, direccion, telefono, mail, nacimiento)
