@@ -264,7 +264,7 @@ BEGIN
 	ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 	ALTER TABLE MLJ.Tramos ADD
-	CONSTRAINT fk_tramos_recorrido FOREIGN KEY (cod_recorrido) REFERENCES MLJ.Recorridos(cod_tramo)
+	CONSTRAINT fk_tramos_recorrido FOREIGN KEY (cod_recorrido) REFERENCES MLJ.Recorridos(cod_recorrido)
 	ON DELETE NO ACTION ON UPDATE CASCADE,
 	CONSTRAINT fk_tramos_puerto_salida FOREIGN KEY (cod_puerto_salida) REFERENCES MLJ.Puertos(cod_puerto)
 	ON DELETE NO ACTION ON UPDATE NO ACTION,
