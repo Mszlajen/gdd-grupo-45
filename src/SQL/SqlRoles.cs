@@ -100,6 +100,42 @@ namespace FrbaCrucero.SQL
             }
         }
 
+        public void actualizarRol(Rol rolNuevo, Rol rol)
+        {
+            SqlConnection conexion = SqlGeneral.nuevaConexion();
+            conexion.Open();
+            SqlTransaction transaction = conexion.BeginTransaction();
+            SqlCommand comando2 = new SqlCommand("", conexion, transaction);
+            SqlCommand borrarFuncionalidades = new SqlCommand("DELETE FROM MLJ.RolesXFuncionalidades WHERE cod_rol = @codRol", conexion, transaction);
+            borrarFuncionalidades.Parameters.AddWithValue("@codRol", rol.idRol);
+
+            try
+            {
+                borrarFuncionalidades.ExecuteNonQuery();
+                SqlCommand comando = new SqlCommand("UPDATE MLJ.Roles SET descripcion = @desc, habilitado = @estado, registrable = @registrable WHERE cod_rol = @codRol", conexion, transaction);
+                comando.Parameters.AddWithValue("@codRol", rol.idRol);
+                comando.Parameters.AddWithValue("@desc", rolNuevo.desc);
+                comando.Parameters.AddWithValue("@estado", rolNuevo.estado);
+                comando.Parameters.AddWithValue("@registrable", rolNuevo.registrable);
+                comando.ExecuteNonQuery();
+                foreach (Funcionalidad func in rolNuevo.funcionalidades)
+                {
+                    comando2.CommandText = "INSERT INTO MLJ.RolesXFuncionalidades (cod_rol,cod_funcionalidad) VALUES (@codRol,@codFunc)";
+                    comando2.Parameters.AddWithValue("@codRol", rol.idRol);
+                    comando2.Parameters.AddWithValue("@codFunc", func.idFuncion);
+                    comando2.ExecuteNonQuery();
+                }
+                transaction.Commit();
+                conexion.Close();
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                conexion.Close();
+                throw ex;
+            }
+        }
+
         public void eliminarLogico(Rol rol)
         {
             SqlConnection conexion = SqlGeneral.nuevaConexion();

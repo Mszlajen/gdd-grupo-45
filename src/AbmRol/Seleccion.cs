@@ -42,7 +42,10 @@ namespace FrbaCrucero.AbmRol
                 new SqlRoles().eliminarLogico(this.dataGridView1.Rows[e.RowIndex].DataBoundItem as Rol);
                 actualizarGrilla();
             }
+            if (e.ColumnIndex == this.Editar.Index)
+            {
+                new modificarRol(this, this.dataGridView1.Rows[e.RowIndex].DataBoundItem as Rol).Show();
+            }
         }
-
     }
 }
