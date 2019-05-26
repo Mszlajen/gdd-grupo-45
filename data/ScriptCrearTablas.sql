@@ -116,12 +116,13 @@ BEGIN
 	--Sentencia crea tabla Recorridos
 	CREATE TABLE MLJ.Recorridos (
 		cod_recorrido INTEGER IDENTITY(1,1) PRIMARY KEY,
-		habilitado bit NOT NULL DEFAULT(1)
+		habilitado bit NOT NULL DEFAULT(1),
+		cod_viejo DECIMAL(18,0)
 	);
 
 	--Sentencia crea tabla Tramos
 	CREATE TABLE MLJ.Tramos (
-		cod_recorrido INTEGER NOT NULL,
+		cod_recorrido INTEGER, --Se coloca luego el constraint NOT NULL, se necesita que permita NULL durante la migracion
 		nro_tramo TINYINT NOT NULL,
 		cod_puerto_salida INTEGER NOT NULL,
 		cod_puerto_llegada INTEGER NOT NULL,
@@ -165,9 +166,9 @@ BEGIN
 	CREATE TABLE MLJ.Cruceros (
 		cod_crucero INTEGER IDENTITY(1,1) PRIMARY KEY,
 		identificador varchar(50) NOT NULL,
-		fecha_alta datetime NOT NULL,
-		cod_marca INTEGER NOT NULL,	
-		cod_servicio INTEGER NOT NULL,
+		fecha_alta datetime,
+		cod_marca INTEGER,	
+		cod_servicio INTEGER,
 		cod_fabricante INTEGER NOT NULL,
 		cod_modelo INTEGER NOT NULL
 	);
@@ -184,11 +185,12 @@ BEGIN
 
 	--Sentencia crea tabla Cabinas
 	CREATE TABLE MLJ.Cabinas (
+		cod_cabina INTEGER IDENTITY(1,1),
 		cod_crucero INTEGER NOT NULL,
 		nro decimal(18,0) NOT NULL,
 		cod_tipo INTEGER NOT NULL,
 		piso decimal(18,0) NOT NULL,
-		primary key(cod_crucero,nro)
+		primary key(cod_cabina)
 	);
 
 	--Sentencia crea tabla Tipo_Cabinas
@@ -211,26 +213,26 @@ BEGIN
 		cod_pasaje INTEGER IDENTITY(1,1) PRIMARY KEY,
 		cod_cliente INTEGER NOT NULL,
 		cod_viaje INTEGER NOT NULL,
-		cod_pago INTEGER NOT NULL,
-		cantidad numeric(18,2) NOT NULL
+		cod_pago INTEGER,
+		cantidad numeric(18,2) NOT NULL,
+		cod_viejo DECIMAL(18,0)
 	);
 
 	--Sentencia crea tabla Cabinas_reservadas
 	CREATE TABLE MLJ.Cabinas_reservadas (
 		cod_pasaje INTEGER NOT NULL,
-		cod_crucero INTEGER NOT NULL,
-		nro_cabina decimal(18,0) NOT NULL,
-		primary key(cod_pasaje,cod_crucero,nro_cabina)
+		cod_cabina INTEGER NOT NULL,
+		primary key(cod_pasaje, cod_cabina)
 	);
 
 	--Sentencia crea tabla Pagos
 	CREATE TABLE MLJ.Pagos (
 		cod_pago INTEGER IDENTITY(1,1) PRIMARY KEY,
 		fecha datetime NOT NULL,
-		cod_medio INTEGER NOT NULL,
-		hash_nro_tarjeta char(255) NOT NULL,
-		ultimos_digitos char(4) NOT NULL,
-		cod_seguridad char(4) NOT NULL
+		cod_medio INTEGER,
+		hash_nro_tarjeta char(255),
+		ultimos_digitos char(4),
+		cod_seguridad char(4)
 	);
 
 	--Sentencia crea tabla Medios_de_Pago
@@ -314,7 +316,7 @@ BEGIN
 	ALTER TABLE MLJ.Cabinas_reservadas ADD
 	CONSTRAINT fk_cabinas_reservadas_cliente FOREIGN KEY (cod_pasaje) REFERENCES MLJ.Pasajes(cod_pasaje)
 	ON DELETE NO ACTION ON UPDATE CASCADE,
-	CONSTRAINT fk_cabinas_reservadas_cabina FOREIGN KEY (cod_crucero,nro_cabina) REFERENCES MLJ.Cabinas(cod_crucero,nro)
+	CONSTRAINT fk_cabinas_reservadas_cabina FOREIGN KEY (cod_cabina) REFERENCES MLJ.Cabinas(cod_cabina)
 	ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 	ALTER TABLE MLJ.Pagos ADD
