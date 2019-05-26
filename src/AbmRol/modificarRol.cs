@@ -27,7 +27,7 @@ namespace FrbaCrucero.AbmRol
             this.rol = rol;
             funcionalidades = new SqlRoles().getFuncionesTotales();
             this.funcSeleccionadas = this.rol.funcionalidades;
-            this.comboBoxFuncionalidades.DisplayMember = "nombreFuncion";
+            this.comboBoxFuncionalidades.DisplayMember = "descFuncion";
             this.comboBoxFuncionalidades.ValueMember = "this";
             this.comboBoxFuncionalidades.DataSource = funcionalidades;
 

@@ -119,6 +119,7 @@
             this.buttonAgregar.TabIndex = 6;
             this.buttonAgregar.Text = "Agregar";
             this.buttonAgregar.UseVisualStyleBackColor = true;
+            this.buttonAgregar.Click += new System.EventHandler(this.buttonAgregar_Click);
             // 
             // ButtonRemover
             // 
@@ -129,6 +130,7 @@
             this.ButtonRemover.TabIndex = 5;
             this.ButtonRemover.Text = "Remover";
             this.ButtonRemover.UseVisualStyleBackColor = true;
+            this.ButtonRemover.Click += new System.EventHandler(this.ButtonRemover_Click);
             // 
             // textBoxDesc
             // 

@@ -26,7 +26,7 @@ namespace FrbaCrucero.AbmRol
             _seleccionForm = seleccionForm; 
             funcionalidades = new SqlRoles().getFuncionesTotales();
             funcSeleccionadas = new List<Funcionalidad>();
-            this.comboBoxFuncionalidades.DisplayMember = "nombreFuncion";
+            this.comboBoxFuncionalidades.DisplayMember = "descFuncion";
             this.comboBoxFuncionalidades.ValueMember = "this";
             this.comboBoxFuncionalidades.DataSource = funcionalidades;
         }

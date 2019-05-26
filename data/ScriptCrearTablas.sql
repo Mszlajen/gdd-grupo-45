@@ -8,6 +8,14 @@ IF(OBJECT_ID('MLJ.crear_tablas') IS NOT NULL)
 	DROP PROCEDURE MLJ.crear_tablas
 GO
 
+IF(OBJECT_ID('MLJ.crear_funciones') IS NOT NULL)
+	DROP PROCEDURE MLJ.crear_funciones
+GO
+
+IF(OBJECT_ID('MLJ.crear_roles') IS NOT NULL)
+	DROP PROCEDURE MLJ.crear_roles
+GO
+
 CREATE PROCEDURE MLJ.crear_tablas 
 AS
 BEGIN
@@ -171,7 +179,7 @@ BEGIN
 		permanente bit NOT NULL DEFAULT(0),
 		fecha_baja datetime NOT NULL,
 		fecha_alta datetime
-		CHECK(NOT permanente = 1 OR fecha_alta IS NOT NULL)
+		--CHECK(NOT permanente = 1 OR fecha_alta IS NOT NULL)
 	);
 
 	--Sentencia crea tabla Cabinas
@@ -258,7 +266,7 @@ BEGIN
 	ON DELETE NO ACTION ON UPDATE CASCADE;
 
 	ALTER TABLE MLJ.Viajes ADD
-	CONSTRAINT fk_viajes_recorrido FOREIGN KEY (cod_recorrido) REFERENCES MLJ.Recorridos(cod_tramo)
+	CONSTRAINT fk_viajes_recorrido FOREIGN KEY (cod_recorrido) REFERENCES MLJ.Recorridos(cod_recorrido)
 	ON DELETE NO ACTION ON UPDATE CASCADE,
 	CONSTRAINT fk_viajes_crucero FOREIGN KEY (cod_crucero) REFERENCES MLJ.Cruceros(cod_crucero)
 	ON DELETE NO ACTION ON UPDATE NO ACTION;
@@ -316,8 +324,39 @@ BEGIN
 END
 GO
 
+--Este procedure se encarga de crear funcionalidades del tp
+CREATE PROCEDURE MLJ.crear_funciones
+AS
+BEGIN
+	INSERT INTO MLJ.Funcionalidades (descripcion) VALUES ('ABM Puertos');
+	INSERT INTO MLJ.Funcionalidades (descripcion) VALUES ('ABM Rol');
+	INSERT INTO MLJ.Funcionalidades (descripcion) VALUES ('ABM Usuarios');
+	INSERT INTO MLJ.Funcionalidades (descripcion) VALUES ('ABM Recorridos');
+	INSERT INTO MLJ.Funcionalidades (descripcion) VALUES ('ABM Cruceros');
+	INSERT INTO MLJ.Funcionalidades (descripcion) VALUES ('Generar Viaje');
+	INSERT INTO MLJ.Funcionalidades (descripcion) VALUES ('ListadosTOP');
+END
+GO
+
+--Este procedure se encarga de crear roles del tp
+CREATE PROCEDURE MLJ.crear_roles
+AS
+BEGIN
+	INSERT MLJ.Roles (descripcion, habilitado, registrable) VALUES ('Administrador', 1, 0)
+	INSERT MLJ.RolesXFuncionalidades (cod_rol, cod_funcionalidad) VALUES (1, 1)
+	INSERT MLJ.RolesXFuncionalidades (cod_rol, cod_funcionalidad) VALUES (1, 2)
+	INSERT MLJ.RolesXFuncionalidades (cod_rol, cod_funcionalidad) VALUES (1, 3)
+	INSERT MLJ.RolesXFuncionalidades (cod_rol, cod_funcionalidad) VALUES (1, 4)
+	INSERT MLJ.RolesXFuncionalidades (cod_rol, cod_funcionalidad) VALUES (1, 5)
+	INSERT MLJ.RolesXFuncionalidades (cod_rol, cod_funcionalidad) VALUES (1, 6)
+	INSERT MLJ.RolesXFuncionalidades (cod_rol, cod_funcionalidad) VALUES (1, 7)
+END
+GO
+
 --Ejecuto procedure creado anteriormente que crea las tablas
 BEGIN
 	EXEC MLJ.crear_tablas;
+	EXEC MLJ.crear_funciones;
+	EXEC MLJ.crear_roles;
 END
 GO

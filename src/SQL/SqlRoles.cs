@@ -16,8 +16,6 @@ namespace FrbaCrucero.SQL
         public List<Rol> getRoles()
         {
             List<Rol> roles = new List<Rol>();
-            List<Funcionalidad> funcionalidades = new List<Funcionalidad>();
-
 
             SqlConnection conexion = SqlGeneral.nuevaConexion();
             try
@@ -27,7 +25,7 @@ namespace FrbaCrucero.SQL
                 SqlDataReader rolesResultados = consulta.ExecuteReader();
                 while (rolesResultados.Read())
                 {
-                    roles.Add(new Rol(rolesResultados.GetInt32(0), rolesResultados.GetBoolean(2), rolesResultados.GetBoolean(3), rolesResultados.GetString(1), funcionalidades));
+                    roles.Add(new Rol(rolesResultados.GetInt32(0), rolesResultados.GetBoolean(2), rolesResultados.GetBoolean(3), rolesResultados.GetString(1), this.getFuncionesRol(rolesResultados.GetInt32(0))));
                 }
             }
             catch (Exception ex)
@@ -39,6 +37,32 @@ namespace FrbaCrucero.SQL
                 conexion.Close();
             }
             return roles;
+        }
+
+        public List<Funcionalidad> getFuncionesRol(Int32 codRol)
+        {
+            List<Funcionalidad> funcionalidades = new List<Funcionalidad>();
+            SqlConnection conexion = SqlGeneral.nuevaConexion();
+            try
+            {
+                SqlCommand consulta = new SqlCommand("SELECT f.cod_funcionalidad, f.descripcion FROM MLJ.RolesXFuncionalidades rf, MLJ.Funcionalidades f WHERE rf.cod_rol = @codRol AND f.cod_funcionalidad = rf.cod_funcionalidad", conexion);
+                consulta.Parameters.AddWithValue("@codRol", codRol);
+                conexion.Open();
+                SqlDataReader funcResultados = consulta.ExecuteReader();
+                while (funcResultados.Read())
+                {
+                    funcionalidades.Add(new Funcionalidad(funcResultados.GetInt32(0), funcResultados.GetString(1)));
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conexion.Close();
+            }
+            return funcionalidades;
         }
 
 
@@ -75,19 +99,21 @@ namespace FrbaCrucero.SQL
             SqlCommand comando2 = new SqlCommand("", conexion, transaction);
             try
             {
-                SqlCommand comando = new SqlCommand("INSERT INTO MLJ.Roles (descripcion,habilitado,registrable) VALUES (@desc,@estado,@registrable)", conexion, transaction);
+                SqlCommand comando = new SqlCommand("INSERT INTO MLJ.Roles (descripcion,habilitado,registrable) OUTPUT INSERTED.cod_rol VALUES (@desc,@estado,@registrable)", conexion, transaction);
                 comando.Parameters.AddWithValue("@desc", rolNuevo.desc);
                 comando.Parameters.AddWithValue("@estado", rolNuevo.estado);
                 comando.Parameters.AddWithValue("@registrable", rolNuevo.registrable);
- 
-                int cod_rol = Convert.ToInt32(comando.ExecuteScalar());
 
+                Int32 cod_rol = Convert.ToInt32(comando.ExecuteScalar());
+                comando2.Parameters.AddWithValue("@codRol", cod_rol);
+
+                int i = 0;
                 foreach (Funcionalidad func in rolNuevo.funcionalidades)
                 {
-                    comando2.CommandText = "INSERT INTO MLJ.RolesXFuncionalidades (cod_rol,cod_funcionalidad) VALUES (@codRol,@codFunc)";
-                    comando2.Parameters.AddWithValue("@codRol", cod_rol);
-                    comando2.Parameters.AddWithValue("@codFunc", func.idFuncion);
+                    comando2.CommandText = "INSERT INTO MLJ.RolesXFuncionalidades (cod_rol,cod_funcionalidad) VALUES (@codRol,@codFunc" + i + ")";
+                    comando2.Parameters.AddWithValue("@codFunc" + i, func.idFuncion);
                     comando2.ExecuteNonQuery();
+                    i++;
                 }
                 transaction.Commit();
                 conexion.Close();
@@ -118,12 +144,15 @@ namespace FrbaCrucero.SQL
                 comando.Parameters.AddWithValue("@estado", rolNuevo.estado);
                 comando.Parameters.AddWithValue("@registrable", rolNuevo.registrable);
                 comando.ExecuteNonQuery();
+                comando2.Parameters.AddWithValue("@codRol", rol.idRol);
+
+                int i = 0;
                 foreach (Funcionalidad func in rolNuevo.funcionalidades)
                 {
-                    comando2.CommandText = "INSERT INTO MLJ.RolesXFuncionalidades (cod_rol,cod_funcionalidad) VALUES (@codRol,@codFunc)";
-                    comando2.Parameters.AddWithValue("@codRol", rol.idRol);
-                    comando2.Parameters.AddWithValue("@codFunc", func.idFuncion);
+                    comando2.CommandText = "INSERT INTO MLJ.RolesXFuncionalidades (cod_rol,cod_funcionalidad) VALUES (@codRol,@codFunc" + i + ")";
+                    comando2.Parameters.AddWithValue("@codFunc" + i, func.idFuncion);
                     comando2.ExecuteNonQuery();
+                    i++;
                 }
                 transaction.Commit();
                 conexion.Close();
