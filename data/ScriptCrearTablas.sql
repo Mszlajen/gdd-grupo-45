@@ -16,6 +16,10 @@ IF(OBJECT_ID('MLJ.crear_roles') IS NOT NULL)
 	DROP PROCEDURE MLJ.crear_roles
 GO
 
+IF(OBJECT_ID('MLJ.crear_usuarios') IS NOT NULL)
+	DROP PROCEDURE MLJ.crear_usuarios
+GO
+
 CREATE PROCEDURE MLJ.crear_tablas 
 AS
 BEGIN
@@ -69,7 +73,7 @@ BEGIN
 	--Sentencia crea tabla Usuarios
 	CREATE TABLE MLJ.Usuarios (
 		cod_usuario INTEGER IDENTITY(1,1) PRIMARY KEY,
-		usuario varchar(50) NOT NULL,
+		usuario varchar(50) UNIQUE NOT NULL,
 		hash_contrasenia char(256) NOT NULL,
 		habilitado bit NOT NULL DEFAULT(1),
 		ingresos_restantes tinyint NOT NULL DEFAULT(3)
@@ -330,6 +334,8 @@ GO
 CREATE PROCEDURE MLJ.crear_funciones
 AS
 BEGIN
+	INSERT INTO MLJ.Funcionalidades (descripcion) VALUES ('Compra y/o Reserva de Viaje');
+	INSERT INTO MLJ.Funcionalidades (descripcion) VALUES ('Pago Reserva');
 	INSERT INTO MLJ.Funcionalidades (descripcion) VALUES ('ABM Puertos');
 	INSERT INTO MLJ.Funcionalidades (descripcion) VALUES ('ABM Rol');
 	INSERT INTO MLJ.Funcionalidades (descripcion) VALUES ('ABM Usuarios');
@@ -362,10 +368,53 @@ BEGIN
 END
 GO
 
+--Este procedure se encarga de crear usuarios con roles
+CREATE PROCEDURE MLJ.crear_usuarios
+AS
+BEGIN
+	INSERT MLJ.Usuarios (usuario, hash_contrasenia) VALUES ('admin','e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7')
+	INSERT MLJ.UsuariosXRoles (cod_usuario, cod_rol) VALUES (1, 1)
+	INSERT MLJ.Usuarios (usuario, hash_contrasenia) VALUES ('admin2','e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7')
+	INSERT MLJ.UsuariosXRoles (cod_usuario, cod_rol) VALUES (2, 1)
+	INSERT MLJ.Usuarios (usuario, hash_contrasenia) VALUES ('admin3','e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7')
+	INSERT MLJ.UsuariosXRoles (cod_usuario, cod_rol) VALUES (3, 1)
+END
+GO
+
 --Ejecuto procedure creado anteriormente que crea las tablas
 BEGIN
 	EXEC MLJ.crear_tablas;
 	EXEC MLJ.crear_funciones;
 	EXEC MLJ.crear_roles;
+	EXEC MLJ.crear_usuarios;
+END
+GO
+
+IF(OBJECT_ID('MLJ.BajaLogicaROL') IS NOT NULL)
+	DROP TRIGGER MLJ.BajaLogicaROL
+GO
+
+CREATE TRIGGER MLJ.BajaLogicaROL 
+ON MLJ.Roles AFTER UPDATE
+AS
+BEGIN
+	DECLARE @cod_rol INTEGER;
+	
+	DECLARE rolesdeshabilitados CURSOR FOR
+	SELECT i.cod_rol
+	FROM inserted i
+	WHERE i.habilitado = 0
+
+	OPEN rolesdeshabilitados;
+	FETCH NEXT FROM rolesdeshabilitados INTO @cod_rol;
+
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+		DELETE FROM MLJ.UsuariosXRoles WHERE cod_rol = @cod_rol;
+		FETCH NEXT FROM rolesdeshabilitados INTO @cod_rol;
+	END
+
+	CLOSE rolesdeshabilitados;
+	DEALLOCATE rolesdeshabilitados;
 END
 GO

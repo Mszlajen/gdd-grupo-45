@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using FrbaCrucero.Entidades;
 
 namespace FrbaCrucero.Menu
 {
@@ -16,9 +17,8 @@ namespace FrbaCrucero.Menu
         {
             InitializeComponent();
 
-            comboBox1.Items.Add("OPCION_1");
-            comboBox1.Items.Add("OPCION_2");
-            comboBox1.Items.Add("OPCION_3");
+            comboBox1.Items.Add("Compra y/o Reserva de Viaje");
+            comboBox1.Items.Add("Pago Reserva");
             comboBox1.SelectedIndex = 0;
         }
 
@@ -28,9 +28,68 @@ namespace FrbaCrucero.Menu
            LoginForm.Show();
         }
 
-        public void agregarFuncionalidadDeRoles(string[] array)
+        public void agregarFuncionalidadDeRoles(Usuario usuario)
         {
-            comboBox1.Items.AddRange(array);
+            this.comboBox1.DisplayMember = "descFuncion";
+            this.comboBox1.ValueMember = "this";
+            if (usuario.userrol != null)
+            {
+                this.comboBox1.DataSource = usuario.userrol.funcionalidades;
+            }
+            else
+            {
+                this.comboBox1.DataSource = null;
+
+                if (comboBox1.Items.Count == 0)
+                {
+                    comboBox1.Items.Add("Compra y/o Reserva de Viaje");
+                    comboBox1.Items.Add("Pago Reserva");
+                }
+
+            }
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            /*Ak comparar el textbox text selecccionado con un switch e ir poniendo 
+ * las ventanas correspondientes a cada nombre*/
+            if (comboBox1.Text.ToLower().Equals("compra y/o reserva de viaje"))
+            {
+                new CompraReservaPasaje.Busqueda().Show();
+            }
+            else if (comboBox1.Text.ToLower().Equals("pago reserva"))
+            {
+                new PagoReserva.Busqueda().Show();
+            }
+            else if (comboBox1.Text.ToLower().Equals("abm puertos"))
+            {
+                MessageBox.Show("ABM Puertos...");
+            }
+            else if (comboBox1.Text.ToLower().Equals("abm rol"))
+            {
+                new AbmRol.Seleccion().Show();
+            }
+            else if (comboBox1.Text.ToLower().Equals("abm usuarios"))
+            {
+                MessageBox.Show("ABM Usuarios...");
+            }
+            else if (comboBox1.Text.ToLower().Equals("abm recorridos"))
+            {
+                new AbmRecorrido.Formulario().Show();
+            }
+            else if (comboBox1.Text.ToLower().Equals("abm cruceros"))
+            {
+                new AbmCrucero.Form1().Show();
+            }
+            else if (comboBox1.Text.ToLower().Equals("generar viaje"))
+            {
+                new GeneracionViaje.GenerarViaje().Show();
+            }
+            else if (comboBox1.Text.ToLower().Equals("listadostop"))
+            {
+                new ListadoEstadistico.ListadoTop5().Show();
+            }
         }
     }
 }

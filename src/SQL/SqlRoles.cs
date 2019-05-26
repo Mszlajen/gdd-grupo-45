@@ -12,6 +12,36 @@ namespace FrbaCrucero.SQL
 {
     class SqlRoles
     {
+        public Rol getRolUsuario(String usuario)
+        {
+            Rol rol = null;
+            SqlConnection conexion = SqlGeneral.nuevaConexion();
+            try
+            {
+                SqlCommand consulta = new SqlCommand("SELECT ur.cod_rol FROM MLJ.UsuariosXRoles ur, MLJ.Usuarios u WHERE u.usuario = @usuario AND ur.cod_usuario = u.cod_usuario", conexion);
+                consulta.Parameters.AddWithValue("@usuario", usuario);
+                conexion.Open();
+                Int32 cod_rol = Convert.ToInt32(consulta.ExecuteScalar());
+
+                SqlCommand consulta2 = new SqlCommand("SELECT cod_rol,descripcion,habilitado,registrable FROM MLJ.Roles WHERE cod_rol=@codRol", conexion);
+                consulta2.Parameters.AddWithValue("@codRol", cod_rol);
+                SqlDataReader rolesResultados = consulta2.ExecuteReader();
+
+                while (rolesResultados.Read())
+                {
+                    rol = new Rol(rolesResultados.GetInt32(0), rolesResultados.GetBoolean(2), rolesResultados.GetBoolean(3), rolesResultados.GetString(1), this.getFuncionesRol(rolesResultados.GetInt32(0)));
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conexion.Close();
+            }
+            return rol;
+        }
 
         public List<Rol> getRoles()
         {
