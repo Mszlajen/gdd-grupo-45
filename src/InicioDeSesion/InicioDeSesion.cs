@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using FrbaCrucero.Entidades;
+using FrbaCrucero.SQL;
 
 namespace FrbaCrucero.InicioDeSesion
 {
@@ -14,6 +16,8 @@ namespace FrbaCrucero.InicioDeSesion
     {
 
         private Menu.Menu _menuForm;
+        private string username;
+        private string password;
 
         public InicioDeSesion(Menu.Menu menuForm)
         {
@@ -23,9 +27,30 @@ namespace FrbaCrucero.InicioDeSesion
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string[] array = { "OPCION_ADMIN1", "OPCION_ADMIN2", "OPCION_ADMIN3" };
-            _menuForm.agregarFuncionalidadDeRoles(array);
-            this.Close();
+            if (textBox1.Text != "" && textBox2.Text != "")
+            {
+                username = textBox1.Text;
+                password = textBox2.Text;
+                this.habilitarSeleccionDeRoles(username);
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("Ingrese Datos de Login");
+            }
+
+        }
+
+        private void habilitarSeleccionDeRoles(String username)
+        {
+            Usuario usuario = new Usuario(username, new SqlRoles().getRolUsuario(username));
+            _menuForm.agregarFuncionalidadDeRoles(usuario);
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            textBox1.Clear();
+            textBox2.Clear();
         }
     }
 }
