@@ -76,7 +76,7 @@ namespace FrbaCrucero.Menu
             }
             else if (comboBox1.Text.ToLower().Equals("abm recorridos"))
             {
-                new AbmRecorrido.Formulario().Show();
+                new AbmRecorrido.Selector().Show();
             }
             else if (comboBox1.Text.ToLower().Equals("abm cruceros"))
             {
