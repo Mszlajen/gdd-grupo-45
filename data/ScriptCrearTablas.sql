@@ -178,8 +178,8 @@ BEGIN
 		cod_crucero INTEGER NOT NULL,
 		permanente bit NOT NULL DEFAULT(0),
 		fecha_baja datetime NOT NULL,
-		fecha_alta datetime
-		--CHECK(NOT permanente = 1 OR fecha_alta IS NOT NULL)
+		fecha_alta datetime,
+		CHECK(NOT permanente = 1 OR fecha_alta IS NOT NULL)
 	);
 
 	--Sentencia crea tabla Cabinas
@@ -335,6 +335,8 @@ BEGIN
 	INSERT INTO MLJ.Funcionalidades (descripcion) VALUES ('ABM Cruceros');
 	INSERT INTO MLJ.Funcionalidades (descripcion) VALUES ('Generar Viaje');
 	INSERT INTO MLJ.Funcionalidades (descripcion) VALUES ('ListadosTOP');
+	INSERT INTO MLJ.Funcionalidades (descripcion) VALUES ('Comprar Pasaje');
+	INSERT INTO MLJ.Funcionalidades (descripcion) VALUES ('Pagar Reserva');
 END
 GO
 
@@ -342,14 +344,19 @@ GO
 CREATE PROCEDURE MLJ.crear_roles
 AS
 BEGIN
-	INSERT MLJ.Roles (descripcion, habilitado, registrable) VALUES ('Administrador', 1, 0)
-	INSERT MLJ.RolesXFuncionalidades (cod_rol, cod_funcionalidad) VALUES (1, 1)
-	INSERT MLJ.RolesXFuncionalidades (cod_rol, cod_funcionalidad) VALUES (1, 2)
-	INSERT MLJ.RolesXFuncionalidades (cod_rol, cod_funcionalidad) VALUES (1, 3)
-	INSERT MLJ.RolesXFuncionalidades (cod_rol, cod_funcionalidad) VALUES (1, 4)
-	INSERT MLJ.RolesXFuncionalidades (cod_rol, cod_funcionalidad) VALUES (1, 5)
-	INSERT MLJ.RolesXFuncionalidades (cod_rol, cod_funcionalidad) VALUES (1, 6)
-	INSERT MLJ.RolesXFuncionalidades (cod_rol, cod_funcionalidad) VALUES (1, 7)
+	INSERT INTO MLJ.Roles (descripcion, habilitado, registrable) VALUES ('Administrador', 1, 0)
+	INSERT INTO MLJ.RolesXFuncionalidades (cod_rol, cod_funcionalidad) VALUES (1, 1)
+	INSERT INTO MLJ.RolesXFuncionalidades (cod_rol, cod_funcionalidad) VALUES (1, 2)
+	INSERT INTO MLJ.RolesXFuncionalidades (cod_rol, cod_funcionalidad) VALUES (1, 3)
+	INSERT INTO MLJ.RolesXFuncionalidades (cod_rol, cod_funcionalidad) VALUES (1, 4)
+	INSERT INTO MLJ.RolesXFuncionalidades (cod_rol, cod_funcionalidad) VALUES (1, 5)
+	INSERT INTO MLJ.RolesXFuncionalidades (cod_rol, cod_funcionalidad) VALUES (1, 6)
+	INSERT INTO MLJ.RolesXFuncionalidades (cod_rol, cod_funcionalidad) VALUES (1, 7)
+	INSERT INTO MLJ.RolesXFuncionalidades (cod_rol, cod_funcionalidad) VALUES (1, 8)
+	INSERT INTO MLJ.RolesXFuncionalidades (cod_rol, cod_funcionalidad) VALUES (1, 9)
+	INSERT INTO MLJ.Roles (descripcion, habilitado, registrable) VALUES ('Usuario', 1, 1)
+	INSERT INTO MLJ.RolesXFuncionalidades (cod_rol, cod_funcionalidad) VALUES (2, 8)
+	INSERT INTO MLJ.RolesXFuncionalidades (cod_rol, cod_funcionalidad) VALUES (2, 9)
 END
 GO
 
