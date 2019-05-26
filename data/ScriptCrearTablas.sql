@@ -382,3 +382,32 @@ BEGIN
 	EXEC MLJ.crear_usuarios;
 END
 GO
+
+IF(OBJECT_ID('MLJ.BajaLogicaROL') IS NOT NULL)
+	DROP TRIGGER MLJ.BajaLogicaROL
+GO
+
+CREATE TRIGGER MLJ.BajaLogicaROL 
+ON MLJ.Roles AFTER UPDATE
+AS
+BEGIN
+	DECLARE @cod_rol INTEGER;
+	
+	DECLARE rolesdeshabilitados CURSOR FOR
+	SELECT i.cod_rol
+	FROM inserted i
+	WHERE i.habilitado = 0
+
+	OPEN rolesdeshabilitados;
+	FETCH NEXT FROM rolesdeshabilitados INTO @cod_rol;
+
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+		DELETE FROM MLJ.UsuariosXRoles WHERE cod_rol = @cod_rol;
+		FETCH NEXT FROM rolesdeshabilitados INTO @cod_rol;
+	END
+
+	CLOSE rolesdeshabilitados;
+	DEALLOCATE rolesdeshabilitados;
+END
+GO

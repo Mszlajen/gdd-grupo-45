@@ -39,9 +39,15 @@ namespace FrbaCrucero.Menu
             else
             {
                 this.comboBox1.DataSource = null;
-                comboBox1.Items.Add("Compra y/o Reserva de Viaje");
-                comboBox1.Items.Add("Pago Reserva");
+
+                if (comboBox1.Items.Count == 0)
+                {
+                    comboBox1.Items.Add("Compra y/o Reserva de Viaje");
+                    comboBox1.Items.Add("Pago Reserva");
+                }
+
             }
+
         }
 
         private void button1_Click(object sender, EventArgs e)
