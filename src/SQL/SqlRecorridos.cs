@@ -38,6 +38,32 @@ namespace FrbaCrucero.SQL
             return recorridos;
         }
 
+        public List<Recorridos> getRecorridosHabilitados()
+        {
+            List<Recorridos> recorridos = new List<Recorridos>();
+
+            SqlConnection conexion = SqlGeneral.nuevaConexion();
+            try
+            {
+                SqlCommand consulta = new SqlCommand("SELECT cod_recorrido, habilitado FROM MLJ.Recorridos WHERE habilitado = 1", conexion);
+                conexion.Open();
+                SqlDataReader recorridosResult = consulta.ExecuteReader();
+                while (recorridosResult.Read())
+                {
+                    recorridos.Add(new Recorridos(recorridosResult.GetInt32(0), recorridosResult.GetBoolean(1), getTramosRecorrido(recorridosResult.GetInt32(0))));
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conexion.Close();
+            }
+            return recorridos;
+        }
+
         public List<Tramos> getTramosRecorrido(Int32 codRecorrido)
         {
             List<Tramos> tramos = new List<Tramos>();
@@ -133,16 +159,16 @@ namespace FrbaCrucero.SQL
             SqlTransaction transaction = conexion.BeginTransaction();
             SqlCommand comando2 = new SqlCommand("", conexion, transaction);
             SqlCommand actualizarHabilitado = new SqlCommand("UPDATE MLJ.Recorridos SET habilitado = @habilitado WHERE cod_recorrido = @codRecorrido", conexion, transaction);
-            actualizarHabilitado.Parameters.AddWithValue("@codRecorrido", recorrido.idRol);
+            actualizarHabilitado.Parameters.AddWithValue("@codRecorrido", recorrido.idRecorrido);
             actualizarHabilitado.Parameters.AddWithValue("@habilitado", recorrido.estado);
             SqlCommand borrarTramos = new SqlCommand("DELETE FROM MLJ.Tramos WHERE cod_recorrido = @codRecorrido", conexion, transaction);
-            borrarTramos.Parameters.AddWithValue("@codRecorrido", recorrido.idRol);
+            borrarTramos.Parameters.AddWithValue("@codRecorrido", recorrido.idRecorrido);
 
             try
             {
                 actualizarHabilitado.ExecuteNonQuery();
                 borrarTramos.ExecuteNonQuery();
-                comando2.Parameters.AddWithValue("@codRecorrido", recorrido.idRol);
+                comando2.Parameters.AddWithValue("@codRecorrido", recorrido.idRecorrido);
 
                 int i = 0;
                 foreach (Tramos tramo in recorrido.tramos)
@@ -175,7 +201,7 @@ namespace FrbaCrucero.SQL
             try
             {
                 SqlCommand comando = new SqlCommand("UPDATE MLJ.Recorridos SET habilitado = 0 WHERE cod_recorrido = @codRecorrido", conexion, transaction);
-                comando.Parameters.AddWithValue("@codRecorrido", recorrido.idRol);
+                comando.Parameters.AddWithValue("@codRecorrido", recorrido.idRecorrido);
                 comando.ExecuteNonQuery();
                 transaction.Commit();
                 conexion.Close();

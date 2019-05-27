@@ -9,14 +9,14 @@ namespace FrbaCrucero.Entidades
     public class Recorridos
     {
         [System.ComponentModel.DisplayName("codRecorrido")]
-        public Int32 idRol { get; set; }
+        public Int32 idRecorrido { get; set; }
         [System.ComponentModel.DisplayName("Estado")]
         public Boolean estado { get; set; }
         public List<Tramos> tramos { get; set; }
 
-        public Recorridos(Int32 idRol, Boolean estado, List<Tramos> tramos)
+        public Recorridos(Int32 idRecorrido, Boolean estado, List<Tramos> tramos)
         {
-            this.idRol = idRol;
+            this.idRecorrido = idRecorrido;
             this.estado = estado;
             this.tramos = tramos;
         }

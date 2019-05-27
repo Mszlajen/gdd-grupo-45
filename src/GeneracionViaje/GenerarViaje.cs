@@ -7,19 +7,98 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using FrbaCrucero.Entidades;
+using FrbaCrucero.SQL;
 
 namespace FrbaCrucero.GeneracionViaje
 {
     public partial class GenerarViaje : Form
     {
+        Recorridos recorrido=null;
+        CrucerosDisponibles crucero = null;
+        public DateTime fecha_salida;
+        public DateTime fecha_llegada;
+
+
         public GenerarViaje()
         {
             InitializeComponent();
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            new SeleccionRecorrido(this).Show();
+        }
+
+        public void Recorrido(Recorridos recorrido)
+        {
+            this.recorrido = recorrido;
+            textBox1.Text = recorrido.idRecorrido.ToString();
+        }
+
+        public void CruceroDisponible(CrucerosDisponibles crucero)
+        {
+            this.crucero = crucero;
+            textBox3.Text = crucero.identificador;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (this.dateTimePicker1.Value.Date > DateTime.Now && this.dateTimePicker2.Value.Date > DateTime.Now)
+            {
+            this.fecha_salida = this.dateTimePicker1.Value.Date;
+            this.fecha_llegada = this.dateTimePicker2.Value.Date;
+            new SeleccionCrucero(this).Show();
+            }
+            else
+            {
+                MessageBox.Show("Las Fechas NO son mayores a la actual");
+            }
+        }
+
         private void button3_Click(object sender, EventArgs e)
         {
+            if (this.dateTimePicker1.Value.Date > DateTime.Now && this.dateTimePicker2.Value.Date > DateTime.Now)
+            {
+                if ((recorrido != null) && (crucero != null))
+                {
+                    this.fecha_salida = this.dateTimePicker1.Value.Date;
+                    this.fecha_llegada = this.dateTimePicker2.Value.Date;
+                    int retorno = new SqlViaje().viaje(recorrido.idRecorrido, crucero.codCrucero, this.fecha_salida, this.fecha_llegada,this.Retorna());
+                    switch (retorno)
+                    {
+                        case -1:
+                            MessageBox.Show("Fecha Salida Invalida");
+                            break;
+                        case -2:
+                            MessageBox.Show("No hay Cruceros Disponibles");
+                            break;
+                        case -3:
+                            MessageBox.Show("Crucero Asignado fue Dado de Baja Permanentemente");
+                            break;
+                        case -4:
+                            MessageBox.Show("Recorrido Deshabilitado");
+                            break;
+                        case 1:
+                            MessageBox.Show("Se Creo El Viaje. OKEY");
+                            break;
+                    }
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Ingrese Crucero|Recorrido");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Las Fechas NO son mayores a la actual");
+            }
+        }
 
+        public Boolean Retorna()
+        {
+            return this.recorrido.tramos.ElementAt(0).puertoSalida.codPuerto == this.recorrido.tramos.ElementAt(this.recorrido.tramos.Count-1).puertoLlegada.codPuerto;
         }
     }
 }

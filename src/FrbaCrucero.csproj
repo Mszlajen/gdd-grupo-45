@@ -172,6 +172,7 @@
     <Compile Include="CompraReservaPasaje\SeleccionCliente.Designer.cs">
       <DependentUpon>SeleccionCliente.cs</DependentUpon>
     </Compile>
+    <Compile Include="Entidades\CrucerosDisponibles.cs" />
     <Compile Include="Entidades\Funcionalidad.cs" />
     <Compile Include="Entidades\Puertos.cs" />
     <Compile Include="Entidades\Recorridos.cs" />
@@ -196,11 +197,17 @@
     <Compile Include="GeneracionViaje\SeleccionCrucero.Designer.cs">
       <DependentUpon>SeleccionCrucero.cs</DependentUpon>
     </Compile>
-    <Compile Include="GeneracionViaje\SeleccionTramo.cs">
+    <Compile Include="GeneracionViaje\SeleccionRecorrido.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GeneracionViaje\SeleccionTramo.Designer.cs">
-      <DependentUpon>SeleccionTramo.cs</DependentUpon>
+    <Compile Include="GeneracionViaje\SeleccionRecorrido.Designer.cs">
+      <DependentUpon>SeleccionRecorrido.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GeneracionViaje\VerRecorrido.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GeneracionViaje\VerRecorrido.Designer.cs">
+      <DependentUpon>VerRecorrido.cs</DependentUpon>
     </Compile>
     <Compile Include="InicioDeSesion\InicioDeSesion.cs">
       <SubType>Form</SubType>
@@ -240,10 +247,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SQL\SqlCruceros.cs" />
     <Compile Include="SQL\SqlGeneral.cs" />
     <Compile Include="SQL\SqlPuertos.cs" />
     <Compile Include="SQL\SqlRecorridos.cs" />
     <Compile Include="SQL\SqlRoles.cs" />
+    <Compile Include="SQL\SqlViaje.cs" />
     <EmbeddedResource Include="AbmCrucero\AltaCabina.resx">
       <DependentUpon>AltaCabina.cs</DependentUpon>
     </EmbeddedResource>
@@ -307,8 +316,11 @@
     <EmbeddedResource Include="GeneracionViaje\SeleccionCrucero.resx">
       <DependentUpon>SeleccionCrucero.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GeneracionViaje\SeleccionTramo.resx">
-      <DependentUpon>SeleccionTramo.cs</DependentUpon>
+    <EmbeddedResource Include="GeneracionViaje\SeleccionRecorrido.resx">
+      <DependentUpon>SeleccionRecorrido.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GeneracionViaje\VerRecorrido.resx">
+      <DependentUpon>VerRecorrido.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="InicioDeSesion\InicioDeSesion.resx">
       <DependentUpon>InicioDeSesion.cs</DependentUpon>

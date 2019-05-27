@@ -20,6 +20,10 @@ IF(OBJECT_ID('MLJ.crear_usuarios') IS NOT NULL)
 	DROP PROCEDURE MLJ.crear_usuarios
 GO
 
+IF(OBJECT_ID('MLJ.verificar_viaje') IS NOT NULL)
+	DROP PROCEDURE MLJ.verificar_viaje
+GO
+
 CREATE PROCEDURE MLJ.crear_tablas 
 AS
 BEGIN
@@ -184,7 +188,7 @@ BEGIN
 		permanente bit NOT NULL DEFAULT(0),
 		fecha_baja datetime NOT NULL,
 		fecha_alta datetime,
-		CHECK(NOT permanente = 1 OR fecha_alta IS NOT NULL)
+		CHECK(NOT permanente = 1 OR fecha_alta IS NULL)
 	);
 
 	--Sentencia crea tabla Cabinas
@@ -343,8 +347,6 @@ BEGIN
 	INSERT INTO MLJ.Funcionalidades (descripcion) VALUES ('ABM Cruceros');
 	INSERT INTO MLJ.Funcionalidades (descripcion) VALUES ('Generar Viaje');
 	INSERT INTO MLJ.Funcionalidades (descripcion) VALUES ('ListadosTOP');
-	INSERT INTO MLJ.Funcionalidades (descripcion) VALUES ('Comprar Pasaje');
-	INSERT INTO MLJ.Funcionalidades (descripcion) VALUES ('Pagar Reserva');
 END
 GO
 
@@ -363,8 +365,8 @@ BEGIN
 	INSERT INTO MLJ.RolesXFuncionalidades (cod_rol, cod_funcionalidad) VALUES (1, 8)
 	INSERT INTO MLJ.RolesXFuncionalidades (cod_rol, cod_funcionalidad) VALUES (1, 9)
 	INSERT INTO MLJ.Roles (descripcion, habilitado, registrable) VALUES ('Usuario', 1, 1)
-	INSERT INTO MLJ.RolesXFuncionalidades (cod_rol, cod_funcionalidad) VALUES (2, 8)
-	INSERT INTO MLJ.RolesXFuncionalidades (cod_rol, cod_funcionalidad) VALUES (2, 9)
+	INSERT INTO MLJ.RolesXFuncionalidades (cod_rol, cod_funcionalidad) VALUES (2, 1)
+	INSERT INTO MLJ.RolesXFuncionalidades (cod_rol, cod_funcionalidad) VALUES (2, 2)
 END
 GO
 
@@ -378,6 +380,38 @@ BEGIN
 	INSERT MLJ.UsuariosXRoles (cod_usuario, cod_rol) VALUES (2, 1)
 	INSERT MLJ.Usuarios (usuario, hash_contrasenia) VALUES ('admin3','e6b87050bfcb8143fcb8db0170a4dc9ed00d904ddd3e2a4ad1b1e8dc0fdc9be7')
 	INSERT MLJ.UsuariosXRoles (cod_usuario, cod_rol) VALUES (3, 1)
+END
+GO
+
+CREATE PROCEDURE MLJ.verificar_viaje @codigo_recorrido int, @cod_crucero int, @fechaSalida datetime, @fechaLlegada datetime, @fechaActual datetime, @retorno bit, @resultado int output
+AS
+BEGIN
+	IF (@fechaActual > @fechaSalida)
+		BEGIN
+		SET @resultado = -1
+		END
+	ELSE IF NOT EXISTS(SELECT cruceros.cod_crucero FROM MLJ.Cruceros cruceros LEFT JOIN MLJ.Bajas_de_servicio bajas ON (bajas.cod_crucero = cruceros.cod_crucero ) WHERE (coalesce(bajas.permanente,0) <> 1) AND cruceros.cod_crucero NOT IN (SELECT viajes.cod_crucero FROM MLJ.Viajes viajes 
+						     JOIN MLJ.Cruceros cruceros ON (viajes.cod_crucero = cruceros.cod_crucero )
+						     WHERE (viajes.fecha_inicio BETWEEN @fechaSalida AND @fechaLlegada)  
+						     AND   (viajes.fecha_fin BETWEEN @fechaSalida AND @fechaLlegada) 
+						     AND   (CONVERT(date, viajes.fecha_inicio) <> CONVERT(date, viajes.fecha_fin))))
+		BEGIN
+		SET @resultado = -2
+		END
+	ELSE IF EXISTS(SELECT * FROM MLJ.Cruceros cruceros JOIN MLJ.Bajas_de_servicio bajas ON (bajas.cod_crucero = @cod_crucero ) WHERE permanente = 1)
+		BEGIN
+		SET @resultado = -3
+		END
+	ELSE IF EXISTS(SELECT * FROM MLJ.Recorridos WHERE cod_recorrido = @codigo_recorrido AND habilitado = 0)
+		BEGIN
+		SET @resultado = -4
+		END
+	ELSE 
+		BEGIN
+		INSERT INTO MLJ.Viajes(fecha_inicio, fecha_fin, cod_recorrido, cod_crucero,retorna)
+			VALUES (@fechaSalida, @fechaLlegada, @codigo_recorrido,@cod_crucero, @retorno)
+		SET @resultado = 1
+		END
 END
 GO
 
