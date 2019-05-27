@@ -81,11 +81,11 @@
     <Compile Include="AbmPuerto\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmRecorrido\AgregarTramo.cs">
+    <Compile Include="AbmRecorrido\Tramo.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmRecorrido\AgregarTramo.Designer.cs">
-      <DependentUpon>AgregarTramo.cs</DependentUpon>
+    <Compile Include="AbmRecorrido\Tramo.Designer.cs">
+      <DependentUpon>Tramo.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmRecorrido\FormTramos.cs" />
     <Compile Include="AbmRecorrido\Formulario.cs">
@@ -256,8 +256,8 @@
     <EmbeddedResource Include="AbmCrucero\ModificacionCrucero.resx">
       <DependentUpon>ModificacionCrucero.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AbmRecorrido\AgregarTramo.resx">
-      <DependentUpon>AgregarTramo.cs</DependentUpon>
+    <EmbeddedResource Include="AbmRecorrido\Tramo.resx">
+      <DependentUpon>Tramo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRecorrido\Formulario.resx">
       <DependentUpon>Formulario.cs</DependentUpon>

@@ -11,18 +11,31 @@ using FrbaCrucero.Entidades;
 
 namespace FrbaCrucero.AbmRecorrido
 {
-    public partial class AgregarTramo : Form
+    public partial class Tramo : Form
     {
 
         Puertos puertosalida;
         Puertos puertollegada;
 
+        Tramos tramo = null;
+
         FormTramos _formulario;
 
-        public AgregarTramo(FormTramos formulario)
+        public Tramo(FormTramos formulario)
         {
             InitializeComponent();
             this._formulario = formulario;
+        }
+
+        public Tramo(FormTramos formulario,Tramos tramo)
+        {
+            InitializeComponent();
+            this._formulario = formulario;
+            this.tramo = tramo;
+            this.puertosale(tramo.puertoSalida);
+            this.puertollega(tramo.puertoLlegada);
+            this.textBox3.Text = tramo.costoTramo.ToString();
+
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -49,15 +62,27 @@ namespace FrbaCrucero.AbmRecorrido
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text != "" && textBox2.Text != "" && textBox3.Text != "")
+            if (tramo != null)
             {
-                _formulario.getTramos().Add(new Tramos((Byte)(_formulario.getTramos().Count + 1), puertosalida, puertollegada, Convert.ToDecimal(textBox3.Text)));
+                tramo.puertoSalida = this.puertosalida;
+                tramo.puertoLlegada = this.puertollegada;
+                tramo.costoTramo = Convert.ToDecimal(this.textBox3.Text);
                 _formulario.actualizarGrilla();
                 this.Close();
             }
             else
             {
-                MessageBox.Show("Ingrese Puertos de Llegada|Salida y Costo del Tramo");
+
+                if (textBox1.Text != "" && textBox2.Text != "" && textBox3.Text != "")
+                {
+                    _formulario.getTramos().Add(new Tramos((Byte)(_formulario.getTramos().Count + 1), puertosalida, puertollegada, Convert.ToDecimal(textBox3.Text)));
+                    _formulario.actualizarGrilla();
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Ingrese Puertos de Llegada|Salida y Costo del Tramo");
+                }
             }
         }
 

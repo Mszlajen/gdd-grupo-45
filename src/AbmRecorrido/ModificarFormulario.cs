@@ -48,6 +48,11 @@ namespace FrbaCrucero.AbmRecorrido
 
                 this.actualizarGrilla();
             }
+
+            if (e.ColumnIndex == this.Modificar.Index)
+            {
+                new Tramo(this, this.dataGridView1.Rows[e.RowIndex].DataBoundItem as Tramos).Show();
+            }
         }
 
         public void actualizarGrilla()
@@ -64,7 +69,7 @@ namespace FrbaCrucero.AbmRecorrido
 
         private void button2_Click(object sender, EventArgs e)
         {
-            new AbmRecorrido.AgregarTramo(this).Show();
+            new AbmRecorrido.Tramo(this).Show();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -73,6 +78,7 @@ namespace FrbaCrucero.AbmRecorrido
             {
                 try
                 {
+                    this.validarTramos();
                     recorrido.tramos = tramos;
                     recorrido.estado = this.checkBox1.Checked;
                     new SqlRecorridos().actualizarRecorrido(this.recorrido);
@@ -93,6 +99,28 @@ namespace FrbaCrucero.AbmRecorrido
             {
                 MessageBox.Show("Complete Informacion del Recorrido");
             }
+        }
+
+        private void validarTramos()
+        {
+            Puertos salida;
+
+            int i = 0;
+            foreach (Tramos tramo in tramos)
+            {
+                salida = tramo.puertoSalida;
+
+                if (i > 0)
+                {
+                    if (!(salida.codPuerto == tramos.ElementAt(i - 1).puertoLlegada.codPuerto))
+                    {
+                        SystemException ex = new SystemException("Los Tramos No Son Validos");
+                        throw ex;
+                    }
+                }
+                i++;
+            }
+
         }
     }
 }

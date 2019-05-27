@@ -15,10 +15,10 @@ namespace FrbaCrucero.AbmRecorrido
     public partial class SeleccionPuerto : Form
     {
 
-        private AgregarTramo formulario;
+        private Tramo formulario;
         private int tipo_puerto;
 
-        public SeleccionPuerto(AgregarTramo formulario, int tipo_puerto)
+        public SeleccionPuerto(Tramo formulario, int tipo_puerto)
         {
             InitializeComponent();
 

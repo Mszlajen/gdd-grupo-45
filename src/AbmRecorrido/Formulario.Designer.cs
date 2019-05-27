@@ -29,10 +29,11 @@
         private void InitializeComponent()
         {
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.quitar = new System.Windows.Forms.DataGridViewButtonColumn();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
+            this.quitar = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.Modificar = new System.Windows.Forms.DataGridViewButtonColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -42,21 +43,14 @@
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.quitar});
+            this.quitar,
+            this.Modificar});
             this.dataGridView1.Location = new System.Drawing.Point(15, 29);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.Size = new System.Drawing.Size(573, 150);
             this.dataGridView1.TabIndex = 5;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
-            // 
-            // quitar
-            // 
-            this.quitar.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.quitar.HeaderText = "Quitar";
-            this.quitar.Name = "quitar";
-            this.quitar.ReadOnly = true;
-            this.quitar.Width = 41;
             // 
             // button2
             // 
@@ -87,6 +81,20 @@
             this.label2.TabIndex = 8;
             this.label2.Text = "Paradas";
             // 
+            // quitar
+            // 
+            this.quitar.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.quitar.HeaderText = "Quitar";
+            this.quitar.Name = "quitar";
+            this.quitar.ReadOnly = true;
+            this.quitar.Width = 41;
+            // 
+            // Modificar
+            // 
+            this.Modificar.HeaderText = "Modificar";
+            this.Modificar.Name = "Modificar";
+            this.Modificar.ReadOnly = true;
+            // 
             // Formulario
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -111,5 +119,6 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.DataGridViewButtonColumn quitar;
+        private System.Windows.Forms.DataGridViewButtonColumn Modificar;
     }
 }
