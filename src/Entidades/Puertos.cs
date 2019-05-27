@@ -10,9 +10,9 @@ namespace FrbaCrucero.Entidades
     {
         [System.ComponentModel.DisplayName("codPuerto")]
         public Int32 codPuerto { get; set; }
-        [System.ComponentModel.DisplayName("Nombre")]
+        [System.ComponentModel.DisplayName("NombrePuerto")]
         public String nombrePuerto { get; set; }
-        [System.ComponentModel.DisplayName("Estado")]
+        [System.ComponentModel.DisplayName("EstadoPuerto")]
         public Boolean estado { get; set; }
 
         public Puertos(Int32 codPuerto, String nombrePuerto, Boolean estado)
@@ -20,6 +20,11 @@ namespace FrbaCrucero.Entidades
             this.codPuerto = codPuerto;
             this.nombrePuerto = nombrePuerto;
             this.estado = estado;
+        }
+
+        public override string ToString()
+        {
+            return nombrePuerto;
         }
     }
 }

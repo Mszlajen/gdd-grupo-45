@@ -40,7 +40,7 @@ namespace FrbaCrucero.AbmRecorrido
             }
             if (e.ColumnIndex == this.Editar.Index)
             {
-               // new modificarRol(this, this.dataGridView1.Rows[e.RowIndex].DataBoundItem as Rol).Show();
+                new ModificarFormulario(this, this.dataGridView1.Rows[e.RowIndex].DataBoundItem as Recorridos).Show();
             }
         }
     }

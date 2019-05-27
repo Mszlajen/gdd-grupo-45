@@ -14,9 +14,6 @@ namespace FrbaCrucero.AbmRol
 {
     public partial class Seleccion : Form
     {
-
-        Rol rol;
-
         public Seleccion()
         {
             InitializeComponent();

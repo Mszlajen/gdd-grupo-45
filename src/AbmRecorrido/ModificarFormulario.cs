@@ -13,26 +13,23 @@ using FrbaCrucero.SQL;
 
 namespace FrbaCrucero.AbmRecorrido
 {
-    public partial class Formulario : Form, FormTramos
+    public partial class ModificarFormulario : Form, FormTramos
     {
 
-        public List<Tramos> tramos = new List<Tramos>();
         Selector selector;
+        Recorridos recorrido;
+        List<Tramos> tramos;
 
-        public Formulario(Selector selector)
+        public ModificarFormulario(Selector selector,Recorridos recorrido)
         {
             InitializeComponent();
             this.selector = selector;
-        }
+            this.recorrido = recorrido;
+            this.tramos = recorrido.tramos;
+            this.checkBox1.Checked = recorrido.estado;
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-                new AbmRecorrido.AgregarTramo(this).Show();
+            this.dataGridView1.DataSource = tramos;
+            this.dataGridView1.Columns["codRecorrido"].Visible = false;
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -42,9 +39,9 @@ namespace FrbaCrucero.AbmRecorrido
                 tramos.RemoveAt(e.RowIndex);
 
                 int i = 1;
-                foreach(Tramos tramo in tramos)
+                foreach (Tramos tramo in tramos)
                 {
-                    tramo.nroTramo = (Byte) i;
+                    tramo.nroTramo = (Byte)i;
                     i++;
                 }
 
@@ -58,13 +55,16 @@ namespace FrbaCrucero.AbmRecorrido
             dataGridView1.DataSource = null;
             dataGridView1.DataSource = tramos;
             this.dataGridView1.Columns["codRecorrido"].Visible = false;
-            this.dataGridView1.Columns["puertoSalida"].Tag = "nombrePuerto";
-            this.dataGridView1.Columns["puertoLlegada"].Tag = "nombrePuerto";
         }
 
         public List<Tramos> getTramos()
         {
             return this.tramos;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            new AbmRecorrido.AgregarTramo(this).Show();
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -73,8 +73,10 @@ namespace FrbaCrucero.AbmRecorrido
             {
                 try
                 {
-                    new SqlRecorridos().insertarRecorrido(this.tramos);
-                    MessageBox.Show("Recorrido guardado con exito");
+                    recorrido.tramos = tramos;
+                    recorrido.estado = this.checkBox1.Checked;
+                    new SqlRecorridos().actualizarRecorrido(this.recorrido);
+                    MessageBox.Show("Recorrido modificado con exito");
                     selector.actualizarGrilla();
                     this.Close();
                 }

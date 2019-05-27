@@ -17,9 +17,9 @@ namespace FrbaCrucero.AbmRecorrido
         Puertos puertosalida;
         Puertos puertollegada;
 
-        Formulario _formulario;
+        FormTramos _formulario;
 
-        public AgregarTramo(Formulario formulario)
+        public AgregarTramo(FormTramos formulario)
         {
             InitializeComponent();
             this._formulario = formulario;
@@ -51,7 +51,7 @@ namespace FrbaCrucero.AbmRecorrido
         {
             if (textBox1.Text != "" && textBox2.Text != "" && textBox3.Text != "")
             {
-                _formulario.tramos.Add(new Tramos((Byte)(_formulario.tramos.Count+1), puertosalida.codPuerto, puertollegada.codPuerto, Convert.ToDecimal(textBox3.Text)));
+                _formulario.getTramos().Add(new Tramos((Byte)(_formulario.getTramos().Count + 1), puertosalida, puertollegada, Convert.ToDecimal(textBox3.Text)));
                 _formulario.actualizarGrilla();
                 this.Close();
             }

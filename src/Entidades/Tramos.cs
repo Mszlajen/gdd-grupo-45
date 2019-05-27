@@ -13,13 +13,13 @@ namespace FrbaCrucero.Entidades
         [System.ComponentModel.DisplayName("nroTramo")]
         public Byte nroTramo { get; set; }
         [System.ComponentModel.DisplayName("puertoSalida")]
-        public Int32 puertoSalida { get; set; }
+        public Puertos puertoSalida { get; set; }
         [System.ComponentModel.DisplayName("puertoLlegada")]
-        public Int32 puertoLlegada { get; set; }
+        public Puertos puertoLlegada { get; set; }
         [System.ComponentModel.DisplayName("costoTramo")]
         public Decimal costoTramo { get; set; }
 
-        public Tramos(Int32 codRecorrido, Byte nroTramo, Int32 puertoSalida, Int32 puertoLlegada, Decimal costoTramo)
+        public Tramos(Int32 codRecorrido, Byte nroTramo, Puertos puertoSalida, Puertos puertoLlegada, Decimal costoTramo)
         {
             this.codRecorrido = codRecorrido;
             this.nroTramo = nroTramo;
@@ -28,7 +28,7 @@ namespace FrbaCrucero.Entidades
             this.costoTramo = costoTramo;
         }
 
-        public Tramos(Byte nroTramo, Int32 puertoSalida, Int32 puertoLlegada, Decimal costoTramo)
+        public Tramos(Byte nroTramo, Puertos puertoSalida, Puertos puertoLlegada, Decimal costoTramo)
         {
             this.nroTramo = nroTramo;
             this.puertoSalida = puertoSalida;
