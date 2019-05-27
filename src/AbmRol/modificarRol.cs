@@ -50,6 +50,8 @@ namespace FrbaCrucero.AbmRol
                 this.validar();
                 new SqlRoles().actualizarRol(new Rol(Convert.ToBoolean(this.comboBoxEstado.Text), Convert.ToBoolean(this.comboBoxRegistrable.Text), this.textBoxDesc.Text, this.funcSeleccionadas),rol);
                 MessageBox.Show("Modificado con exito");
+                _seleccionForm.actualizarGrilla();
+                this.Close();
             }
             catch (SqlException ex)
             {

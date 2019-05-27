@@ -41,7 +41,7 @@ namespace FrbaCrucero.AbmRecorrido
             {
                 tramos.RemoveAt(e.RowIndex);
 
-                int i = 1;
+                int i = 0;
                 foreach(Tramos tramo in tramos)
                 {
                     tramo.nroTramo = (Byte) i;

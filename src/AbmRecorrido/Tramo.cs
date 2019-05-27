@@ -64,18 +64,25 @@ namespace FrbaCrucero.AbmRecorrido
         {
             if (tramo != null)
             {
-                tramo.puertoSalida = this.puertosalida;
-                tramo.puertoLlegada = this.puertollegada;
-                tramo.costoTramo = Convert.ToDecimal(this.textBox3.Text);
-                _formulario.actualizarGrilla();
-                this.Close();
+                if (textBox3.Text != "")
+                {
+                    tramo.puertoSalida = this.puertosalida;
+                    tramo.puertoLlegada = this.puertollegada;
+                    tramo.costoTramo = Convert.ToDecimal(this.textBox3.Text);
+                    _formulario.actualizarGrilla();
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Ingresa Costo del Tramo");
+                }
             }
             else
             {
 
                 if (textBox1.Text != "" && textBox2.Text != "" && textBox3.Text != "")
                 {
-                    _formulario.getTramos().Add(new Tramos((Byte)(_formulario.getTramos().Count + 1), puertosalida, puertollegada, Convert.ToDecimal(textBox3.Text)));
+                    _formulario.getTramos().Add(new Tramos((Byte)(_formulario.getTramos().Count), puertosalida, puertollegada, Convert.ToDecimal(textBox3.Text)));
                     _formulario.actualizarGrilla();
                     this.Close();
                 }
