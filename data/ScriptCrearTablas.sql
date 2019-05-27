@@ -24,6 +24,10 @@ IF(OBJECT_ID('MLJ.verificar_viaje') IS NOT NULL)
 	DROP PROCEDURE MLJ.verificar_viaje
 GO
 
+If (OBJECT_ID('MLJ.login') IS NOT NULL)
+	DROP PROCEDURE MLJ.login
+GO
+
 CREATE PROCEDURE MLJ.crear_tablas 
 AS
 BEGIN
@@ -414,6 +418,39 @@ BEGIN
 		END
 END
 GO
+
+--Este procedure se encarga de comprobar la password, el estado del usuario y devuelve el resultado
+CREATE PROCEDURE MLJ.login @usuario varchar(50), @password varchar(256), @resultado int OUTPUT
+AS
+BEGIN
+	
+	/*
+	0 -> Usuario Deshabilitado
+	1 -> Password ok
+	2 -> Password no ok
+	3 -> User not found
+	*/
+
+	SET @resultado = ISNULL((SELECT 
+								CASE 
+								WHEN ingresos_restantes = 0 THEN 0
+								WHEN (CONVERT(CHAR(256),HASHBYTES('SHA2_256',@password),2) = hash_contrasenia) THEN 1
+								ELSE 2
+								END
+							FROM MLJ.Usuarios
+							WHERE usuario = @usuario),3)
+	/*Si la passwrod no es correcta resto la cantidad de intentos*/
+	IF(@resultado = 2) 
+	BEGIN
+		UPDATE MLJ.Usuarios SET ingresos_restantes = ingresos_restantes - 1 WHERE usuario=@usuario; 
+	END
+	/*Si la loguea bien reinicio la cant de intentos, si esta deshabilitado no loguea ni reinicio cant de intentos*/
+	IF (@resultado = 1)
+	BEGIN
+		UPDATE MLJ.Usuarios SET ingresos_restantes = 3 WHERE usuario = @usuario;
+	END
+END
+GO 
 
 --Ejecuto procedure creado anteriormente que crea las tablas
 BEGIN

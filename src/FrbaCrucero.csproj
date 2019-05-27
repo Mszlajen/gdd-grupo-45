@@ -252,6 +252,7 @@
     <Compile Include="SQL\SqlPuertos.cs" />
     <Compile Include="SQL\SqlRecorridos.cs" />
     <Compile Include="SQL\SqlRoles.cs" />
+    <Compile Include="SQL\SqlUsuarios.cs" />
     <Compile Include="SQL\SqlViaje.cs" />
     <EmbeddedResource Include="AbmCrucero\AltaCabina.resx">
       <DependentUpon>AltaCabina.cs</DependentUpon>

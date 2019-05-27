@@ -31,8 +31,25 @@ namespace FrbaCrucero.InicioDeSesion
             {
                 username = textBox1.Text;
                 password = textBox2.Text;
-                this.habilitarSeleccionDeRoles(username);
-                this.Close();
+
+                int resultado = new SqlUsuarios().IniciarSesion(username, password);
+                switch (resultado)
+                {
+                    case 0:
+                        MessageBox.Show("USUARIO INHABILITADO.");
+                        break;
+                    case 1:
+                        this.habilitarSeleccionDeRoles(username);
+                        this.Close();
+                        break;
+                    case 2:
+                        MessageBox.Show("Login FALLIDO. Al tercer intento fallido se inhabilita la Cuenta!");
+                        break;
+                    case 3:
+                        MessageBox.Show("NO EXISTE EL USUARIO");
+                        break;
+                }
+
             }
             else
             {
