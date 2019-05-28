@@ -489,3 +489,35 @@ BEGIN
 	DEALLOCATE rolesdeshabilitados;
 END
 GO
+
+IF(OBJECT_ID('MLJ.BajaLogicaPuerto') IS NOT NULL)
+	DROP TRIGGER MLJ.BajaLogicaPuerto
+GO
+
+CREATE TRIGGER MLJ.BajaLogicaPuerto 
+ON MLJ.Puertos AFTER UPDATE
+AS
+BEGIN
+	DECLARE @cod_puerto INTEGER;
+	
+	DECLARE puertosdeshabilitados CURSOR FOR
+	SELECT i.cod_puerto
+	FROM inserted i
+	WHERE i.habilitado = 0
+
+	OPEN puertosdeshabilitados;
+	FETCH NEXT FROM puertosdeshabilitados INTO @cod_puerto;
+
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+		UPDATE MLJ.Recorridos SET habilitado = 0 WHERE cod_recorrido IN (select cod_recorrido FROM MLJ.Tramos
+		WHERE cod_puerto_salida = @cod_puerto OR cod_puerto_llegada = @cod_puerto)
+		UPDATE MLJ.Viajes SET razon_de_cancelacion = 'VIAJE CANCELADO POR PUERTO DADO DE BAJA, HAY QUE PRODUCIR REEMBOLSO DE LOS PASAJES' WHERE cod_recorrido IN (select cod_recorrido FROM MLJ.Tramos
+		WHERE cod_puerto_salida = @cod_puerto OR cod_puerto_llegada = @cod_puerto)
+		FETCH NEXT FROM puertosdeshabilitados INTO @cod_puerto;
+	END
+
+	CLOSE puertosdeshabilitados;
+	DEALLOCATE puertosdeshabilitados;
+END
+GO
