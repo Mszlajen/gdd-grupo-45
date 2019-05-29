@@ -74,8 +74,6 @@ namespace FrbaCrucero.AbmRecorrido
 
         private void button3_Click(object sender, EventArgs e)
         {
-            if (tramos.Any())
-            {
                 try
                 {
                     this.validarTramos();
@@ -94,16 +92,17 @@ namespace FrbaCrucero.AbmRecorrido
                 {
                     MessageBox.Show(ex.Message);
                 }
-            }
-            else
-            {
-                MessageBox.Show("Complete Informacion del Recorrido");
-            }
         }
 
         private void validarTramos()
         {
             Puertos salida;
+
+            if (!tramos.Any())
+            {
+                SystemException ex = new SystemException("Complete Informacion del Recorrido");
+                throw ex;
+            }
 
             int i = 0;
             foreach (Tramos tramo in tramos)

@@ -44,24 +44,24 @@ namespace FrbaCrucero.GeneracionViaje
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (this.dateTimePicker1.Value.Date > DateTime.Now && this.dateTimePicker2.Value.Date > DateTime.Now)
+            try
             {
+            this.ValidarFechas();
             this.fecha_salida = this.dateTimePicker1.Value.Date;
             this.fecha_llegada = this.dateTimePicker2.Value.Date;
             new SeleccionCrucero(this).Show();
             }
-            else
+            catch (SystemException ex)
             {
-                MessageBox.Show("Las Fechas NO son mayores a la actual");
+                MessageBox.Show(ex.Message);
             }
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            if (this.dateTimePicker1.Value.Date > DateTime.Now && this.dateTimePicker2.Value.Date > DateTime.Now)
+            try
             {
-                if ((recorrido != null) && (crucero != null))
-                {
+                    this.validar();
                     this.fecha_salida = this.dateTimePicker1.Value.Date;
                     this.fecha_llegada = this.dateTimePicker2.Value.Date;
                     int retorno = new SqlViaje().viaje(recorrido.idRecorrido, crucero.codCrucero, this.fecha_salida, this.fecha_llegada,this.Retorna());
@@ -84,21 +84,36 @@ namespace FrbaCrucero.GeneracionViaje
                             break;
                     }
                     this.Close();
-                }
-                else
-                {
-                    MessageBox.Show("Ingrese Crucero|Recorrido");
-                }
             }
-            else
+            catch (SystemException ex)
             {
-                MessageBox.Show("Las Fechas NO son mayores a la actual");
+                MessageBox.Show(ex.Message);
             }
         }
 
         public Boolean Retorna()
         {
             return this.recorrido.tramos.ElementAt(0).puertoSalida.codPuerto == this.recorrido.tramos.ElementAt(this.recorrido.tramos.Count-1).puertoLlegada.codPuerto;
+        }
+
+        private void validar()
+        {
+            ValidarFechas();
+
+            if ((recorrido == null) || (crucero == null))
+            {
+                SystemException ex = new SystemException("Ingrese Crucero|Recorrido");
+                throw ex;
+            }
+        }
+
+        private void ValidarFechas()
+        {
+            if (Program.dia >= this.dateTimePicker1.Value.Date || Program.dia >= this.dateTimePicker2.Value.Date)
+             {
+                 SystemException ex = new SystemException("Las Fechas NO son mayores a la actual");
+                 throw ex;
+            }
         }
     }
 }

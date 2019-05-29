@@ -18,7 +18,7 @@ namespace FrbaCrucero.SQL
             SqlConnection conexion = SqlGeneral.nuevaConexion();
             try
             {
-                SqlCommand consulta = new SqlCommand("SELECT ur.cod_rol FROM MLJ.UsuariosXRoles ur, MLJ.Usuarios u WHERE u.usuario = @usuario AND ur.cod_usuario = u.cod_usuario", conexion);
+                SqlCommand consulta = new SqlCommand("SELECT cod_rol FROM MLJ.UsuariosXRoles WHERE (cod_usuario = (SELECT cod_usuario FROM MLJ.Usuarios WHERE (usuario = @usuario)))", conexion);
                 consulta.Parameters.AddWithValue("@usuario", usuario);
                 conexion.Open();
                 Int32 cod_rol = Convert.ToInt32(consulta.ExecuteScalar());

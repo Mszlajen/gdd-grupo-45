@@ -390,15 +390,11 @@ GO
 CREATE PROCEDURE MLJ.verificar_viaje @codigo_recorrido int, @cod_crucero int, @fechaSalida datetime, @fechaLlegada datetime, @fechaActual datetime, @retorno bit, @resultado int output
 AS
 BEGIN
-	IF (@fechaActual > @fechaSalida)
+	IF (@fechaActual >= @fechaSalida)
 		BEGIN
 		SET @resultado = -1
 		END
-	ELSE IF NOT EXISTS(SELECT cruceros.cod_crucero FROM MLJ.Cruceros cruceros LEFT JOIN MLJ.Bajas_de_servicio bajas ON (bajas.cod_crucero = cruceros.cod_crucero ) WHERE (coalesce(bajas.permanente,0) <> 1) AND cruceros.cod_crucero NOT IN (SELECT viajes.cod_crucero FROM MLJ.Viajes viajes 
-						     JOIN MLJ.Cruceros cruceros ON (viajes.cod_crucero = cruceros.cod_crucero )
-						     WHERE (viajes.fecha_inicio BETWEEN @fechaSalida AND @fechaLlegada)  
-						     AND   (viajes.fecha_fin BETWEEN @fechaSalida AND @fechaLlegada) 
-						     AND   (CONVERT(date, viajes.fecha_inicio) <> CONVERT(date, viajes.fecha_fin))))
+	ELSE IF NOT EXISTS(SELECT cod_crucero FROM MLJ.Cruceros WHERE cod_crucero NOT IN (select cod_crucero FROM MLJ.Bajas_de_servicio WHERE permanente = 1) AND cod_crucero NOT IN (SELECT viajes.cod_crucero FROM MLJ.Viajes viajes WHERE (viajes.fecha_inicio BETWEEN @fechaSalida AND @fechaLlegada) AND (viajes.fecha_fin BETWEEN @fechaSalida AND @fechaLlegada) AND (viajes.fecha_inicio <> viajes.fecha_fin)))
 		BEGIN
 		SET @resultado = -2
 		END
@@ -469,24 +465,11 @@ CREATE TRIGGER MLJ.BajaLogicaROL
 ON MLJ.Roles AFTER UPDATE
 AS
 BEGIN
-	DECLARE @cod_rol INTEGER;
-	
-	DECLARE rolesdeshabilitados CURSOR FOR
-	SELECT i.cod_rol
-	FROM inserted i
-	WHERE i.habilitado = 0
 
-	OPEN rolesdeshabilitados;
-	FETCH NEXT FROM rolesdeshabilitados INTO @cod_rol;
+BEGIN TRANSACTION
+DELETE FROM MLJ.UsuariosXRoles WHERE cod_rol IN (SELECT i.cod_rol FROM inserted i WHERE i.habilitado = 0);
+COMMIT TRANSACTION
 
-	WHILE @@FETCH_STATUS = 0
-	BEGIN
-		DELETE FROM MLJ.UsuariosXRoles WHERE cod_rol = @cod_rol;
-		FETCH NEXT FROM rolesdeshabilitados INTO @cod_rol;
-	END
-
-	CLOSE rolesdeshabilitados;
-	DEALLOCATE rolesdeshabilitados;
 END
 GO
 
@@ -498,26 +481,23 @@ CREATE TRIGGER MLJ.BajaLogicaPuerto
 ON MLJ.Puertos AFTER UPDATE
 AS
 BEGIN
-	DECLARE @cod_puerto INTEGER;
 	
-	DECLARE puertosdeshabilitados CURSOR FOR
 	SELECT i.cod_puerto
-	FROM inserted i
+	into #PuertosBaja 
+	FROM inserted i 
 	WHERE i.habilitado = 0
 
-	OPEN puertosdeshabilitados;
-	FETCH NEXT FROM puertosdeshabilitados INTO @cod_puerto;
+	select cod_recorrido 
+	into #RecorridosTemp
+	FROM MLJ.Tramos 
+	WHERE cod_puerto_salida IN (select * FROM #PuertosBaja) OR cod_puerto_llegada IN (select * FROM #PuertosBaja)
+	
+	BEGIN TRANSACTION
+	UPDATE MLJ.Recorridos SET habilitado = 0 
+	WHERE cod_recorrido IN (select * FROM #RecorridosTemp)
+	UPDATE MLJ.Viajes SET razon_de_cancelacion = 'VIAJE CANCELADO POR PUERTO DADO DE BAJA, HAY QUE PRODUCIR REEMBOLSO DE LOS PASAJES' 
+	WHERE cod_recorrido IN (select * FROM #RecorridosTemp)
+	COMMIT TRANSACTION
 
-	WHILE @@FETCH_STATUS = 0
-	BEGIN
-		UPDATE MLJ.Recorridos SET habilitado = 0 WHERE cod_recorrido IN (select cod_recorrido FROM MLJ.Tramos
-		WHERE cod_puerto_salida = @cod_puerto OR cod_puerto_llegada = @cod_puerto)
-		UPDATE MLJ.Viajes SET razon_de_cancelacion = 'VIAJE CANCELADO POR PUERTO DADO DE BAJA, HAY QUE PRODUCIR REEMBOLSO DE LOS PASAJES' WHERE cod_recorrido IN (select cod_recorrido FROM MLJ.Tramos
-		WHERE cod_puerto_salida = @cod_puerto OR cod_puerto_llegada = @cod_puerto)
-		FETCH NEXT FROM puertosdeshabilitados INTO @cod_puerto;
-	END
-
-	CLOSE puertosdeshabilitados;
-	DEALLOCATE puertosdeshabilitados;
 END
 GO

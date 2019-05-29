@@ -24,7 +24,7 @@ namespace FrbaCrucero.SQL
             cmd.Parameters.Add(new SqlParameter("@cod_crucero", cod_crucero));
             cmd.Parameters.Add(new SqlParameter("@fechaSalida", fechaSalida));
             cmd.Parameters.Add(new SqlParameter("@fechaLlegada", fechaLlegada));
-            cmd.Parameters.Add(new SqlParameter("@fechaActual", DateTime.Now));
+            cmd.Parameters.Add(new SqlParameter("@fechaActual", Program.ObtenerFechaActual()));
             cmd.Parameters.Add(new SqlParameter("@retorno", retorno));
             cmd.Parameters.Add(VariableRetorno);
 

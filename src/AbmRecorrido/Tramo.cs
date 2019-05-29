@@ -62,34 +62,28 @@ namespace FrbaCrucero.AbmRecorrido
 
         private void button1_Click(object sender, EventArgs e)
         {
+            try
+            {
             if (tramo != null)
             {
-                if (textBox3.Text != "")
-                {
+                    this.validar();
                     tramo.puertoSalida = this.puertosalida;
                     tramo.puertoLlegada = this.puertollegada;
                     tramo.costoTramo = Convert.ToDecimal(this.textBox3.Text);
                     _formulario.actualizarGrilla();
                     this.Close();
-                }
-                else
-                {
-                    MessageBox.Show("Ingresa Costo del Tramo");
-                }
             }
             else
             {
-
-                if (textBox1.Text != "" && textBox2.Text != "" && textBox3.Text != "")
-                {
+                    this.validar();
                     _formulario.getTramos().Add(new Tramos((Byte)(_formulario.getTramos().Count), puertosalida, puertollegada, Convert.ToDecimal(textBox3.Text)));
                     _formulario.actualizarGrilla();
                     this.Close();
-                }
-                else
-                {
-                    MessageBox.Show("Ingrese Puertos de Llegada|Salida y Costo del Tramo");
-                }
+            }
+            }
+            catch (SystemException ex)
+            {
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -103,6 +97,21 @@ namespace FrbaCrucero.AbmRecorrido
         private void button5_Click(object sender, EventArgs e)
         {
             new AbmRecorrido.SeleccionPuerto(this,0).Show();
+        }
+
+                private void validar()
+        {
+                if (textBox3.Text == "")
+                {
+                    SystemException ex = new SystemException("Ingresa Costo del Tramo");
+		            throw ex;
+                }
+
+                if (textBox1.Text == "" || textBox2.Text == "")
+                {
+                    SystemException ex = new SystemException("Ingrese Puertos de Llegada|Salida");
+		            throw ex;
+                }
         }
     }
 }
