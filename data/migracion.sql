@@ -1,5 +1,6 @@
 USE GD1C2019
 
+--Creo el indice para buscar los clientes por su DNI 
 CREATE INDEX DNI ON MLJ.Clientes(dni)
 
 --Migro los datos de "tipo", para las migraciones posteriores pueden recuperarse con el nombre
@@ -37,6 +38,7 @@ FROM #PuertosConRepeticiones
 DROP TABLE #PuertosConRepeticiones	
 
 -- Migro la información de los clientes, para recuperar a uno hay que usar el DNI + Apellido + Nombre
+-- Hay un par de clientes que tienen mismo DNI y Apellido por eso es necesario tambien el nombre.
 INSERT INTO MLJ.Clientes
 (nombre, apellido, dni, direccion, telefono, mail, nacimiento)
 SELECT DISTINCT CLI_NOMBRE, CLI_APELLIDO, CLI_DNI, CLI_DIRECCION, CLI_TELEFONO, CLI_MAIL, CLI_FECHA_NAC
@@ -58,7 +60,9 @@ SELECT DISTINCT (SELECT cod_crucero FROM MLJ.Cruceros C WHERE M.CRUCERO_IDENTIFI
 				(SELECT cod_tipo FROM MLJ.Tipo_Cabinas TC WHERE M.CABINA_TIPO = TC.nombre),
 				M.CABINA_PISO
 FROM gd_esquema.Maestra M
-	
+
+
+-- Creo una tabla temporal que normaliza los datos ya migrados y tiene columnas para los que no fueron migrados todavia	
 SELECT DISTINCT (SELECT cod_cliente FROM MLJ.Clientes C WHERE C.dni = M.CLI_DNI AND C.apellido = M.CLI_APELLIDO AND C.nombre = M.CLI_NOMBRE) CLI_CODIGO,
 				PASAJE_CODIGO, 
 				PASAJE_FECHA_COMPRA, 
@@ -82,88 +86,109 @@ SELECT DISTINCT (SELECT cod_cliente FROM MLJ.Clientes C WHERE C.dni = M.CLI_DNI 
 INTO #temp
 FROM GD1C2019.gd_esquema.Maestra M
 
+-- Coloco el codigo de cabina normalizado
+-- No puedo hacer al crear la tabla porque necesito el codigo de crucero
 UPDATE t
-SET CABINA_CODIGO = (SELECT c.cod_crucero FROM MLJ.Cabinas C WHERE t.CRU_CODIGO = c.cod_crucero AND t.CABINA_NRO = c.nro AND t.CABINA_PISO = c.piso)
+SET CABINA_CODIGO = (SELECT c.cod_cabina FROM MLJ.Cabinas C WHERE t.CRU_CODIGO = c.cod_crucero AND t.CABINA_NRO = c.nro AND t.CABINA_PISO = c.piso)
 FROM #temp t
 
+-- Creo una tabla temporal auxiliar que contiene los recorridos
 SELECT DISTINCT RECORRIDO_CODIGO cod_recorrido_viejo, PUERTO_DESDE_COD, PUERTO_HASTA_COD, RECORRIDO_PRECIO_BASE
 INTO #PreRecorridos
 FROM #temp
 
+-- Creo una segunda tabla temporal que agrega el numero de fila usando el orden cod_recorrido, puerto_desde, y puerto_hasta
 SELECT ROW_NUMBER() OVER(ORDER BY cod_recorrido_viejo, PUERTO_DESDE_COD, PUERTO_HASTA_COD) cod_recorrido_nuevo, 
 	cod_recorrido_viejo, PUERTO_DESDE_COD, PUERTO_HASTA_COD, RECORRIDO_PRECIO_BASE
 INTO #recorridos
 FROM #PreRecorridos
 
+-- Elimino la tabla auxiliar
 DROP TABLE #PreRecorridos
 
+-- Migro los recorridos respetando el orden en que se asigno el numero de fila de manera que se coincida con la clave primaria
 INSERT INTO MLJ.Recorridos
 (cod_viejo)
 SELECT cod_recorrido_viejo
 FROM #recorridos
 ORDER BY cod_recorrido_viejo, PUERTO_DESDE_COD, PUERTO_HASTA_COD
 
+-- Migro los tramos usando el numero de fila como referencia a recorridos
 INSERT INTO MLJ.Tramos
 (cod_recorrido, cod_puerto_salida, cod_puerto_llegada, costo, nro_tramo)
 SELECT cod_recorrido_nuevo, PUERTO_DESDE_COD, PUERTO_HASTA_COD, RECORRIDO_PRECIO_BASE, 0
 FROM #recorridos
 
+-- Actualizo en la tabla temporal normalizada el valor de los cod de recorrido
 UPDATE t
 SET RECORRIDO_CODIGO_NUEVO = (SELECT cod_recorrido_nuevo FROM #recorridos r WHERE r.cod_recorrido_viejo = t.RECORRIDO_CODIGO AND r.PUERTO_DESDE_COD = t.PUERTO_DESDE_COD AND R.PUERTO_HASTA_COD = t.PUERTO_HASTA_COD)
 FROM #temp t
 
+-- Elimino la tabla temporal de recorridos
 DROP TABLE #recorridos
 
+-- Migro la informacion de los viajes
 INSERT INTO MLJ.Viajes
 (cod_crucero, fecha_inicio, fecha_fin, fecha_fin_estimada, retorna, cod_recorrido)
 SELECT DISTINCT CRU_CODIGO, FECHA_SALIDA, FECHA_LLEGADA, FECHA_LLEGADA_ESTIMADA, 0,
 		RECORRIDO_CODIGO_NUEVO
 FROM #temp t
 
+-- Actualizo el cod de viaje en la tabla temporal normalizada
 UPDATE t
 SET VIAJE_CODIGO = (SELECT cod_viaje FROM MLJ.Viajes v WHERE v.cod_recorrido = t.RECORRIDO_CODIGO_NUEVO AND v.cod_crucero = t.CRU_CODIGO AND v.fecha_inicio = t.FECHA_SALIDA)
 FROM #temp t
 
+-- Migro los pasajes
 INSERT INTO MLJ.Pasajes
 (cantidad, cod_cliente, cod_viaje, cod_viejo)
 SELECT DISTINCT PASAJE_PRECIO, CLI_CODIGO, VIAJE_CODIGO, PASAJE_CODIGO
 FROM #temp 
 WHERE PASAJE_CODIGO IS NOT NULL
 
---Como la tabla tiene una fila para el pasaje/compra y otra para la reserva, las segundas el campo queda en NULL
+-- Actualizo el codigo de pasaje en la tabla temporal normalizada
+-- Como la tabla tiene una fila para el pasaje/compra y otra para la reserva, las segundas el campo queda en NULL
 UPDATE t
 SET PASAJE_CODIGO_NUEVO = (SELECT cod_pasaje FROM MLJ.Pasajes p WHERE t.CLI_CODIGO = p.cod_cliente AND t.VIAJE_CODIGO = p.cod_viaje AND t.PASAJE_CODIGO = p.cod_viejo)
 FROM #temp t
 
+-- Migro las cabinas que ya están reservadas
 INSERT INTO MLJ.Cabinas_reservadas
 (cod_pasaje, cod_cabina)
 SELECT DISTINCT PASAJE_CODIGO_NUEVO, CABINA_CODIGO
 FROM #temp t
 WHERE PASAJE_CODIGO_NUEVO IS NOT NULL
 
+-- Creo una tabla temporal auxiliar con la informacion de los pasajes
 SELECT DISTINCT t.PASAJE_CODIGO_NUEVO, t.PASAJE_FECHA_COMPRA
 INTO #PrePasajes
 FROM #temp t
 WHERE t.PASAJE_CODIGO_NUEVO IS NOT NULL
 
+-- Creo la tabla temporal de pasajes con el numero de fila 
 SELECT ROW_NUMBER() OVER(ORDER BY PASAJE_CODIGO_NUEVO, PASAJE_FECHA_COMPRA) PAGO_COD, PASAJE_CODIGO_NUEVO, PASAJE_FECHA_COMPRA
 INTO #pasajes
 FROM #PrePasajes
 
+-- Elimino la tabla temporal axiliar
 DROP TABLE #PrePasajes
 
+-- Migro la informacion del pago 
 INSERT INTO MLJ.Pagos
 (fecha)
 SELECT PASAJE_FECHA_COMPRA
 FROM #pasajes
 ORDER BY PAGO_COD
 
+-- Le agrego la referenca del pago a los pasajes
 UPDATE p
 SET cod_pago = (SELECT cod_pago FROM #pasajes pt WHERE pt.PASAJE_CODIGO_NUEVO = p.cod_pasaje)
 FROM MLJ.Pasajes p
 
+-- Elimino la tabla temporal de pasajes
 DROP TABLE #pasajes
 
+-- Migro la informacion de las reservas
 INSERT INTO MLJ.Reservas
 (cod_pasaje, cod_viejo, fecha_reserva)
 SELECT DISTINCT (SELECT cod_pasaje FROM MLJ.Pasajes p WHERE p.cod_cliente = t.CLI_CODIGO AND p.cod_viaje = t.VIAJE_CODIGO), 
@@ -171,4 +196,5 @@ SELECT DISTINCT (SELECT cod_pasaje FROM MLJ.Pasajes p WHERE p.cod_cliente = t.CL
 FROM #temp t
 WHERE t.PASAJE_CODIGO_NUEVO IS NULL
 
+-- Elimino la tabla temporal normalizada
 DROP TABLE #temp
