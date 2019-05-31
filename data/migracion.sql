@@ -3,6 +3,9 @@ USE GD1C2019
 --Creo el indice para buscar los clientes por su DNI 
 CREATE INDEX DNI ON MLJ.Clientes(dni)
 
+--Creo el indice para buscar usuarios
+CREATE INDEX USUARIO ON MLJ.Usuarios(usuario)
+
 --Migro los datos de "tipo", para las migraciones posteriores pueden recuperarse con el nombre
 INSERT INTO MLJ.Tipo_Cabinas
 (valor, nombre)
@@ -92,19 +95,12 @@ UPDATE t
 SET CABINA_CODIGO = (SELECT c.cod_cabina FROM MLJ.Cabinas C WHERE t.CRU_CODIGO = c.cod_crucero AND t.CABINA_NRO = c.nro AND t.CABINA_PISO = c.piso)
 FROM #temp t
 
--- Creo una tabla temporal auxiliar que contiene los recorridos
-SELECT DISTINCT RECORRIDO_CODIGO cod_recorrido_viejo, PUERTO_DESDE_COD, PUERTO_HASTA_COD, RECORRIDO_PRECIO_BASE
-INTO #PreRecorridos
-FROM #temp
-
 -- Creo una segunda tabla temporal que agrega el numero de fila usando el orden cod_recorrido, puerto_desde, y puerto_hasta
 SELECT ROW_NUMBER() OVER(ORDER BY cod_recorrido_viejo, PUERTO_DESDE_COD, PUERTO_HASTA_COD) cod_recorrido_nuevo, 
 	cod_recorrido_viejo, PUERTO_DESDE_COD, PUERTO_HASTA_COD, RECORRIDO_PRECIO_BASE
 INTO #recorridos
-FROM #PreRecorridos
-
--- Elimino la tabla auxiliar
-DROP TABLE #PreRecorridos
+FROM (SELECT DISTINCT RECORRIDO_CODIGO cod_recorrido_viejo, PUERTO_DESDE_COD, PUERTO_HASTA_COD, RECORRIDO_PRECIO_BASE
+	  FROM #temp) recorridos
 
 -- Migro los recorridos respetando el orden en que se asigno el numero de fila de manera que se coincida con la clave primaria
 INSERT INTO MLJ.Recorridos
@@ -159,19 +155,12 @@ SELECT DISTINCT PASAJE_CODIGO_NUEVO, CABINA_CODIGO
 FROM #temp t
 WHERE PASAJE_CODIGO_NUEVO IS NOT NULL
 
--- Creo una tabla temporal auxiliar con la informacion de los pasajes
-SELECT DISTINCT t.PASAJE_CODIGO_NUEVO, t.PASAJE_FECHA_COMPRA
-INTO #PrePasajes
-FROM #temp t
-WHERE t.PASAJE_CODIGO_NUEVO IS NOT NULL
-
 -- Creo la tabla temporal de pasajes con el numero de fila 
 SELECT ROW_NUMBER() OVER(ORDER BY PASAJE_CODIGO_NUEVO, PASAJE_FECHA_COMPRA) PAGO_COD, PASAJE_CODIGO_NUEVO, PASAJE_FECHA_COMPRA
 INTO #pasajes
-FROM #PrePasajes
-
--- Elimino la tabla temporal axiliar
-DROP TABLE #PrePasajes
+FROM (SELECT DISTINCT t.PASAJE_CODIGO_NUEVO, t.PASAJE_FECHA_COMPRA
+	  FROM #temp t
+	  WHERE t.PASAJE_CODIGO_NUEVO IS NOT NULL) pasajes
 
 -- Migro la informacion del pago 
 INSERT INTO MLJ.Pagos
