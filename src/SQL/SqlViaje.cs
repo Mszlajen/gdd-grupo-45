@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using System.Text;
 using System.Threading.Tasks;
 using FrbaCrucero.Entidades;
+using System.Windows.Forms;
 
 namespace FrbaCrucero.SQL
 {
@@ -36,7 +37,7 @@ namespace FrbaCrucero.SQL
             return resultado;
         }
 
-        public List<Entidades.Viaje> getViajes(DateTime fecha, Puertos origen, Puertos destino)
+        public List<Entidades.Viaje> buscarViajes(DateTime fecha, Puertos origen, Puertos destino)
         {
             List<Viaje> viajes = new List<Viaje>();
 
@@ -61,6 +62,52 @@ namespace FrbaCrucero.SQL
                     viajes.Add(new Viaje(resultados.GetInt32(0), resultados.GetDateTime(1), resultados.GetDateTime(2), resultados.GetInt32(3), resultados.GetInt32(4), resultados.GetBoolean(5), resultados.GetString(6)));
             conexion.Close();
             return viajes;
+        }
+
+        public Viaje getViaje(Int32 idViaje)
+        {
+            Viaje viaje = null;
+            SqlConnection conexion = SqlGeneral.nuevaConexion();
+            try
+            {
+
+                conexion.Open();
+                SqlCommand consulta2 = new SqlCommand("SELECT cod_viaje, fecha_inicio, fecha_fin, cod_recorrido, cod_crucero, retorna, razon_de_cancelacion FROM MLJ.Viajes WHERE @id = cod_viaje", conexion);
+                consulta2.Parameters.AddWithValue("@id", idViaje);
+                SqlDataReader resultados = consulta2.ExecuteReader();
+
+                while (resultados.Read())
+                {
+                    if(resultados.GetValue(6) == DBNull.Value)
+                        viaje = new Viaje(idViaje, resultados.GetDateTime(1), resultados.GetDateTime(2), resultados.GetInt32(3), resultados.GetInt32(4), resultados.GetBoolean(5));
+                    else
+                        viaje = new Viaje(idViaje, resultados.GetDateTime(1), resultados.GetDateTime(2), resultados.GetInt32(3), resultados.GetInt32(4), resultados.GetBoolean(5), resultados.GetString(6));
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conexion.Close();
+            }
+            return viaje;
+        }
+
+        public List<Cabina> buscarCabinasDisponibles(Int32 codViaje)
+        {
+            List<Cabina> cabinas = new List<Cabina>();
+            SqlConnection conexion = SqlGeneral.nuevaConexion();
+            SqlCommand consulta = new SqlCommand("MLJ.buscarCabinasDisponibles", conexion);
+            consulta.CommandType = CommandType.StoredProcedure;
+            consulta.Parameters.AddWithValue("@codViaje", codViaje);
+            conexion.Open();
+            SqlDataReader resultados = consulta.ExecuteReader();
+            while (resultados.Read())
+                cabinas.Add(new Cabina(codViaje, resultados.GetInt32(1), resultados.GetDecimal(2), resultados.GetInt32(3), resultados.GetDecimal(4)));
+            conexion.Close();
+            return cabinas;
         }
     }
 }

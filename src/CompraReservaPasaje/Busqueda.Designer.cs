@@ -113,6 +113,7 @@
             this.grilla.ReadOnly = true;
             this.grilla.Size = new System.Drawing.Size(411, 150);
             this.grilla.TabIndex = 7;
+            this.grilla.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grilla_CellContentClick);
             // 
             // comprar
             // 

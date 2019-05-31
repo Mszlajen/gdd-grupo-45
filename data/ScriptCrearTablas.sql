@@ -502,7 +502,7 @@ BEGIN
 END
 GO
 
-ALTER PROCEDURE MLJ.buscarViajes(@fecha DATE, @cod_origen INT, @cod_destino INT)
+CREATE PROCEDURE MLJ.buscarViajes(@fecha DATE, @cod_origen INT, @cod_destino INT)
 AS 
 BEGIN
 	IF(@cod_origen IS NULL AND @cod_destino IS NULL)
@@ -523,3 +523,14 @@ BEGIN
 	END
 
 END
+GO
+
+CREATE PROCEDURE MLJ.buscarCabinasDisponibles(@codViaje INT)
+AS
+BEGIN
+	SELECT cod_cabina, cod_crucero, nro, cod_tipo, piso
+	FROM MLJ.Cabinas
+	WHERE cod_crucero = (SELECT cod_crucero FROM MLJ.Viajes WHERE cod_viaje = @codViaje)
+		AND NOT cod_cabina IN (SELECT cod_cabina FROM Cabinas_reservadas) 
+END
+GO

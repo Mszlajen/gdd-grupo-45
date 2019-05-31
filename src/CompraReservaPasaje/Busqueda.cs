@@ -24,6 +24,7 @@ namespace FrbaCrucero.CompraReservaPasaje
                 destino.Items.Add(puerto.nombrePuerto);
             }
             fecha.Value = Program.ObtenerFechaActual();
+            viajesTable.Columns.Add("codViaje");
             viajesTable.Columns.Add("fecha inicio");
             viajesTable.Columns.Add("fecha llegada");
             viajesTable.Columns.Add("retona");
@@ -31,6 +32,7 @@ namespace FrbaCrucero.CompraReservaPasaje
             viajesTable.Columns.Add("puerto llegada");
             viajesTable.Columns.Add("identificador crucero");
             grilla.DataSource = viajesTable;
+            grilla.Columns["codViaje"].Visible = false;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -38,13 +40,14 @@ namespace FrbaCrucero.CompraReservaPasaje
             viajesTable.Rows.Clear();
             Entidades.Puertos puertoOrigen = origen.SelectedIndex != -1? puertos[origen.SelectedIndex] : null,
                               puertoDestino = destino.SelectedIndex != -1? puertos[destino.SelectedIndex] : null;
-            List<Entidades.Viaje> viajes = (new SQL.SqlViaje()).getViajes(fecha.Value, puertoOrigen, puertoDestino);
+            List<Entidades.Viaje> viajes = (new SQL.SqlViaje()).buscarViajes(fecha.Value, puertoOrigen, puertoDestino);
 
             foreach (Entidades.Viaje viaje in viajes)
             {
                 Entidades.CrucerosDisponibles crucero = viaje.crucero();
                 List<Entidades.Tramos> paradas = (new SQL.SqlRecorridos()).getTramosRecorrido(viaje.codRecorrido);
                 viajesTable.Rows.Add(new Object[] {
+                    viaje.idViaje,
                     viaje.fechaInicio, 
                     viaje.fechaLlegada, 
                     viaje.retorna? "Sí" : "No", 
@@ -59,6 +62,15 @@ namespace FrbaCrucero.CompraReservaPasaje
         private void label3_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void grilla_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 0)
+            {
+                Int32 codViaje = Convert.ToInt32(viajesTable.Rows[e.RowIndex]["codViaje"].ToString());
+                new CompraReservaPasaje.Cabinas(codViaje).Show();
+            }
         }
     }
 }
