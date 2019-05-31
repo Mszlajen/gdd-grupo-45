@@ -90,6 +90,33 @@ namespace FrbaCrucero.SQL
             return tramos;
         }
 
+        public Recorridos getRecorrido(Int32 codRecorrido)
+        {
+            Recorridos recorrido = null;
+
+            SqlConnection conexion = SqlGeneral.nuevaConexion();
+            try
+            {
+                SqlCommand consulta = new SqlCommand("SELECT cod_recorrido, habilitado FROM MLJ.Recorridos WHERE cod_recorrido = @cod", conexion);
+                consulta.Parameters.Add(new SqlParameter("@cod", codRecorrido));
+                conexion.Open();
+                SqlDataReader recorridosResult = consulta.ExecuteReader();
+                while (recorridosResult.Read())
+                {
+                    recorrido = new Recorridos(recorridosResult.GetInt32(0), recorridosResult.GetBoolean(1), getTramosRecorrido(recorridosResult.GetInt32(0)));
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conexion.Close();
+            }
+            return recorrido;
+        }
+
         public Puertos getPuerto(Int32 codPuerto)
         {
             Puertos puerto = null;

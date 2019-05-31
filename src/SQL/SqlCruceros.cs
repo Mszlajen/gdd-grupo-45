@@ -42,5 +42,34 @@ namespace FrbaCrucero.SQL
             return cruceros;
         }
 
+        public CrucerosDisponibles getCrucero(Int32 codCrucero)
+        {
+            CrucerosDisponibles crucero = null;
+
+            SqlConnection conexion = SqlGeneral.nuevaConexion();
+            try
+            {
+                SqlCommand consulta = new SqlCommand("SELECT cod_crucero, identificador, fecha_alta FROM MLJ.Cruceros WHERE cod_crucero = @cod", conexion);
+                consulta.Parameters.Add(new SqlParameter("@cod", codCrucero));
+                conexion.Open();
+                SqlDataReader cruceroResult = consulta.ExecuteReader();
+                while (cruceroResult.Read())
+                {
+                    if(cruceroResult.GetValue(2) == DBNull.Value)
+                        crucero = new CrucerosDisponibles(cruceroResult.GetInt32(0), cruceroResult.GetString(1));
+                    else
+                        crucero = new CrucerosDisponibles(cruceroResult.GetInt32(0), cruceroResult.GetString(1), cruceroResult.GetDateTime(2));
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conexion.Close();
+            }
+            return crucero;
+        }
     }
 }

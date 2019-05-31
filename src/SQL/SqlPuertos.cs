@@ -38,6 +38,30 @@ namespace FrbaCrucero.SQL
             return puertos;
         }
 
+        public List<Puertos> getPuertosHabilitados()
+        {
+            List<Puertos> puertos = new List<Puertos>();
+
+            SqlConnection conexion = SqlGeneral.nuevaConexion();
+            try
+            {
+                SqlCommand consulta = new SqlCommand("SELECT cod_puerto, nombre FROM MLJ.Puertos WHERE habilitado = 1", conexion);
+                conexion.Open();
+                SqlDataReader puertosResultados = consulta.ExecuteReader();
+                while (puertosResultados.Read())
+                    puertos.Add(new Puertos(puertosResultados.GetInt32(0), puertosResultados.GetString(1), true));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conexion.Close();
+            }
+            return puertos;
+        }
+
         public List<Puertos> getPuertos(String nombrePuerto)
         {
             List<Puertos> puertos = new List<Puertos>();

@@ -31,13 +31,13 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.fecha = new System.Windows.Forms.DateTimePicker();
+            this.origen = new System.Windows.Forms.ComboBox();
+            this.destino = new System.Windows.Forms.ComboBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.grilla = new System.Windows.Forms.DataGridView();
             this.comprar = new System.Windows.Forms.DataGridViewButtonColumn();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.grilla)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -63,32 +63,33 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(173, 53);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(43, 13);
+            this.label3.Size = new System.Drawing.Size(56, 13);
             this.label3.TabIndex = 2;
-            this.label3.Text = "Destino";
+            this.label3.Text = "Parada en";
+            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
-            // dateTimePicker1
+            // fecha
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(16, 30);
-            this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(200, 20);
-            this.dateTimePicker1.TabIndex = 3;
+            this.fecha.Location = new System.Drawing.Point(16, 30);
+            this.fecha.Name = "fecha";
+            this.fecha.Size = new System.Drawing.Size(200, 20);
+            this.fecha.TabIndex = 3;
             // 
-            // comboBox1
+            // origen
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(16, 70);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 4;
+            this.origen.FormattingEnabled = true;
+            this.origen.Location = new System.Drawing.Point(16, 70);
+            this.origen.Name = "origen";
+            this.origen.Size = new System.Drawing.Size(121, 21);
+            this.origen.TabIndex = 4;
             // 
-            // comboBox2
+            // destino
             // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(176, 70);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(121, 21);
-            this.comboBox2.TabIndex = 5;
+            this.destino.FormattingEnabled = true;
+            this.destino.Location = new System.Drawing.Point(176, 70);
+            this.destino.Name = "destino";
+            this.destino.Size = new System.Drawing.Size(121, 21);
+            this.destino.TabIndex = 5;
             // 
             // button1
             // 
@@ -98,19 +99,20 @@
             this.button1.TabIndex = 6;
             this.button1.Text = "Buscar";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
-            // dataGridView1
+            // grilla
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.grilla.AllowUserToAddRows = false;
+            this.grilla.AllowUserToDeleteRows = false;
+            this.grilla.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.grilla.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.comprar});
-            this.dataGridView1.Location = new System.Drawing.Point(16, 98);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(411, 150);
-            this.dataGridView1.TabIndex = 7;
+            this.grilla.Location = new System.Drawing.Point(16, 98);
+            this.grilla.Name = "grilla";
+            this.grilla.ReadOnly = true;
+            this.grilla.Size = new System.Drawing.Size(411, 150);
+            this.grilla.TabIndex = 7;
             // 
             // comprar
             // 
@@ -120,22 +122,22 @@
             this.comprar.ReadOnly = true;
             this.comprar.Width = 52;
             // 
-            // Form1
+            // Busqueda
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(437, 261);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.grilla);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.comboBox2);
-            this.Controls.Add(this.comboBox1);
-            this.Controls.Add(this.dateTimePicker1);
+            this.Controls.Add(this.destino);
+            this.Controls.Add(this.origen);
+            this.Controls.Add(this.fecha);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Name = "Form1";
+            this.Name = "Busqueda";
             this.Text = "Form1";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.grilla)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -146,11 +148,11 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.DateTimePicker dateTimePicker1;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.DateTimePicker fecha;
+        private System.Windows.Forms.ComboBox origen;
+        private System.Windows.Forms.ComboBox destino;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView grilla;
         private System.Windows.Forms.DataGridViewButtonColumn comprar;
     }
 }

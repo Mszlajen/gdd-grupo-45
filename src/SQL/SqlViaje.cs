@@ -5,6 +5,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Text;
 using System.Threading.Tasks;
+using FrbaCrucero.Entidades;
 
 namespace FrbaCrucero.SQL
 {
@@ -33,6 +34,33 @@ namespace FrbaCrucero.SQL
             int resultado = (int)cmd.Parameters["@resultado"].Value;
             conexion.Close();
             return resultado;
+        }
+
+        public List<Entidades.Viaje> getViajes(DateTime fecha, Puertos origen, Puertos destino)
+        {
+            List<Viaje> viajes = new List<Viaje>();
+
+            SqlConnection conexion = SqlGeneral.nuevaConexion(); 
+            SqlCommand consulta = new SqlCommand("MLJ.buscarViajes", conexion);
+            consulta.CommandType = CommandType.StoredProcedure;
+            consulta.Parameters.AddWithValue("@fecha", fecha);
+            if(origen == null)
+                consulta.Parameters.AddWithValue("@cod_origen", DBNull.Value);
+            else
+                consulta.Parameters.AddWithValue("@cod_origen", origen.codPuerto);
+            if(destino == null)
+                consulta.Parameters.AddWithValue("@cod_destino", DBNull.Value);
+            else
+                consulta.Parameters.AddWithValue("@cod_destino", destino.codPuerto);
+            conexion.Open();
+            SqlDataReader resultados = consulta.ExecuteReader();
+            while (resultados.Read())
+                if(resultados.GetValue(6) == DBNull.Value)
+                    viajes.Add(new Viaje(resultados.GetInt32(0), resultados.GetDateTime(1), resultados.GetDateTime(2), resultados.GetInt32(3), resultados.GetInt32(4), resultados.GetBoolean(5)));
+                else
+                    viajes.Add(new Viaje(resultados.GetInt32(0), resultados.GetDateTime(1), resultados.GetDateTime(2), resultados.GetInt32(3), resultados.GetInt32(4), resultados.GetBoolean(5), resultados.GetString(6)));
+            conexion.Close();
+            return viajes;
         }
     }
 }

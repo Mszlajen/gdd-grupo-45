@@ -501,3 +501,25 @@ BEGIN
 
 END
 GO
+
+ALTER PROCEDURE MLJ.buscarViajes(@fecha DATE, @cod_origen INT, @cod_destino INT)
+AS 
+BEGIN
+	IF(@cod_origen IS NULL AND @cod_destino IS NULL)
+	BEGIN
+		SELECT v.cod_viaje, v.fecha_inicio, v.fecha_fin, v.cod_recorrido, v.cod_crucero, v.retorna, v.razon_de_cancelacion
+			FROM MLJ.Viajes v
+			WHERE @fecha = CONVERT(DATE, v.fecha_inicio) AND razon_de_cancelacion IS NULL
+	END
+	ELSE
+	BEGIN
+		SELECT v.cod_viaje, v.fecha_inicio, v.fecha_fin, v.cod_recorrido, v.cod_crucero, v.retorna, v.razon_de_cancelacion
+		FROM MLJ.Viajes v
+		WHERE @fecha = CONVERT(DATE, v.fecha_inicio) AND razon_de_cancelacion IS NULL 
+			  AND v.cod_recorrido IN (SELECT r.cod_recorrido 
+									  FROM MLJ.Recorridos r JOIN MLJ.Tramos t ON r.cod_recorrido = t.cod_recorrido
+									  WHERE	(@cod_origen IS NULL OR (t.cod_puerto_salida = @cod_origen AND t.nro_tramo = 0)) AND 
+											(@cod_destino IS NULL OR t.cod_puerto_llegada = @cod_destino))
+	END
+
+END

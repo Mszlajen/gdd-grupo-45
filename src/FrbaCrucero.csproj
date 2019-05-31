@@ -172,6 +172,7 @@
     <Compile Include="CompraReservaPasaje\SeleccionCliente.Designer.cs">
       <DependentUpon>SeleccionCliente.cs</DependentUpon>
     </Compile>
+    <Compile Include="Entidades\Cliente.cs" />
     <Compile Include="Entidades\CrucerosDisponibles.cs" />
     <Compile Include="Entidades\Funcionalidad.cs" />
     <Compile Include="Entidades\Puertos.cs" />
@@ -179,6 +180,7 @@
     <Compile Include="Entidades\Rol.cs" />
     <Compile Include="Entidades\Tramos.cs" />
     <Compile Include="Entidades\Usuario.cs" />
+    <Compile Include="Entidades\Viaje.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

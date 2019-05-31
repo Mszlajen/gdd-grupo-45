@@ -21,5 +21,11 @@ namespace FrbaCrucero.Entidades
             this.identificador = identificador;
             this.fechaAlta = fechaAlta;
         }
+
+        public CrucerosDisponibles(Int32 codCrucero, String identificador)
+        {
+            this.codCrucero = codCrucero;
+            this.identificador = identificador;
+        }
     }
 }
