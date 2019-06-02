@@ -72,7 +72,7 @@ namespace FrbaCrucero.SQL
             {
 
                 conexion.Open();
-                SqlCommand consulta2 = new SqlCommand("SELECT cod_viaje, fecha_inicio, fecha_fin, cod_recorrido, cod_crucero, retorna, razon_de_cancelacion FROM MLJ.Viajes WHERE @id = cod_viaje", conexion);
+                SqlCommand consulta2 = new SqlCommand("SELECT cod_viaje, fecha_inicio, fecha_fin, cod_recorrido, cod_crucero, retorna, razon_de_cancelacion FROM MLJ.Viajes WHERE cod_viaje = @id", conexion);
                 consulta2.Parameters.AddWithValue("@id", idViaje);
                 SqlDataReader resultados = consulta2.ExecuteReader();
 

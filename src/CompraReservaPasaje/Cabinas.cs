@@ -49,7 +49,9 @@ namespace FrbaCrucero.CompraReservaPasaje
             List<Cabina> cabinasSeleccionadas = new List<Cabina>();
             foreach (DataGridViewRow fila in grilla.Rows)
             {
-                if (fila.Cells[0].Value == "t")
+                String comprar = fila.Cells[0].Value == DBNull.Value ? "f" : (String) fila.Cells[0].Value;
+
+                if (comprar == "t")
                 {
                     cabinasSeleccionadas.Add(this.cabinas[fila.Index]);
                 }
