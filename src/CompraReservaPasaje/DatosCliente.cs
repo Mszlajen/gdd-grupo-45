@@ -16,19 +16,23 @@ namespace FrbaCrucero.CompraReservaPasaje
     {
         Cliente cliente = null;
         Viaje viaje;
-        List<Int32> cabinasSeleccionadas;
-        public Datos_Cliente(Viaje viaje, List<Int32> cabinasSeleccionadas, Decimal dni)
+        List<Cabina> cabinasSeleccionadas;
+        public Datos_Cliente(Viaje viaje, List<Cabina> cabinasSeleccionadas, Decimal dni)
         {
             InitializeComponent();
+            this.viaje = viaje;
+            this.cabinasSeleccionadas = cabinasSeleccionadas;
             this.dni.Text = dni.ToString();
             this.nacimiento.Value = Program.ObtenerFechaActual();
             nacimiento.MaxDate = Program.ObtenerFechaActual();
         }
 
-        public Datos_Cliente(Viaje viaje, List<Int32> cabinasSeleccionadas, Cliente cliente)
+        public Datos_Cliente(Viaje viaje, List<Cabina> cabinasSeleccionadas, Cliente cliente)
         {
             InitializeComponent();
             this.cliente = cliente;
+            this.viaje = viaje;
+            this.cabinasSeleccionadas = cabinasSeleccionadas;
             nombre.Text = cliente.nombre;
             apellido.Text = cliente.apellido;
             dni.Text = cliente.dni.ToString();
@@ -49,6 +53,8 @@ namespace FrbaCrucero.CompraReservaPasaje
         {
             if (checkAndSaveCliente(this.cliente))
             {
+                Reserva reserva = new SqlReservas().crearReserva(viaje.idViaje, cliente.idCliente, cabinasSeleccionadas);
+                Program.openNextWindow(this, new PantallaFinal(viaje, cabinasSeleccionadas, reserva));
             }
         }
 

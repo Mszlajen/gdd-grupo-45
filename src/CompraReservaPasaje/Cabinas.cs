@@ -14,12 +14,13 @@ namespace FrbaCrucero.CompraReservaPasaje
     public partial class Cabinas : Form
     {
         Viaje viaje;
+        List<Cabina> cabinas;
         
         public Cabinas(Int32 idViaje)
         {
             InitializeComponent();
-            this.viaje = (new SQL.SqlViaje()).getViaje(idViaje);
-            List<Cabina> cabinas = (new SQL.SqlViaje()).buscarCabinasDisponibles(idViaje);
+            this.viaje = new SQL.SqlViaje().getViaje(idViaje);
+            this.cabinas = new SQL.SqlViaje().buscarCabinasDisponibles(idViaje);
             DataTable tablaCabinas = new DataTable();
             tablaCabinas.Columns.Add("codCabina");
             tablaCabinas.Columns.Add("Piso");
@@ -35,7 +36,7 @@ namespace FrbaCrucero.CompraReservaPasaje
             {
                 tablaCabinas.Rows.Add(new Object[] { 
                     cabina.codCabina, 
-                    cabina.piso, 
+                    cabina.piso,    
                     cabina.numero, 
                     cabina.codTipo, 
                     cabina.tipoCabina().nombre
@@ -45,14 +46,12 @@ namespace FrbaCrucero.CompraReservaPasaje
 
         private void button1_Click(object sender, EventArgs e)
         {
-            List<Int32> cabinasSeleccionadas = new List<Int32>();
-            Int32 codCabina;
+            List<Cabina> cabinasSeleccionadas = new List<Cabina>();
             foreach (DataGridViewRow fila in grilla.Rows)
             {
                 if (fila.Cells[0].Value == "t")
                 {
-                    codCabina = Convert.ToInt32(fila.Cells["codCabina"].Value);
-                    cabinasSeleccionadas.Add(codCabina);
+                    cabinasSeleccionadas.Add(this.cabinas[fila.Index]);
                 }
             }
             if (cabinasSeleccionadas.Count == 0)

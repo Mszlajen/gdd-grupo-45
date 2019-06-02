@@ -29,22 +29,24 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.voucher = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.crucero = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.cabinas = new System.Windows.Forms.DataGridView();
             this.label4 = new System.Windows.Forms.Label();
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.puertos = new System.Windows.Forms.DataGridView();
             this.puerto = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label5 = new System.Windows.Forms.Label();
-            this.textBox3 = new System.Windows.Forms.TextBox();
-            this.textBox4 = new System.Windows.Forms.TextBox();
+            this.salida = new System.Windows.Forms.TextBox();
+            this.llegada = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
+            this.tipo = new System.Windows.Forms.TextBox();
+            this.costo = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.cabinas)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.puertos)).BeginInit();
             this.SuspendLayout();
             // 
             // label1
@@ -56,13 +58,13 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Voucher";
             // 
-            // textBox1
+            // voucher
             // 
-            this.textBox1.Location = new System.Drawing.Point(16, 30);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 1;
+            this.voucher.Location = new System.Drawing.Point(16, 30);
+            this.voucher.Name = "voucher";
+            this.voucher.ReadOnly = true;
+            this.voucher.Size = new System.Drawing.Size(100, 20);
+            this.voucher.TabIndex = 1;
             // 
             // label2
             // 
@@ -73,13 +75,13 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "Crucero";
             // 
-            // textBox2
+            // crucero
             // 
-            this.textBox2.Location = new System.Drawing.Point(16, 73);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.ReadOnly = true;
-            this.textBox2.Size = new System.Drawing.Size(100, 20);
-            this.textBox2.TabIndex = 3;
+            this.crucero.Location = new System.Drawing.Point(16, 73);
+            this.crucero.Name = "crucero";
+            this.crucero.ReadOnly = true;
+            this.crucero.Size = new System.Drawing.Size(100, 20);
+            this.crucero.TabIndex = 3;
             // 
             // label3
             // 
@@ -90,16 +92,16 @@
             this.label3.TabIndex = 4;
             this.label3.Text = "Cabinas";
             // 
-            // dataGridView1
+            // cabinas
             // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(15, 117);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.Size = new System.Drawing.Size(240, 150);
-            this.dataGridView1.TabIndex = 5;
+            this.cabinas.AllowUserToAddRows = false;
+            this.cabinas.AllowUserToDeleteRows = false;
+            this.cabinas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.cabinas.Location = new System.Drawing.Point(15, 117);
+            this.cabinas.Name = "cabinas";
+            this.cabinas.ReadOnly = true;
+            this.cabinas.Size = new System.Drawing.Size(240, 150);
+            this.cabinas.TabIndex = 5;
             // 
             // label4
             // 
@@ -110,19 +112,19 @@
             this.label4.TabIndex = 6;
             this.label4.Text = "Puertos";
             // 
-            // dataGridView2
+            // puertos
             // 
-            this.dataGridView2.AllowUserToAddRows = false;
-            this.dataGridView2.AllowUserToDeleteRows = false;
-            this.dataGridView2.AllowUserToResizeColumns = false;
-            this.dataGridView2.AllowUserToResizeRows = false;
-            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.puertos.AllowUserToAddRows = false;
+            this.puertos.AllowUserToDeleteRows = false;
+            this.puertos.AllowUserToResizeColumns = false;
+            this.puertos.AllowUserToResizeRows = false;
+            this.puertos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.puertos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.puerto});
-            this.dataGridView2.Location = new System.Drawing.Point(299, 117);
-            this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.Size = new System.Drawing.Size(240, 150);
-            this.dataGridView2.TabIndex = 7;
+            this.puertos.Location = new System.Drawing.Point(299, 117);
+            this.puertos.Name = "puertos";
+            this.puertos.Size = new System.Drawing.Size(240, 150);
+            this.puertos.TabIndex = 7;
             // 
             // puerto
             // 
@@ -139,21 +141,21 @@
             this.label5.TabIndex = 8;
             this.label5.Text = "Fecha de salida";
             // 
-            // textBox3
+            // salida
             // 
-            this.textBox3.Location = new System.Drawing.Point(299, 30);
-            this.textBox3.Name = "textBox3";
-            this.textBox3.ReadOnly = true;
-            this.textBox3.Size = new System.Drawing.Size(136, 20);
-            this.textBox3.TabIndex = 9;
+            this.salida.Location = new System.Drawing.Point(299, 30);
+            this.salida.Name = "salida";
+            this.salida.ReadOnly = true;
+            this.salida.Size = new System.Drawing.Size(136, 20);
+            this.salida.TabIndex = 9;
             // 
-            // textBox4
+            // llegada
             // 
-            this.textBox4.Location = new System.Drawing.Point(299, 73);
-            this.textBox4.Name = "textBox4";
-            this.textBox4.ReadOnly = true;
-            this.textBox4.Size = new System.Drawing.Size(136, 20);
-            this.textBox4.TabIndex = 11;
+            this.llegada.Location = new System.Drawing.Point(299, 73);
+            this.llegada.Name = "llegada";
+            this.llegada.ReadOnly = true;
+            this.llegada.Size = new System.Drawing.Size(136, 20);
+            this.llegada.TabIndex = 11;
             // 
             // label6
             // 
@@ -173,37 +175,56 @@
             this.label7.TabIndex = 12;
             this.label7.Text = "Tipo";
             // 
-            // textBox5
+            // tipo
             // 
-            this.textBox5.Location = new System.Drawing.Point(126, 30);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.ReadOnly = true;
-            this.textBox5.Size = new System.Drawing.Size(100, 20);
-            this.textBox5.TabIndex = 13;
+            this.tipo.Location = new System.Drawing.Point(126, 30);
+            this.tipo.Name = "tipo";
+            this.tipo.ReadOnly = true;
+            this.tipo.Size = new System.Drawing.Size(100, 20);
+            this.tipo.TabIndex = 13;
+            // 
+            // costo
+            // 
+            this.costo.Location = new System.Drawing.Point(126, 73);
+            this.costo.Name = "costo";
+            this.costo.ReadOnly = true;
+            this.costo.Size = new System.Drawing.Size(100, 20);
+            this.costo.TabIndex = 15;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(122, 57);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(49, 13);
+            this.label8.TabIndex = 14;
+            this.label8.Text = "Costo ($)";
             // 
             // PantallaFinal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(572, 292);
-            this.Controls.Add(this.textBox5);
+            this.Controls.Add(this.costo);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.tipo);
             this.Controls.Add(this.label7);
-            this.Controls.Add(this.textBox4);
+            this.Controls.Add(this.llegada);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.textBox3);
+            this.Controls.Add(this.salida);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.dataGridView2);
+            this.Controls.Add(this.puertos);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.cabinas);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.textBox2);
+            this.Controls.Add(this.crucero);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.voucher);
             this.Controls.Add(this.label1);
             this.Name = "PantallaFinal";
             this.Text = "PantallaFinal";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cabinas)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.puertos)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -212,19 +233,21 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox voucher;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox crucero;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView cabinas;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.DataGridView dataGridView2;
+        private System.Windows.Forms.DataGridView puertos;
         private System.Windows.Forms.DataGridViewTextBoxColumn puerto;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.TextBox textBox4;
+        private System.Windows.Forms.TextBox salida;
+        private System.Windows.Forms.TextBox llegada;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.TextBox tipo;
+        private System.Windows.Forms.TextBox costo;
+        private System.Windows.Forms.Label label8;
     }
 }

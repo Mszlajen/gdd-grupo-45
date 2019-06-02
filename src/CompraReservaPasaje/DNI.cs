@@ -14,9 +14,9 @@ namespace FrbaCrucero.CompraReservaPasaje
 {
     public partial class DNI : Form
     {
-        List<Int32> cabinasSeleccionadas;
+        List<Cabina> cabinasSeleccionadas;
         Viaje viaje;
-        public DNI(Viaje viaje, List<Int32> cabinasSeleccionadas)
+        public DNI(Viaje viaje, List<Cabina> cabinasSeleccionadas)
         {
             InitializeComponent();
             this.cabinasSeleccionadas = cabinasSeleccionadas;

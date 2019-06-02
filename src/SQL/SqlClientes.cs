@@ -46,12 +46,13 @@ namespace FrbaCrucero.SQL
             try
             {
                 SqlCommand consulta = new SqlCommand("MLJ.clienteViajaDurante", conexion);
-                consulta.Parameters.AddWithValue("@cod_cliente", cod_cliente);
+                consulta.CommandType = CommandType.StoredProcedure;
                 consulta.Parameters.AddWithValue("@inicio", fecha_inicio);
                 consulta.Parameters.AddWithValue("@fin", fecha_fin);
+                consulta.Parameters.AddWithValue("@cod_cliente", cod_cliente);
                 conexion.Open();
                 SqlDataReader result = consulta.ExecuteReader();
-                resultado = result.Read();
+                resultado = !result.Read();
             }
             catch (Exception ex)
             {
@@ -98,6 +99,7 @@ namespace FrbaCrucero.SQL
             try
             {
                 SqlCommand consulta = new SqlCommand("MLJ.CrearCliente", conexion);
+                consulta.CommandType = CommandType.StoredProcedure;
                 consulta.Parameters.AddWithValue("@nombre", nombre);
                 consulta.Parameters.AddWithValue("@apellido", apellido);
                 consulta.Parameters.AddWithValue("@direccion", direccion);

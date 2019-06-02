@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using FrbaCrucero.Entidades;
 
 namespace FrbaCrucero.CompraReservaPasaje
 {
@@ -24,7 +25,7 @@ namespace FrbaCrucero.CompraReservaPasaje
                 destino.Items.Add(puerto.nombrePuerto);
             }
             fecha.Value = Program.ObtenerFechaActual();
-            viajesTable.Columns.Add("codViaje");
+            viajesTable.Columns.Add("idViaje");
             viajesTable.Columns.Add("fecha inicio");
             viajesTable.Columns.Add("fecha llegada");
             viajesTable.Columns.Add("retona");
@@ -32,7 +33,7 @@ namespace FrbaCrucero.CompraReservaPasaje
             viajesTable.Columns.Add("puerto llegada");
             viajesTable.Columns.Add("identificador crucero");
             grilla.DataSource = viajesTable;
-            grilla.Columns["codViaje"].Visible = false;
+            grilla.Columns["idViaje"].Visible = false;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -68,7 +69,7 @@ namespace FrbaCrucero.CompraReservaPasaje
         {
             if (e.ColumnIndex == 0)
             {
-                Int32 codViaje = Convert.ToInt32(viajesTable.Rows[e.RowIndex]["codViaje"].ToString());
+                Int32 codViaje = Convert.ToInt32(grilla.Rows[e.RowIndex].Cells["idViaje"].Value.ToString());
                 Program.openNextWindow(this, new CompraReservaPasaje.Cabinas(codViaje));
             }
         }

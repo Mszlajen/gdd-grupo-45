@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FrbaCrucero.Entidades
 {
-    class TipoCabina
+    public class TipoCabina
     {
         public Int32 codTipo { get; set; }
         public Decimal valor { get; set; }

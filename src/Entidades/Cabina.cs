@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FrbaCrucero.Entidades
 {
-    class Cabina
+    public class Cabina
     {
         [System.ComponentModel.DisplayName("codCabina")]
         public Int32 codCabina { get; set; }
@@ -31,6 +31,17 @@ namespace FrbaCrucero.Entidades
         public TipoCabina tipoCabina()
         {
             return (new SQL.SqlCabinas()).getTipoCabina(this.codTipo);
+        }
+
+        public static String formatearLista(List<Cabina> cabinas)
+        {
+            StringBuilder builder = new StringBuilder("");
+            foreach (Cabina cabina in cabinas)
+            {
+                builder.Append(cabina.codCabina);
+                builder.Append(" ");
+            }
+            return builder.ToString();
         }
     }
 }

@@ -1,4 +1,4 @@
-USE GD1C2019;
+USE GD1C2019
 GO
 
 CREATE SCHEMA MLJ
@@ -518,9 +518,7 @@ END
 GO
 
 CREATE PROCEDURE MLJ.buscarViajes(@fecha DATE, @cod_origen INT, @cod_destino INT)
-AS 
-BEGIN
-	--Falta agregar la condicion para ignorar los cruceros dados de baja
+AS BEGIN
 	IF(@cod_origen IS NULL AND @cod_destino IS NULL)
 	BEGIN
 		SELECT v.cod_viaje, v.fecha_inicio, v.fecha_fin, v.cod_recorrido, v.cod_crucero, v.retorna, v.razon_de_cancelacion
@@ -542,7 +540,7 @@ BEGIN
 
 END
 GO
-
+	
 CREATE PROCEDURE MLJ.buscarCabinasDisponibles(@codViaje INT)
 AS
 BEGIN
@@ -555,13 +553,13 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE MLJ.clienteViajaDurante(@inicio DATE, @fin DATE, @cod_cliente INT)
+CREATE PROCEDURE MLJ.clienteViajaDurante(@inicio DATETIME, @fin DATETIME, @cod_cliente INT)
 AS BEGIN
-	RETURN SELECT cod_pasaje
-		   FROM MLJ.Pasajes p JOIN MLJ.Viajes v ON p.cod_viaje = v.cod_viaje
-		   WHERE p.cod_cliente = @cod_cliente 
-				AND (@inicio BETWEEN v.fecha_inicio AND v.fecha_fin 
-					 OR @fin BETWEEN v.fecha_inicio AND v.fecha_fin)
+	SELECT cod_pasaje
+	FROM MLJ.Pasajes p JOIN MLJ.Viajes v ON p.cod_viaje = v.cod_viaje
+	WHERE p.cod_cliente = @cod_cliente 
+		  AND (@inicio BETWEEN v.fecha_inicio AND v.fecha_fin 
+			  OR @fin BETWEEN v.fecha_inicio AND v.fecha_fin)
 END
 GO
 
@@ -575,3 +573,73 @@ AS BEGIN
 	RETURN SCOPE_IDENTITY()
 END
 GO
+
+CREATE FUNCTION MLJ.SplitList (@list VARCHAR(MAX), @separator VARCHAR(MAX) = ';')
+RETURNS @table TABLE (Value VARCHAR(MAX))
+AS BEGIN
+  DECLARE @position INT, @previous INT
+  SET @list = @list + @separator
+  SET @previous = 1
+  SET @position = CHARINDEX(@separator, @list)
+  WHILE @position > 0 
+  BEGIN
+    IF @position - @previous > 0
+      INSERT INTO @table VALUES (SUBSTRING(@list, @previous, @position - @previous))
+    IF @position >= LEN(@list) BREAK
+      SET @previous = @position + 1
+      SET @position = CHARINDEX(@separator, @list, @previous)
+  END
+  RETURN
+END
+GO
+
+CREATE FUNCTION MLJ.calcularCosto(@cod_viaje INT, @cabinas VARCHAR(max))
+RETURNS DECIMAL(18,2)
+AS BEGIN
+	DECLARE @costoRecorrido DECIMAL(18,2), @costoTotal DECIMAL(18,2)
+
+	SELECT @costoRecorrido = SUM(t.costo) 
+	FROM MLJ.Tramos t
+	WHERE cod_recorrido = (SELECT cod_recorrido FROM MLJ.Viajes WHERE cod_viaje = @cod_viaje)
+
+	SELECT @costoTotal = SUM(@costoRecorrido * tc.valor) 
+	FROM MLJ.Cabinas c JOIN MLJ.Tipo_Cabinas tc ON c.cod_tipo = tc.cod_tipo
+	WHERE c.cod_cabina IN (SELECT * FROM MLJ.SplitList(@cabinas, ' '))
+
+	RETURN @costoTotal
+END
+GO
+
+CREATE PROCEDURE MLJ.crearPasaje(@cod_cliente INT, @cod_viaje INT, @cod_pago INT, @cabinas VARCHAR(max))
+AS BEGIN
+	DECLARE @cod_pasaje INT
+	BEGIN TRANSACTION
+		INSERT INTO MLJ.Pasajes
+		(cod_cliente, cod_viaje, cod_pago, cantidad)
+		VALUES
+		(@cod_cliente, @cod_viaje, @cod_pago, MLJ.calcularCosto(@cod_viaje, @cabinas))
+
+		SET @cod_pasaje = SCOPE_IDENTITY()
+
+		INSERT INTO MLJ.Cabinas_reservadas
+		(cod_pasaje, cod_cabina)
+		SELECT @cod_pasaje, value
+		FROM MLJ.SplitList(@cabinas, ' ')
+
+	COMMIT TRANSACTION
+
+	RETURN @cod_pasaje
+END
+GO
+
+CREATE PROCEDURE MLJ.crearReserva(@cod_pasaje INT, @fecha DATE)
+AS BEGIN
+	INSERT INTO MLJ.Reservas
+	(cod_pasaje, fecha_reserva)
+	VALUES
+	(@cod_pasaje, @fecha)
+
+	RETURN SCOPE_IDENTITY()
+END
+GO
+

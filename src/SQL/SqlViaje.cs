@@ -105,7 +105,7 @@ namespace FrbaCrucero.SQL
             conexion.Open();
             SqlDataReader resultados = consulta.ExecuteReader();
             while (resultados.Read())
-                cabinas.Add(new Cabina(codViaje, resultados.GetInt32(1), resultados.GetDecimal(2), resultados.GetInt32(3), resultados.GetDecimal(4)));
+                cabinas.Add(new Cabina(resultados.GetInt32(0), resultados.GetInt32(1), resultados.GetDecimal(2), resultados.GetInt32(3), resultados.GetDecimal(4)));
             conexion.Close();
             return cabinas;
         }

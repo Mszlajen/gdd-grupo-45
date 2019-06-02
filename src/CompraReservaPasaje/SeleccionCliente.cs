@@ -15,9 +15,9 @@ namespace FrbaCrucero.CompraReservaPasaje
     public partial class SeleccionCliente : Form
     {
         List<Cliente> clientes;
-        List<Int32> cabinasSeleccionadas;
+        List<Cabina> cabinasSeleccionadas;
         Viaje viaje;
-        public SeleccionCliente(Viaje viaje, List<Int32> cabinasSeleccionadas, List<Cliente> clientes)
+        public SeleccionCliente(Viaje viaje, List<Cabina> cabinasSeleccionadas, List<Cliente> clientes)
         {
             InitializeComponent();
             this.clientes = clientes;
