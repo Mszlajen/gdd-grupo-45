@@ -565,7 +565,7 @@ AS BEGIN
 END
 GO
 
-CREATE PROCEDURE MLJ.CrearCliente(@nombre INT, @apellido INT, @direccion INT, @telefono INT, @dni DECIMAL, @mail VARCHAR(255), @fechaNacimiento DATE)
+CREATE PROCEDURE MLJ.CrearCliente(@nombre VARCHAR(255), @apellido VARCHAR(255), @direccion VARCHAR(255), @telefono INT, @dni DECIMAL, @mail VARCHAR(255), @fechaNacimiento DATE)
 AS BEGIN
 	INSERT INTO MLJ.Clientes
 	(nombre, apellido, dni, direccion, telefono, mail, nacimiento)

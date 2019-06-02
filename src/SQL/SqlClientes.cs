@@ -69,7 +69,7 @@ namespace FrbaCrucero.SQL
             SqlConnection conexion = SqlGeneral.nuevaConexion();
             try
             {
-                SqlCommand consulta = new SqlCommand("UPDATE MLJ.Cliente SET nombre = @nombre, apellido = @apellido, direccion = @direccion, telefono = @telefono, dni = @dni, mail = @mail, nacimiento = @nacimiento WHERE cod_cliente = @cod", conexion);
+                SqlCommand consulta = new SqlCommand("UPDATE MLJ.Clientes SET nombre = @nombre, apellido = @apellido, direccion = @direccion, telefono = @telefono, dni = @dni, mail = @mail, nacimiento = @nacimiento WHERE cod_cliente = @cod", conexion);
                 consulta.Parameters.AddWithValue("@nombre", cliente.nombre);
                 consulta.Parameters.AddWithValue("@apellido", cliente.apellido);
                 consulta.Parameters.AddWithValue("@direccion", cliente.direccion);
@@ -97,7 +97,7 @@ namespace FrbaCrucero.SQL
             SqlConnection conexion = SqlGeneral.nuevaConexion();
             try
             {
-                SqlCommand consulta = new SqlCommand("", conexion);
+                SqlCommand consulta = new SqlCommand("MLJ.CrearCliente", conexion);
                 consulta.Parameters.AddWithValue("@nombre", nombre);
                 consulta.Parameters.AddWithValue("@apellido", apellido);
                 consulta.Parameters.AddWithValue("@direccion", direccion);

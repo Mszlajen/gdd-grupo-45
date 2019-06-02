@@ -72,14 +72,14 @@ namespace FrbaCrucero.CompraReservaPasaje
                 MessageBox.Show("La direccion no puede estar vacio");
                 valido = false;
             }
-            if (String.IsNullOrWhiteSpace(dni.Text) && Decimal.TryParse(dni.Text, out dniNum))
+            if (String.IsNullOrWhiteSpace(dni.Text) || !Decimal.TryParse(dni.Text, out dniNum))
             {
-                MessageBox.Show("El DNI no puede estar vacio");
+                MessageBox.Show("El DNI no puede estar vacio y debe ser un numero valido");
                 valido = false;
             }
-            if(!String.IsNullOrWhiteSpace(telefono.Text) && Int32.TryParse(telefono.Text, out telefonoNum))
+            if (String.IsNullOrWhiteSpace(telefono.Text) || !Int32.TryParse(telefono.Text, out telefonoNum))
             {
-                MessageBox.Show("El numero de telefono debe ser valido");
+                MessageBox.Show("El numero de telefono no puede estar vacio y debe ser valido");
                 valido = false;
             }
             if (valido)
@@ -94,7 +94,7 @@ namespace FrbaCrucero.CompraReservaPasaje
                     this.cliente.direccion = direccion.Text;
                     this.cliente.telefono = telefonoNum;
                     this.cliente.mail = mail.Text;
-                    this.cliente.nacimiento = nacimiento.Value
+                    this.cliente.nacimiento = nacimiento.Value;
                     this.cliente.tieneNacimiento = true;
                     new SqlClientes().actualizarCliente(this.cliente);
                 }

@@ -25,7 +25,17 @@ namespace FrbaCrucero.CompraReservaPasaje
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Decimal dni = Convert.ToDecimal(dniBox.Text);
+            Decimal dni = 0;
+            if (String.IsNullOrWhiteSpace(dniBox.Text))
+            {
+                MessageBox.Show("Ingrese un DNI por favor");
+                return;
+            }
+            else if (!Decimal.TryParse(dniBox.Text, out dni))
+            {
+                MessageBox.Show("El DNI ingresado no es valido");
+                return;
+            }
             List<Cliente> clientes = new SqlClientes().buscarClientePorDNI(dni);
             if (clientes.Count == 0)
             {
