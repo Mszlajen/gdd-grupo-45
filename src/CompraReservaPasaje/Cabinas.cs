@@ -58,7 +58,7 @@ namespace FrbaCrucero.CompraReservaPasaje
             if (cabinasSeleccionadas.Count == 0)
                 MessageBox.Show("No selecciono ninguna cabina");
             else
-                Program.openNextWindow(this, new DNI(cabinasSeleccionadas));
+                Program.openNextWindow(this, new DNI(this.viaje, cabinasSeleccionadas));
         }
 
         private void grilla_CellContentClick(object sender, DataGridViewCellEventArgs e)

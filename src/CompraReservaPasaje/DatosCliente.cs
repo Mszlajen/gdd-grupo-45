@@ -14,14 +14,16 @@ namespace FrbaCrucero.CompraReservaPasaje
     public partial class Datos_Cliente : Form
     {
         Cliente cliente = null;
-        public Datos_Cliente(Decimal dni)
+        Viaje viaje;
+        List<Int32> cabinasSeleccionadas;
+        public Datos_Cliente(Viaje viaje, List<Int32> cabinasSeleccionadas, Decimal dni)
         {
             InitializeComponent();
             this.dni.Text = dni.ToString();
             this.nacimiento.Value = Program.ObtenerFechaActual();
         }
 
-        public Datos_Cliente(Cliente cliente)
+        public Datos_Cliente(Viaje viaje, List<Int32> cabinasSeleccionadas, Cliente cliente)
         {
             InitializeComponent();
             this.cliente = cliente;

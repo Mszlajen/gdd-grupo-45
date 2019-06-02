@@ -38,5 +38,30 @@ namespace FrbaCrucero.SQL
             }
             return clientes ;
         }
+
+        public Boolean validarDisponibilidad(Int32 cod_cliente, DateTime fecha_inicio, DateTime fecha_fin)
+        {
+            Boolean resultado = false;
+            SqlConnection conexion = SqlGeneral.nuevaConexion();
+            try
+            {
+                SqlCommand consulta = new SqlCommand("MLJ.clienteViajaDurante", conexion);
+                consulta.Parameters.AddWithValue("@cod_cliente", cod_cliente);
+                consulta.Parameters.AddWithValue("@inicio", fecha_inicio);
+                consulta.Parameters.AddWithValue("@fin", fecha_fin);
+                conexion.Open();
+                SqlDataReader result = consulta.ExecuteReader();
+                resultado = result.Read();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conexion.Close();
+            }
+            return resultado;
+        }
     }
 }

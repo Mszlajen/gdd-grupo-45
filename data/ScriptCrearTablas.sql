@@ -552,3 +552,13 @@ BEGIN
 		AND NOT cod_cabina IN (SELECT cod_cabina FROM Cabinas_reservadas) 
 END
 GO
+
+CREATE PROCEDURE MLJ.clienteViajaDurante(@inicio DATE, @fin DATE, @cod_cliente INT)
+AS BEGIN
+	RETURN SELECT cod_pasaje
+		   FROM MLJ.Pasajes p JOIN MLJ.Viajes v ON p.cod_viaje = v.cod_viaje
+		   WHERE p.cod_cliente = @cod_cliente 
+				AND (@inicio BETWEEN v.fecha_inicio AND v.fecha_fin 
+					 OR @fin BETWEEN v.fecha_inicio AND v.fecha_fin)
+END
+GO
