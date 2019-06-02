@@ -49,7 +49,7 @@ namespace FrbaCrucero.CompraReservaPasaje
             Int32 codCabina;
             foreach (DataGridViewRow fila in grilla.Rows)
             {
-                if (fila.Cells[0].Value.ToString() == "t")
+                if (fila.Cells[0].Value == "t")
                 {
                     codCabina = Convert.ToInt32(fila.Cells["codCabina"].Value);
                     cabinasSeleccionadas.Add(codCabina);

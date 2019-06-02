@@ -549,7 +549,9 @@ BEGIN
 	SELECT cod_cabina, cod_crucero, nro, cod_tipo, piso
 	FROM MLJ.Cabinas
 	WHERE cod_crucero = (SELECT cod_crucero FROM MLJ.Viajes WHERE cod_viaje = @codViaje)
-		AND NOT cod_cabina IN (SELECT cod_cabina FROM Cabinas_reservadas) 
+		AND NOT cod_cabina IN (SELECT cod_cabina FROM Cabinas_reservadas 
+							   WHERE cod_pasaje IN (SELECT cod_pasaje FROM MLJ.Pasajes 
+													WHERE cod_viaje = @codViaje))
 END
 GO
 
@@ -560,5 +562,16 @@ AS BEGIN
 		   WHERE p.cod_cliente = @cod_cliente 
 				AND (@inicio BETWEEN v.fecha_inicio AND v.fecha_fin 
 					 OR @fin BETWEEN v.fecha_inicio AND v.fecha_fin)
+END
+GO
+
+CREATE PROCEDURE MLJ.CrearCliente(@nombre INT, @apellido INT, @direccion INT, @telefono INT, @dni DECIMAL, @mail VARCHAR(255), @fechaNacimiento DATE)
+AS BEGIN
+	INSERT INTO MLJ.Clientes
+	(nombre, apellido, dni, direccion, telefono, mail, nacimiento)
+	VALUES
+	(@nombre, @apellido, @dni, @direccion, @telefono, @mail, @fechaNacimiento)
+
+	RETURN SCOPE_IDENTITY()
 END
 GO

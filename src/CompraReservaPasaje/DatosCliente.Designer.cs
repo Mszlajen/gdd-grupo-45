@@ -166,6 +166,7 @@
             this.pagarButton.TabIndex = 14;
             this.pagarButton.Text = "Pagar";
             this.pagarButton.UseVisualStyleBackColor = true;
+            this.pagarButton.Click += new System.EventHandler(this.pagarButton_Click);
             // 
             // reservarButton
             // 
@@ -175,6 +176,7 @@
             this.reservarButton.TabIndex = 15;
             this.reservarButton.Text = "Reservar";
             this.reservarButton.UseVisualStyleBackColor = true;
+            this.reservarButton.Click += new System.EventHandler(this.reservarButton_Click);
             // 
             // Datos_Cliente
             // 
