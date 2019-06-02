@@ -31,7 +31,7 @@
             this.grilla = new System.Windows.Forms.DataGridView();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.cantidad = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.comprar = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.grilla)).BeginInit();
             this.SuspendLayout();
             // 
@@ -41,11 +41,12 @@
             this.grilla.AllowUserToDeleteRows = false;
             this.grilla.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.grilla.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.cantidad});
+            this.comprar});
             this.grilla.Location = new System.Drawing.Point(13, 13);
             this.grilla.Name = "grilla";
             this.grilla.Size = new System.Drawing.Size(259, 236);
             this.grilla.TabIndex = 0;
+            this.grilla.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grilla_CellContentClick);
             // 
             // button1
             // 
@@ -55,6 +56,7 @@
             this.button1.TabIndex = 1;
             this.button1.Text = "Continuar";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
@@ -65,14 +67,17 @@
             this.button2.Text = "Cancelar";
             this.button2.UseVisualStyleBackColor = true;
             // 
-            // cantidad
+            // comprar
             // 
-            this.cantidad.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.cantidad.HeaderText = "Comprar";
-            this.cantidad.Name = "cantidad";
-            this.cantidad.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.cantidad.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.cantidad.Width = 71;
+            this.comprar.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.comprar.FalseValue = "f";
+            this.comprar.HeaderText = "Comprar";
+            this.comprar.IndeterminateValue = "f";
+            this.comprar.Name = "comprar";
+            this.comprar.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.comprar.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.comprar.TrueValue = "t";
+            this.comprar.Width = 71;
             // 
             // Cabinas
             // 
@@ -94,6 +99,6 @@
         private System.Windows.Forms.DataGridView grilla;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.DataGridViewCheckBoxColumn cantidad;
+        private System.Windows.Forms.DataGridViewCheckBoxColumn comprar;
     }
 }

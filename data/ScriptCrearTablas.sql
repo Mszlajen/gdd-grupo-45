@@ -502,20 +502,38 @@ BEGIN
 END
 GO
 
+CREATE FUNCTION MLJ.cruceroDeshabilitado(@fecha DATE, @cod_crucero INT)
+RETURNS INT
+AS 
+BEGIN
+	DECLARE @codBaja INT
+
+	SELECT @codBaja = bs.cod_baja 
+	FROM MLJ.Cruceros c JOIN MLJ.Bajas_de_servicio bs ON c.cod_crucero = bs.cod_crucero 
+	WHERE c.cod_crucero = @cod_crucero AND CONVERT(DATE, bs.fecha_baja) <= @fecha 
+		  AND (bs.permanente = 1 OR @fecha < CONVERT(DATE, bs.fecha_alta))
+
+	RETURN @codBaja
+END
+GO
+
 CREATE PROCEDURE MLJ.buscarViajes(@fecha DATE, @cod_origen INT, @cod_destino INT)
 AS 
 BEGIN
+	--Falta agregar la condicion para ignorar los cruceros dados de baja
 	IF(@cod_origen IS NULL AND @cod_destino IS NULL)
 	BEGIN
 		SELECT v.cod_viaje, v.fecha_inicio, v.fecha_fin, v.cod_recorrido, v.cod_crucero, v.retorna, v.razon_de_cancelacion
 			FROM MLJ.Viajes v
-			WHERE @fecha = CONVERT(DATE, v.fecha_inicio) AND razon_de_cancelacion IS NULL
+			WHERE @fecha = CONVERT(DATE, v.fecha_inicio) AND razon_de_cancelacion IS NULL 
+				  AND MLJ.cruceroDeshabilitado(@fecha, v.cod_crucero) IS NULL
 	END
 	ELSE
 	BEGIN
 		SELECT v.cod_viaje, v.fecha_inicio, v.fecha_fin, v.cod_recorrido, v.cod_crucero, v.retorna, v.razon_de_cancelacion
 		FROM MLJ.Viajes v
 		WHERE @fecha = CONVERT(DATE, v.fecha_inicio) AND razon_de_cancelacion IS NULL 
+			  AND MLJ.cruceroDeshabilitado(@fecha, v.cod_crucero) IS NULL
 			  AND v.cod_recorrido IN (SELECT r.cod_recorrido 
 									  FROM MLJ.Recorridos r JOIN MLJ.Tramos t ON r.cod_recorrido = t.cod_recorrido
 									  WHERE	(@cod_origen IS NULL OR (t.cod_puerto_salida = @cod_origen AND t.nro_tramo = 0)) AND 

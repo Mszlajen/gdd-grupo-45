@@ -42,5 +42,25 @@ namespace FrbaCrucero.CompraReservaPasaje
                 });
             }
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            List<Int32> cabinasSeleccionadas = new List<Int32>();
+            Int32 codCabina;
+            foreach (DataGridViewRow fila in grilla.Rows)
+            {
+                if (fila.Cells[0].Value == "t")
+                {
+                    codCabina = Convert.ToInt32(fila.Cells["codCabina"].Value);
+                    cabinasSeleccionadas.Add(codCabina);
+                }
+            }
+            (new DNI(cabinasSeleccionadas)).Show();
+        }
+
+        private void grilla_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
     }
 }
