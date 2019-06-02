@@ -25,7 +25,7 @@ namespace FrbaCrucero.SQL
                 SqlDataReader result = consulta.ExecuteReader();
                 while (result.Read())
                 {
-                    clientes.Add(new Cliente(result.GetInt32(0), result.GetString(1), result.GetString(2), dni, result.GetString(3), result.GetInt32(4), result.GetString(5), result.GetDateTime(6)));
+                    clientes.Add(new Cliente(result.GetInt32(0), result.GetString(1), result.GetString(2), dni, result.GetString(3), result.GetInt32(4), result.GetString(5), result.GetDateTime(6), result.GetValue(6) == DBNull.Value));
                 }
             }
             catch (Exception ex)

@@ -27,15 +27,15 @@ namespace FrbaCrucero.CompraReservaPasaje
             List<Cliente> clientes = new SqlClientes().buscarClientePorDNI(dni);
             if (clientes.Count == 0)
             {
-                new Datos_Cliente().Show();
+                Program.openNextWindow(this, new Datos_Cliente(dni));
             }
-            if (clientes.Count == 1)
+            else if (clientes.Count == 1)
             {
-                new Datos_Cliente().Show();
+                Program.openNextWindow(this, new Datos_Cliente(clientes.First()));
             }
             else
             {
-                new SeleccionCliente(this.cabinasSeleccionadas, clientes).Show();
+                Program.openNextWindow(this, new SeleccionCliente(this.cabinasSeleccionadas, clientes));
             }
         }
     }

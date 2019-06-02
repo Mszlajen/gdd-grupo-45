@@ -49,13 +49,16 @@ namespace FrbaCrucero.CompraReservaPasaje
             Int32 codCabina;
             foreach (DataGridViewRow fila in grilla.Rows)
             {
-                if (fila.Cells[0].Value == "t")
+                if (fila.Cells[0].Value.ToString() == "t")
                 {
                     codCabina = Convert.ToInt32(fila.Cells["codCabina"].Value);
                     cabinasSeleccionadas.Add(codCabina);
                 }
             }
-            (new DNI(cabinasSeleccionadas)).Show();
+            if (cabinasSeleccionadas.Count == 0)
+                MessageBox.Show("No selecciono ninguna cabina");
+            else
+                Program.openNextWindow(this, new DNI(cabinasSeleccionadas));
         }
 
         private void grilla_CellContentClick(object sender, DataGridViewCellEventArgs e)

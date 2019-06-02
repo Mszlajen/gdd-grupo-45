@@ -28,5 +28,23 @@ namespace FrbaCrucero
         {
             return Program.dia;
         }
+        
+        public static DialogResult openNextWindow(Form self, Form next)
+        {
+            self.Hide();
+            DialogResult ret = next.ShowDialog();
+            next.Dispose();
+            self.Show();
+            return ret;
+        }
+
+        public static DialogResult openPopUpWindow(Form self, Form window)
+        {
+            self.Enabled = false;
+            DialogResult ret = window.ShowDialog();
+            window.Dispose();
+            self.Enabled = true;
+            return ret;
+        }
     }
 }

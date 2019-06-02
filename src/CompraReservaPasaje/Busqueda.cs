@@ -12,7 +12,7 @@ namespace FrbaCrucero.CompraReservaPasaje
 {
     public partial class Busqueda : Form
     {
-        List<Entidades.Puertos> puertos = (new SQL.SqlPuertos()).getPuertosHabilitados();
+        List<Entidades.Puertos> puertos = new SQL.SqlPuertos().getPuertosHabilitados();
         DataTable viajesTable = new DataTable();
         public Busqueda()
         {
@@ -40,7 +40,7 @@ namespace FrbaCrucero.CompraReservaPasaje
             viajesTable.Rows.Clear();
             Entidades.Puertos puertoOrigen = origen.SelectedIndex != -1? puertos[origen.SelectedIndex] : null,
                               puertoDestino = destino.SelectedIndex != -1? puertos[destino.SelectedIndex] : null;
-            List<Entidades.Viaje> viajes = (new SQL.SqlViaje()).buscarViajes(fecha.Value, puertoOrigen, puertoDestino);
+            List<Entidades.Viaje> viajes = new SQL.SqlViaje().buscarViajes(fecha.Value, puertoOrigen, puertoDestino);
 
             foreach (Entidades.Viaje viaje in viajes)
             {
@@ -69,7 +69,7 @@ namespace FrbaCrucero.CompraReservaPasaje
             if (e.ColumnIndex == 0)
             {
                 Int32 codViaje = Convert.ToInt32(viajesTable.Rows[e.RowIndex]["codViaje"].ToString());
-                new CompraReservaPasaje.Cabinas(codViaje).Show();
+                Program.openNextWindow(this, new CompraReservaPasaje.Cabinas(codViaje));
             }
         }
     }

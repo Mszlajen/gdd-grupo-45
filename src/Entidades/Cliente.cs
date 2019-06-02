@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FrbaCrucero.Entidades
 {
-    class Cliente
+    public class Cliente
     {
         [System.ComponentModel.DisplayName("idCliente")]
         public Int32 idCliente { get; set; }
@@ -25,7 +25,9 @@ namespace FrbaCrucero.Entidades
         [System.ComponentModel.DisplayName("nacimiento")]
         public DateTime nacimiento { get; set; }
 
-        public Cliente(Int32 idCliente, String nombre, String apellido, Decimal dni, String direccion, Int32 telefono, String mail, DateTime fechaNacimiento) 
+        public Boolean tieneNacimiento { get; set; }
+
+        public Cliente(Int32 idCliente, String nombre, String apellido, Decimal dni, String direccion, Int32 telefono, String mail, DateTime fechaNacimiento,  Boolean tieneNacimiento) 
         {
             this.idCliente = idCliente;
             this.nombre = nombre;
@@ -35,6 +37,7 @@ namespace FrbaCrucero.Entidades
             this.telefono = telefono;
             this.mail = mail;
             this.nacimiento = nacimiento;
+            this.tieneNacimiento = tieneNacimiento;
         }
 
     }
