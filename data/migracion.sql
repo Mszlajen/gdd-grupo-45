@@ -155,27 +155,20 @@ SELECT DISTINCT PASAJE_CODIGO_NUEVO, CABINA_CODIGO
 FROM #temp t
 WHERE PASAJE_CODIGO_NUEVO IS NOT NULL
 
--- Creo la tabla temporal de pasajes con el numero de fila 
-SELECT ROW_NUMBER() OVER(ORDER BY PASAJE_CODIGO_NUEVO, PASAJE_FECHA_COMPRA) PAGO_COD, PASAJE_CODIGO_NUEVO, PASAJE_FECHA_COMPRA
-INTO #pasajes
-FROM (SELECT DISTINCT t.PASAJE_CODIGO_NUEVO, t.PASAJE_FECHA_COMPRA
-	  FROM #temp t
-	  WHERE t.PASAJE_CODIGO_NUEVO IS NOT NULL) pasajes
-
 -- Migro la informacion del pago 
 INSERT INTO MLJ.Pagos
 (fecha)
 SELECT PASAJE_FECHA_COMPRA
-FROM #pasajes
-ORDER BY PAGO_COD
+FROM #temp
+WHERE PASAJE_CODIGO_NUEVO IS NOT NULL
+ORDER BY PASAJE_CODIGO_NUEVO, PASAJE_FECHA_COMPRA
 
 -- Le agrego la referenca del pago a los pasajes
+-- Al haber usado el codigo de pasaje como forma de ordenamiento al insertar los pago 
+-- y de que solo hay un pago por pasaje los codigo se coinciden
 UPDATE p
-SET cod_pago = (SELECT cod_pago FROM #pasajes pt WHERE pt.PASAJE_CODIGO_NUEVO = p.cod_pasaje)
+SET cod_pago = p.cod_pasaje
 FROM MLJ.Pasajes p
-
--- Elimino la tabla temporal de pasajes
-DROP TABLE #pasajes
 
 -- Migro la informacion de las reservas
 INSERT INTO MLJ.Reservas

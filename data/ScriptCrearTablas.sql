@@ -571,18 +571,11 @@ GO
 
 CREATE PROCEDURE MLJ.clienteViajaDurante(@inicio DATE, @fin DATE, @cod_cliente INT, @resultado int output)
 AS BEGIN
-	IF EXISTS(SELECT cod_pasaje
-		   FROM MLJ.Pasajes p JOIN MLJ.Viajes v ON p.cod_viaje = v.cod_viaje
-		   WHERE p.cod_cliente = @cod_cliente 
-				AND (@inicio BETWEEN v.fecha_inicio AND v.fecha_fin 
-					 OR @fin BETWEEN v.fecha_inicio AND v.fecha_fin))
-		BEGIN
-		SET @resultado = 0
-		END
-	ELSE 
-		BEGIN
-		SET @resultado = 1
-		END
+	SELECT cod_pasaje
+	FROM MLJ.Pasajes p JOIN MLJ.Viajes v ON p.cod_viaje = v.cod_viaje
+	WHERE p.cod_cliente = @cod_cliente 
+		  AND (v.fecha_inicio BETWEEN @inicio AND @fin 
+			   AND v.fecha_fin BETWEEN @inicio AND @fin)
 END
 GO
 
