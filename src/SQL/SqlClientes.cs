@@ -42,16 +42,22 @@ namespace FrbaCrucero.SQL
         public Boolean validarDisponibilidad(Int32 cod_cliente, DateTime fecha_inicio, DateTime fecha_fin)
         {
             Boolean resultado = false;
+            SqlParameter VariableRetorno = new SqlParameter("@resultado", SqlDbType.Int);
+            VariableRetorno.Direction = ParameterDirection.Output;
+
             SqlConnection conexion = SqlGeneral.nuevaConexion();
             try
             {
                 SqlCommand consulta = new SqlCommand("MLJ.clienteViajaDurante", conexion);
+                consulta.CommandType = CommandType.StoredProcedure;
                 consulta.Parameters.AddWithValue("@cod_cliente", cod_cliente);
                 consulta.Parameters.AddWithValue("@inicio", fecha_inicio);
                 consulta.Parameters.AddWithValue("@fin", fecha_fin);
+                consulta.Parameters.Add(VariableRetorno);
+
                 conexion.Open();
-                SqlDataReader result = consulta.ExecuteReader();
-                resultado = result.Read();
+                consulta.ExecuteNonQuery();
+                resultado = Convert.ToBoolean(consulta.Parameters["@resultado"].Value);
             }
             catch (Exception ex)
             {

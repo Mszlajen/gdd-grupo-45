@@ -394,7 +394,7 @@ BEGIN
 		BEGIN
 		SET @resultado = -1
 		END
-	ELSE IF NOT EXISTS(SELECT cod_crucero FROM MLJ.Cruceros WHERE cod_crucero NOT IN (select cod_crucero FROM MLJ.Bajas_de_servicio WHERE permanente = 1) AND cod_crucero NOT IN (SELECT viajes.cod_crucero FROM MLJ.Viajes viajes WHERE (viajes.fecha_inicio BETWEEN @fechaSalida AND @fechaLlegada) AND (viajes.fecha_fin BETWEEN @fechaSalida AND @fechaLlegada)))
+	ELSE IF NOT EXISTS(SELECT cod_crucero FROM MLJ.Cruceros WHERE cod_crucero NOT IN (select cod_crucero FROM MLJ.Bajas_de_servicio WHERE permanente = 1) AND cod_crucero NOT IN (SELECT viajes.cod_crucero FROM MLJ.Viajes viajes WHERE (@fechaSalida BETWEEN viajes.fecha_inicio AND viajes.fecha_fin) OR (@fechaLlegada BETWEEN viajes.fecha_inicio AND viajes.fecha_fin)))
 		BEGIN
 		SET @resultado = -2
 		END
@@ -502,6 +502,10 @@ BEGIN
 END
 GO
 
+IF(OBJECT_ID('MLJ.cruceroDeshabilitado') IS NOT NULL)
+	DROP FUNCTION MLJ.cruceroDeshabilitado
+GO
+
 CREATE FUNCTION MLJ.cruceroDeshabilitado(@fecha DATE, @cod_crucero INT)
 RETURNS INT
 AS 
@@ -515,6 +519,10 @@ BEGIN
 
 	RETURN @codBaja
 END
+GO
+
+IF(OBJECT_ID('MLJ.buscarViajes') IS NOT NULL)
+	DROP PROCEDURE MLJ.buscarViajes
 GO
 
 CREATE PROCEDURE MLJ.buscarViajes(@fecha DATE, @cod_origen INT, @cod_destino INT)
@@ -543,6 +551,10 @@ BEGIN
 END
 GO
 
+IF(OBJECT_ID('MLJ.buscarCabinasDisponibles') IS NOT NULL)
+	DROP PROCEDURE MLJ.buscarCabinasDisponibles
+GO
+
 CREATE PROCEDURE MLJ.buscarCabinasDisponibles(@codViaje INT)
 AS
 BEGIN
@@ -555,14 +567,29 @@ BEGIN
 END
 GO
 
-CREATE PROCEDURE MLJ.clienteViajaDurante(@inicio DATE, @fin DATE, @cod_cliente INT)
+IF(OBJECT_ID('MLJ.clienteViajaDurante') IS NOT NULL)
+	DROP PROCEDURE MLJ.clienteViajaDurante
+GO
+
+CREATE PROCEDURE MLJ.clienteViajaDurante(@inicio DATE, @fin DATE, @cod_cliente INT, @resultado int output)
 AS BEGIN
-	RETURN SELECT cod_pasaje
+	IF EXISTS(SELECT cod_pasaje
 		   FROM MLJ.Pasajes p JOIN MLJ.Viajes v ON p.cod_viaje = v.cod_viaje
 		   WHERE p.cod_cliente = @cod_cliente 
 				AND (@inicio BETWEEN v.fecha_inicio AND v.fecha_fin 
-					 OR @fin BETWEEN v.fecha_inicio AND v.fecha_fin)
+					 OR @fin BETWEEN v.fecha_inicio AND v.fecha_fin))
+		BEGIN
+		SET @resultado = 0
+		END
+	ELSE 
+		BEGIN
+		SET @resultado = 1
+		END
 END
+GO
+
+IF(OBJECT_ID('MLJ.CrearCliente') IS NOT NULL)
+	DROP PROCEDURE MLJ.CrearCliente
 GO
 
 CREATE PROCEDURE MLJ.CrearCliente(@nombre VARCHAR(255), @apellido VARCHAR(255), @direccion VARCHAR(255), @telefono INT, @dni DECIMAL, @mail VARCHAR(255), @fechaNacimiento DATE)
