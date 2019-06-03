@@ -394,11 +394,11 @@ BEGIN
 		BEGIN
 		SET @resultado = -1
 		END
-	ELSE IF NOT EXISTS(SELECT cod_crucero FROM MLJ.Cruceros WHERE cod_crucero NOT IN (select cod_crucero FROM MLJ.Bajas_de_servicio WHERE permanente = 1) AND cod_crucero NOT IN (SELECT viajes.cod_crucero FROM MLJ.Viajes viajes WHERE (@fechaSalida BETWEEN viajes.fecha_inicio AND viajes.fecha_fin) OR (@fechaLlegada BETWEEN viajes.fecha_inicio AND viajes.fecha_fin)))
+	ELSE IF NOT EXISTS(SELECT cod_crucero FROM MLJ.Cruceros WHERE cod_crucero NOT IN (select cod_crucero FROM MLJ.Bajas_de_servicio WHERE (permanente = 1 OR fecha_alta >= @fechaSalida)) AND cod_crucero NOT IN (SELECT viajes.cod_crucero FROM MLJ.Viajes viajes WHERE (viajes.fecha_inicio BETWEEN @fechaSalida AND @fechaLlegada) OR (viajes.fecha_fin BETWEEN @fechaSalida AND @fechaLlegada)))
 		BEGIN
 		SET @resultado = -2
 		END
-	ELSE IF EXISTS(SELECT * FROM MLJ.Cruceros cruceros JOIN MLJ.Bajas_de_servicio bajas ON (bajas.cod_crucero = @cod_crucero ) WHERE permanente = 1)
+	ELSE IF EXISTS(SELECT * FROM MLJ.Bajas_de_servicio WHERE (permanente = 1 OR fecha_alta >= @fechaSalida) AND (cod_crucero = @cod_crucero))
 		BEGIN
 		SET @resultado = -3
 		END
