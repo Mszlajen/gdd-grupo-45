@@ -575,7 +575,7 @@ AS BEGIN
 	FROM MLJ.Pasajes p JOIN MLJ.Viajes v ON p.cod_viaje = v.cod_viaje
 	WHERE p.cod_cliente = @cod_cliente 
 		  AND (v.fecha_inicio BETWEEN @inicio AND @fin 
-			   AND v.fecha_fin BETWEEN @inicio AND @fin)
+			   OR v.fecha_fin BETWEEN @inicio AND @fin)
 END
 GO
 
