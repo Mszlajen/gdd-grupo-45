@@ -462,14 +462,29 @@ IF(OBJECT_ID('MLJ.BajaLogicaROL') IS NOT NULL)
 GO
 
 CREATE TRIGGER MLJ.BajaLogicaROL 
-ON MLJ.Roles AFTER UPDATE
+ON MLJ.Roles INSTEAD OF UPDATE
 AS
 BEGIN
+	BEGIN TRANSACTION
+		MERGE INTO MLJ.Roles r
+		USING inserted i
+		ON r.cod_rol = i.cod_rol
+		WHEN MATCHED THEN
+		UPDATE SET
+		r.descripcion = i.descripcion,
+		r.habilitado = i.habilitado,
+		r.registrable = i.registrable;
+		
+		--Esto deberia hacer lo mismo que el MERGE, en caso de que uno no funcione
+		--UPDATE MLJ.Roles
+		--SET descripcion = i.descripcion,
+		--habilitado = i.habilitado,
+		--registrable = i.registrable
+		--FROM inserted i
+		--WHERE MLJ.Roles.cod_rol = i.cod_rol
 
-BEGIN TRANSACTION
-DELETE FROM MLJ.UsuariosXRoles WHERE cod_rol IN (SELECT i.cod_rol FROM inserted i WHERE i.habilitado = 0);
-COMMIT TRANSACTION
-
+		DELETE FROM MLJ.UsuariosXRoles WHERE cod_rol IN (SELECT i.cod_rol FROM inserted i WHERE i.habilitado = 0);
+	COMMIT TRANSACTION
 END
 GO
 
