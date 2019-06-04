@@ -712,8 +712,27 @@ GO
 
 CREATE VIEW MLJ.Reservas_pendientes
 AS
-SELECT cod_pasaje, cod_reserva
+SELECT cod_pasaje, cod_reserva, fecha_reserva
 FROM MLJ.Reservas
 WHERE cod_pasaje NOT IN (SELECT cod_pasaje FROM MLJ.Pagos)
 WITH CHECK OPTION
 GO
+
+CREATE PROCEDURE MLJ.eliminarReservasVencidas(@hoy DATE)
+AS BEGIN
+	SELECT cod_pasaje
+	INTO #borrar
+	FROM MLJ.ReservasPendientes
+	WHERE DATEADD(DAY, 3, fecha_reserva) <= @hoy
+
+	BEGIN TRANSACTION
+		DELETE FROM MLJ.Cabinas_reservadas
+		WHERE cod_pasaje IN (SELECT cod_pasaje FROM #borrar)
+
+		DELETE FROM MLJ.Reservas
+		WHERE cod_pasaje IN (SELECT cod_pasaje FROM #borrar)
+
+		DELETE FROM MLJ.Pasajes
+		WHERE cod_pasaje IN (SELECT cod_pasaje FROM #borrar)
+	COMMIT TRANSACTION
+END
