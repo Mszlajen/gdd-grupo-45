@@ -18,6 +18,8 @@ namespace FrbaCrucero.CompraReservaPasaje
         List<Cabina> cabinas;
         Cliente cliente;
         List<MedioDePago> medios = new SqlPagos().mediosDePagos();
+        Reserva reserva;
+        Boolean compra = true;
         public Pago(Viaje viaje, List<Cabina> cabinasSeleccionadas, Cliente cliente)
         {
             InitializeComponent();
@@ -25,6 +27,24 @@ namespace FrbaCrucero.CompraReservaPasaje
             this.cabinas = cabinasSeleccionadas;
             this.cliente = cliente;
             
+            vencAnio.Minimum = Program.ObtenerFechaActual().Year;
+            vencAnio.Maximum = vencAnio.Minimum + 10;
+            vencAnio.Value = vencAnio.Minimum;
+            vencMes.Value = Program.ObtenerFechaActual().Month;
+
+            formas.DataSource = medios;
+            formas.SelectedIndex = -1;
+        }
+
+        public Pago(Reserva reserva)
+        {
+            InitializeComponent();
+            this.reserva = reserva;
+            Pasaje pasaje = reserva.pasaje();
+            this.viaje = new SqlViaje().getViaje(pasaje.cod_viaje);
+            this.cabinas = new SqlCabinas().buscarCabinasReservadas(reserva.codPasaje);
+            this.compra = false;
+
             vencAnio.Minimum = Program.ObtenerFechaActual().Year;
             vencAnio.Maximum = vencAnio.Minimum + 10;
             vencAnio.Value = vencAnio.Minimum;
@@ -63,10 +83,16 @@ namespace FrbaCrucero.CompraReservaPasaje
             if (valido)
             {
                 SqlPagos queries = new SqlPagos();
-                Int32 cod_pago = queries.crearPago(viaje.idViaje, cliente.idCliente, cabinas, numTarjeta.Text, codSeguridad.Text, Program.ObtenerFechaActual(), ((MedioDePago)formas.SelectedItem).id);
+                Int32 cod_pago;
+                if (this.compra)
+                    cod_pago = queries.crearPago(viaje.idViaje, cliente.idCliente, cabinas, numTarjeta.Text, codSeguridad.Text, Program.ObtenerFechaActual(), ((MedioDePago)formas.SelectedItem).id);
+                else
+                    cod_pago = queries.crearPago(reserva.id, numTarjeta.Text, codSeguridad.Text, Program.ObtenerFechaActual(), ((MedioDePago)formas.SelectedItem).id);
+                 
                 Entidades.Pago pago = queries.buscarPago(cod_pago);
                 Program.openNextWindow(this, new PantallaFinal(viaje, cabinas, pago));
                 this.DialogResult = DialogResult.OK;
+
             }
             
         }

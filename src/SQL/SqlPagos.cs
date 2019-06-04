@@ -75,6 +75,39 @@ namespace FrbaCrucero.SQL
             return cod_pago;
         }
 
+        public Int32 crearPago(Int32 cod_reserva, String numTarjeta, String security_code, DateTime fecha, Int32 cod_medio)
+        {
+            Int32 cod_pago = 0;
+            SqlConnection conexion = SqlGeneral.nuevaConexion();
+            try
+            {
+                SqlCommand consulta = new SqlCommand("MLJ.pagarReserva", conexion);
+                consulta.CommandType = CommandType.StoredProcedure;
+                consulta.Parameters.AddWithValue("@cod_reserva", cod_reserva);
+                consulta.Parameters.AddWithValue("@fecha", Program.ObtenerFechaActual());
+                consulta.Parameters.AddWithValue("@numTarjeta", numTarjeta);
+                consulta.Parameters.AddWithValue("@pin", security_code);
+                consulta.Parameters.AddWithValue("@cod_medio", cod_medio);
+                SqlParameter ret = new SqlParameter();
+                ret.Direction = ParameterDirection.ReturnValue;
+                consulta.Parameters.Add(ret);
+                conexion.Open();
+
+                consulta.ExecuteNonQuery();
+
+                cod_pago = Convert.ToInt32(ret.Value);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conexion.Close();
+            }
+            return cod_pago;
+        }
+
         public Pago buscarPago(Int32 cod_pago)
         {
             Pago pago = null;

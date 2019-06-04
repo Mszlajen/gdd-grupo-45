@@ -24,5 +24,20 @@ namespace FrbaCrucero.SQL
             conexion.Close();
             return tipo;
         }
+
+        public List<Cabina> buscarCabinasReservadas(Int32 cod_pasaje)
+        {
+            List<Cabina> cabinas = new List<Cabina>();
+            SqlConnection conexion = SqlGeneral.nuevaConexion();
+            SqlCommand consulta = new SqlCommand("MLJ.buscarCabinasDePasaje", conexion);
+            consulta.CommandType = CommandType.StoredProcedure;
+            consulta.Parameters.AddWithValue("@cod_pasaje", cod_pasaje);
+            conexion.Open();
+            SqlDataReader resultados = consulta.ExecuteReader();
+            while (resultados.Read())
+                cabinas.Add(new Cabina(resultados.GetInt32(0), resultados.GetInt32(1), resultados.GetDecimal(3), resultados.GetInt32(2), resultados.GetDecimal(4)));
+            conexion.Close();
+            return cabinas;
+        }
     }
 }

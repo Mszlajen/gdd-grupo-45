@@ -59,5 +59,29 @@ namespace FrbaCrucero.SQL
             }
             return reserva;
         }
+
+        public Reserva buscarReserva(Int32 cod_reserva)
+        {
+            Reserva reserva = null;
+            SqlConnection conexion = SqlGeneral.nuevaConexion();
+            try
+            {
+                SqlCommand consulta = new SqlCommand("SELECT cod_pasaje, fecha_reserva FROM MLJ.Reservas WHERE cod_reserva = @cod", conexion);
+                consulta.Parameters.AddWithValue("@cod", cod_reserva);
+                conexion.Open();
+                SqlDataReader result = consulta.ExecuteReader();
+                while (result.Read())
+                    reserva = new Reserva(cod_reserva, result.GetInt32(0), result.GetDateTime(1));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conexion.Close();
+            }
+            return reserva;
+        }
     }
 }

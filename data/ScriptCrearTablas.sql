@@ -688,3 +688,23 @@ AS BEGIN
 	RETURN SCOPE_IDENTITY()
 END
 GO
+
+CREATE PROCEDURE MLJ.pagarReserva(@cod_reserva INT, @numTarjeta CHAR(16), @pin CHAR(4), @cod_medio INT, @fecha DATE)
+AS BEGIN
+	INSERT INTO MLJ.Pagos
+	(cod_pasaje, fecha, cod_medio, cod_seguridad, hash_nro_tarjeta, ultimos_digitos)
+	SELECT cod_pasaje, @fecha, @cod_medio, @pin, CONVERT(CHAR(256),HASHBYTES('SHA2_256',@numTarjeta),2), RIGHT(@numTarjeta, 4)
+	FROM MLJ.Reservas
+	WHERE cod_reserva = @cod_reserva
+
+	RETURN SCOPE_IDENTITY()	
+END	
+GO
+
+CREATE PROCEDURE MLJ.buscarCabinasDePasaje(@cod_pasaje INT)
+AS BEGIN
+	SELECT c.cod_cabina, c.cod_crucero, c.cod_tipo, c.nro, c.piso
+	FROM MLJ.Cabinas_reservadas cr 
+		JOIN MLJ.Cabinas c ON cr.cod_cabina = c.cod_cabina 
+	WHERE cr.cod_pasaje = @cod_pasaje
+END

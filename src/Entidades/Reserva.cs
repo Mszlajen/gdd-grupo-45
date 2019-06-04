@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FrbaCrucero.Entidades
 {
-    class Reserva : TipoPasaje
+    public class Reserva : TipoPasaje
     {
         public DateTime fechaReserva { get; private set; }
 
