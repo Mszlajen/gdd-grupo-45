@@ -30,7 +30,10 @@ namespace FrbaCrucero.CompraReservaPasaje
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Program.openNextWindow(this, new Datos_Cliente(this.viaje, this.cabinasSeleccionadas, clientes.First().dni));
+            DialogResult result = Program.openNextWindow(this, new Datos_Cliente(this.viaje, this.cabinasSeleccionadas, clientes.First().dni));
+            if (result == DialogResult.OK)
+                this.DialogResult = DialogResult.OK;
+
         }
 
         private void grilla_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -39,7 +42,11 @@ namespace FrbaCrucero.CompraReservaPasaje
             {
                 Cliente cliente = clientes[e.RowIndex];
                 if (new SqlClientes().validarDisponibilidad(cliente.idCliente, this.viaje.fechaInicio, this.viaje.fechaLlegada))
-                    Program.openNextWindow(this, new Datos_Cliente(this.viaje, this.cabinasSeleccionadas, cliente));
+                {
+                    DialogResult result = Program.openNextWindow(this, new Datos_Cliente(this.viaje, this.cabinasSeleccionadas, cliente));
+                    if (result == DialogResult.OK)
+                        this.DialogResult = DialogResult.OK;
+                }
                 else
                     MessageBox.Show("Usted ya posee un viaje en esa fecha");
             }

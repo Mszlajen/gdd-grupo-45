@@ -70,7 +70,9 @@ namespace FrbaCrucero.CompraReservaPasaje
             if (e.ColumnIndex == 0)
             {
                 Int32 codViaje = Convert.ToInt32(grilla.Rows[e.RowIndex].Cells["idViaje"].Value.ToString());
-                Program.openNextWindow(this, new CompraReservaPasaje.Cabinas(codViaje));
+                DialogResult result = Program.openNextWindow(this, new CompraReservaPasaje.Cabinas(codViaje));
+                if (result == DialogResult.OK)
+                    viajesTable.Clear();
             }
         }
     }

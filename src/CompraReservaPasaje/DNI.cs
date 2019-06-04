@@ -45,7 +45,12 @@ namespace FrbaCrucero.CompraReservaPasaje
             {
                 Cliente cliente = clientes.First();
                 if (new SqlClientes().validarDisponibilidad(cliente.idCliente, this.viaje.fechaInicio, this.viaje.fechaLlegada))
-                    Program.openNextWindow(this, new Datos_Cliente(this.viaje, this.cabinasSeleccionadas, cliente));
+                {
+                    DialogResult result = Program.openNextWindow(this, new Datos_Cliente(this.viaje, this.cabinasSeleccionadas, cliente));
+                    if (result == DialogResult.OK)
+                        this.DialogResult = DialogResult.OK;
+
+                }
                 else
                     MessageBox.Show("Usted ya posee un viaje en esa fecha");
             }

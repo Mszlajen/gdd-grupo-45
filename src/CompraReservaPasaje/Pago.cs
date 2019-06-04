@@ -66,6 +66,7 @@ namespace FrbaCrucero.CompraReservaPasaje
                 Int32 cod_pago = queries.crearPago(viaje.idViaje, cliente.idCliente, cabinas, numTarjeta.Text, codSeguridad.Text, Program.ObtenerFechaActual(), ((MedioDePago)formas.SelectedItem).id);
                 Entidades.Pago pago = queries.buscarPago(cod_pago);
                 Program.openNextWindow(this, new PantallaFinal(viaje, cabinas, pago));
+                this.DialogResult = DialogResult.OK;
             }
             
         }
@@ -81,6 +82,11 @@ namespace FrbaCrucero.CompraReservaPasaje
         private Boolean validateCreditCardNumber(MedioDePago medio, String numero)
         {
             return true;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.Cancel;
         }
     }
 }

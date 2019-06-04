@@ -47,7 +47,9 @@ namespace FrbaCrucero.CompraReservaPasaje
         {
             if (checkAndSaveCliente(this.cliente))
             {
-                Program.openPopUpWindow(this, new Pago(viaje, cabinasSeleccionadas, cliente));
+                DialogResult result = Program.openPopUpWindow(this, new Pago(viaje, cabinasSeleccionadas, cliente));
+                if (result == DialogResult.OK)
+                    this.DialogResult = DialogResult.OK;
             }
         }
 
@@ -57,6 +59,7 @@ namespace FrbaCrucero.CompraReservaPasaje
             {
                 Reserva reserva = new SqlReservas().crearReserva(viaje.idViaje, cliente.idCliente, cabinasSeleccionadas);
                 Program.openNextWindow(this, new PantallaFinal(viaje, cabinasSeleccionadas, reserva));
+                this.DialogResult = DialogResult.OK;
             }
         }
 
