@@ -225,7 +225,6 @@ BEGIN
 		cod_pasaje INTEGER IDENTITY(1,1) PRIMARY KEY,
 		cod_cliente INTEGER NOT NULL,
 		cod_viaje INTEGER NOT NULL,
-		cod_pago INTEGER,
 		cantidad numeric(18,2) NOT NULL,
 		cod_viejo DECIMAL(18,0)
 	);
@@ -240,6 +239,7 @@ BEGIN
 	--Sentencia crea tabla Pagos
 	CREATE TABLE MLJ.Pagos (
 		cod_pago INTEGER IDENTITY(1,1) PRIMARY KEY,
+		cod_pasaje INTEGER NOT NULL,
 		fecha datetime NOT NULL,
 		cod_medio INTEGER,
 		hash_nro_tarjeta char(255),
@@ -321,9 +321,7 @@ BEGIN
 	CONSTRAINT fk_pasajes_cliente FOREIGN KEY (cod_cliente) REFERENCES MLJ.Clientes(cod_cliente)
 	ON DELETE NO ACTION ON UPDATE CASCADE,
 	CONSTRAINT fk_pasajes_viaje FOREIGN KEY (cod_viaje) REFERENCES MLJ.Viajes(cod_viaje)
-	ON DELETE NO ACTION ON UPDATE CASCADE,
-	CONSTRAINT fk_pasajes_pago FOREIGN KEY (cod_pago) REFERENCES MLJ.Pagos(cod_pago)
-	ON DELETE NO ACTION ON UPDATE CASCADE;
+	ON DELETE NO ACTION ON UPDATE CASCADE
 
 	ALTER TABLE MLJ.Cabinas_reservadas ADD
 	CONSTRAINT fk_cabinas_reservadas_cliente FOREIGN KEY (cod_pasaje) REFERENCES MLJ.Pasajes(cod_pasaje)
@@ -333,6 +331,8 @@ BEGIN
 
 	ALTER TABLE MLJ.Pagos ADD
 	CONSTRAINT fk_pagos_medio FOREIGN KEY (cod_medio) REFERENCES MLJ.Medios_de_Pago(cod_medio)
+	ON DELETE NO ACTION ON UPDATE CASCADE,
+	CONSTRAINT fk_pago_pasaje FOREIGN KEY (cod_pasaje) REFERENCES MLJ.Pasajes(cod_pasaje)
 	ON DELETE NO ACTION ON UPDATE CASCADE;
 	/*--------------------------------*/
 END
@@ -584,7 +584,7 @@ IF(OBJECT_ID('MLJ.clienteViajaDurante') IS NOT NULL)
 	DROP PROCEDURE MLJ.clienteViajaDurante
 GO
 
-CREATE PROCEDURE MLJ.clienteViajaDurante(@inicio DATE, @fin DATE, @cod_cliente INT, @resultado int output)
+CREATE PROCEDURE MLJ.clienteViajaDurante(@inicio DATE, @fin DATE, @cod_cliente INT)
 AS BEGIN
 	SELECT cod_pasaje
 	FROM MLJ.Pasajes p JOIN MLJ.Viajes v ON p.cod_viaje = v.cod_viaje
@@ -645,14 +645,14 @@ AS BEGIN
 END
 GO
 
-CREATE PROCEDURE MLJ.crearPasaje(@cod_cliente INT, @cod_viaje INT, @cod_pago INT, @cabinas VARCHAR(max))
+CREATE PROCEDURE MLJ.crearPasaje(@cod_cliente INT, @cod_viaje INT, @cabinas VARCHAR(max))
 AS BEGIN
 	DECLARE @cod_pasaje INT
 	BEGIN TRANSACTION
 		INSERT INTO MLJ.Pasajes
-		(cod_cliente, cod_viaje, cod_pago, cantidad)
+		(cod_cliente, cod_viaje, cantidad)
 		VALUES
-		(@cod_cliente, @cod_viaje, @cod_pago, MLJ.calcularCosto(@cod_viaje, @cabinas))
+		(@cod_cliente, @cod_viaje, MLJ.calcularCosto(@cod_viaje, @cabinas))
 
 		SET @cod_pasaje = SCOPE_IDENTITY()
 
@@ -678,3 +678,13 @@ AS BEGIN
 END
 GO
 
+CREATE PROCEDURE MLJ.crearPago(@cod_pasaje INT, @numTarjeta CHAR(16), @pin CHAR(4), @cod_medio INT, @fecha DATE)
+AS BEGIN
+	INSERT INTO MLJ.Pagos
+	(fecha, cod_medio, cod_pasaje, cod_seguridad, hash_nro_tarjeta, ultimos_digitos)
+	VALUES
+	(@fecha, @cod_medio, @cod_pasaje, @pin, CONVERT(CHAR(256),HASHBYTES('SHA2_256',@numTarjeta),2), RIGHT(@numTarjeta, 4))
+
+	RETURN SCOPE_IDENTITY()
+END
+GO

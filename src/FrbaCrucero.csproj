@@ -176,6 +176,8 @@
     <Compile Include="Entidades\Cliente.cs" />
     <Compile Include="Entidades\CrucerosDisponibles.cs" />
     <Compile Include="Entidades\Funcionalidad.cs" />
+    <Compile Include="Entidades\MedioDePago.cs" />
+    <Compile Include="Entidades\Pago.cs" />
     <Compile Include="Entidades\Pasaje.cs" />
     <Compile Include="Entidades\Puertos.cs" />
     <Compile Include="Entidades\Recorridos.cs" />
@@ -258,6 +260,7 @@
     <Compile Include="SQL\SqlClientes.cs" />
     <Compile Include="SQL\SqlCruceros.cs" />
     <Compile Include="SQL\SqlGeneral.cs" />
+    <Compile Include="SQL\SqlPagos.cs" />
     <Compile Include="SQL\SqlPasaje.cs" />
     <Compile Include="SQL\SqlPuertos.cs" />
     <Compile Include="SQL\SqlRecorridos.cs" />

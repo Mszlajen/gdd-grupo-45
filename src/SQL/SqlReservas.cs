@@ -23,7 +23,6 @@ namespace FrbaCrucero.SQL
                 consulta.CommandType = CommandType.StoredProcedure;
                 consulta.Parameters.AddWithValue("@cod_cliente", cod_cliente);
                 consulta.Parameters.AddWithValue("@cod_viaje", cod_viaje);
-                consulta.Parameters.AddWithValue("@cod_pago", DBNull.Value);
                 consulta.Parameters.AddWithValue("@cabinas", Cabina.formatearLista(cabinas));
                 SqlParameter ret = new SqlParameter();
                 ret.Direction = ParameterDirection.ReturnValue;
@@ -60,7 +59,5 @@ namespace FrbaCrucero.SQL
             }
             return reserva;
         }
-
-        
     }
 }

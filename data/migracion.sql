@@ -156,19 +156,14 @@ FROM #temp t
 WHERE PASAJE_CODIGO_NUEVO IS NOT NULL
 
 -- Migro la informacion del pago 
-INSERT INTO MLJ.Pagos
-(fecha)
-SELECT PASAJE_FECHA_COMPRA
-FROM #temp
-WHERE PASAJE_CODIGO_NUEVO IS NOT NULL
-ORDER BY PASAJE_CODIGO_NUEVO, PASAJE_FECHA_COMPRA
-
--- Le agrego la referenca del pago a los pasajes
 -- Al haber usado el codigo de pasaje como forma de ordenamiento al insertar los pago 
 -- y de que solo hay un pago por pasaje los codigo se coinciden
-UPDATE p
-SET cod_pago = p.cod_pasaje
-FROM MLJ.Pasajes p
+INSERT INTO MLJ.Pagos
+(fecha, cod_pasaje)
+SELECT PASAJE_FECHA_COMPRA, PASAJE_CODIGO_NUEVO
+FROM #temp
+WHERE PASAJE_CODIGO_NUEVO IS NOT NULL
+ORDER BY PASAJE_CODIGO_NUEVO
 
 -- Migro la informacion de las reservas
 INSERT INTO MLJ.Reservas
@@ -180,3 +175,10 @@ WHERE t.PASAJE_CODIGO_NUEVO IS NULL
 
 -- Elimino la tabla temporal normalizada
 DROP TABLE #temp
+
+--Agrego medios de pago
+INSERT INTO MLJ.Medios_de_Pago
+(nombre)
+VALUES
+('MasterCard'), 
+('VISA')

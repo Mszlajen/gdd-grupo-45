@@ -19,16 +19,13 @@ namespace FrbaCrucero.SQL
             try
             {
                 conexion.Open();
-                SqlCommand consulta = new SqlCommand("SELECT cod_cliente, cod_viaje, cod_pago, cantidad FROM MLJ.Pasajes WHERE cod_pasaje = @cod", conexion);
+                SqlCommand consulta = new SqlCommand("SELECT cod_cliente, cod_viaje, cantidad FROM MLJ.Pasajes WHERE cod_pasaje = @cod", conexion);
                 consulta.Parameters.AddWithValue("@cod", cod_pasaje);
                 SqlDataReader resultados = consulta.ExecuteReader();
 
                 if (resultados.Read())
                 {
-                    if(resultados.GetValue(2) == DBNull.Value)
-                        pasaje = new Pasaje(cod_pasaje, resultados.GetInt32(0), resultados.GetInt32(1), null, resultados.GetDecimal(3));
-                    else
-                        pasaje = new Pasaje(cod_pasaje, resultados.GetInt32(0), resultados.GetInt32(1),  resultados.GetInt32(2), resultados.GetDecimal(3));
+                    pasaje = new Pasaje(cod_pasaje, resultados.GetInt32(0), resultados.GetInt32(1), resultados.GetDecimal(2));
                 }
             }
             catch (Exception ex)

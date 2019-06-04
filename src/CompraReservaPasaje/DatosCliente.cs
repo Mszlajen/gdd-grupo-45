@@ -40,12 +40,14 @@ namespace FrbaCrucero.CompraReservaPasaje
             telefono.Text = cliente.telefono.ToString();
             nacimiento.Value = cliente.tieneNacimiento? cliente.nacimiento : Program.ObtenerFechaActual();
             nacimiento.MaxDate = Program.ObtenerFechaActual();
+            mail.Text = cliente.mail;
         }
 
         private void pagarButton_Click(object sender, EventArgs e)
         {
             if (checkAndSaveCliente(this.cliente))
             {
+                Program.openPopUpWindow(this, new Pago(viaje, cabinasSeleccionadas, cliente));
             }
         }
 

@@ -10,6 +10,10 @@ namespace FrbaCrucero.Entidades
     {
         public Int32 id { get; set; }
         public String tipo { get; protected set; }
-        abstract public Pasaje pasaje();
+        public Int32 codPasaje { get; protected set; }
+        public Pasaje pasaje()
+        {
+            return new SQL.SqlPasaje().buscarPasaje(codPasaje);
+        }
     }
 }
