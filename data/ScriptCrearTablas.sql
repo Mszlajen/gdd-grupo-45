@@ -708,3 +708,12 @@ AS BEGIN
 		JOIN MLJ.Cabinas c ON cr.cod_cabina = c.cod_cabina 
 	WHERE cr.cod_pasaje = @cod_pasaje
 END
+GO
+
+CREATE VIEW MLJ.Reservas_pendientes
+AS
+SELECT cod_pasaje, cod_reserva
+FROM MLJ.Reservas
+WHERE cod_pasaje NOT IN (SELECT cod_pasaje FROM MLJ.Pagos)
+WITH CHECK OPTION
+GO

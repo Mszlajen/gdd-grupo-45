@@ -25,9 +25,14 @@ namespace FrbaCrucero.PagoReserva
             if (!String.IsNullOrWhiteSpace(codigo.Text) && Int32.TryParse(codigo.Text, out cod_reserva))
             {
                 Reserva reserva = new SqlReservas().buscarReserva(cod_reserva);
-                DialogResult result = Program.openNextWindow(this, new CompraReservaPasaje.Pago(reserva));
-                if (result == DialogResult.OK)
-                    this.DialogResult = DialogResult.OK;
+                if (reserva == null)
+                    MessageBox.Show("La reserva no existe o ya fue pagada");
+                else
+                {
+                    DialogResult result = Program.openNextWindow(this, new CompraReservaPasaje.Pago(reserva));
+                    if (result == DialogResult.OK)
+                        this.DialogResult = DialogResult.OK;
+                }
             }
         }
     }

@@ -66,7 +66,7 @@ namespace FrbaCrucero.SQL
             SqlConnection conexion = SqlGeneral.nuevaConexion();
             try
             {
-                SqlCommand consulta = new SqlCommand("SELECT cod_pasaje, fecha_reserva FROM MLJ.Reservas WHERE cod_reserva = @cod", conexion);
+                SqlCommand consulta = new SqlCommand("SELECT cod_pasaje, fecha_reserva FROM MLJ.Reservas_pendientes WHERE cod_reserva = @cod", conexion);
                 consulta.Parameters.AddWithValue("@cod", cod_reserva);
                 conexion.Open();
                 SqlDataReader result = consulta.ExecuteReader();
