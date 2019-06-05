@@ -29,17 +29,17 @@
         private void InitializeComponent()
         {
             this.label2 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.identificador = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.servicio = new System.Windows.Forms.ComboBox();
+            this.marca = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.compania = new System.Windows.Forms.ComboBox();
+            this.modelo = new System.Windows.Forms.ComboBox();
             this.button1 = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.borrar = new System.Windows.Forms.DataGridViewButtonColumn();
@@ -55,12 +55,12 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "Identificador:";
             // 
-            // textBox1
+            // identificador
             // 
-            this.textBox1.Location = new System.Drawing.Point(91, 41);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(201, 20);
-            this.textBox1.TabIndex = 3;
+            this.identificador.Location = new System.Drawing.Point(91, 41);
+            this.identificador.Name = "identificador";
+            this.identificador.Size = new System.Drawing.Size(201, 20);
+            this.identificador.TabIndex = 3;
             // 
             // label5
             // 
@@ -102,21 +102,21 @@
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
-            // comboBox2
+            // servicio
             // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(91, 92);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(121, 21);
-            this.comboBox2.TabIndex = 43;
+            this.servicio.FormattingEnabled = true;
+            this.servicio.Location = new System.Drawing.Point(91, 92);
+            this.servicio.Name = "servicio";
+            this.servicio.Size = new System.Drawing.Size(121, 21);
+            this.servicio.TabIndex = 43;
             // 
-            // comboBox1
+            // marca
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(91, 64);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 21);
-            this.comboBox1.TabIndex = 42;
+            this.marca.FormattingEnabled = true;
+            this.marca.Location = new System.Drawing.Point(91, 64);
+            this.marca.Name = "marca";
+            this.marca.Size = new System.Drawing.Size(121, 21);
+            this.marca.TabIndex = 42;
             // 
             // label4
             // 
@@ -136,21 +136,21 @@
             this.label3.TabIndex = 40;
             this.label3.Text = "Marca:";
             // 
-            // comboBox3
+            // compania
             // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(92, 124);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(121, 21);
-            this.comboBox3.TabIndex = 44;
+            this.compania.FormattingEnabled = true;
+            this.compania.Location = new System.Drawing.Point(92, 124);
+            this.compania.Name = "compania";
+            this.compania.Size = new System.Drawing.Size(121, 21);
+            this.compania.TabIndex = 44;
             // 
-            // comboBox4
+            // modelo
             // 
-            this.comboBox4.FormattingEnabled = true;
-            this.comboBox4.Location = new System.Drawing.Point(91, 151);
-            this.comboBox4.Name = "comboBox4";
-            this.comboBox4.Size = new System.Drawing.Size(121, 21);
-            this.comboBox4.TabIndex = 45;
+            this.modelo.FormattingEnabled = true;
+            this.modelo.Location = new System.Drawing.Point(91, 151);
+            this.modelo.Name = "modelo";
+            this.modelo.Size = new System.Drawing.Size(121, 21);
+            this.modelo.TabIndex = 45;
             // 
             // button1
             // 
@@ -185,17 +185,17 @@
             this.ClientSize = new System.Drawing.Size(648, 261);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.comboBox4);
-            this.Controls.Add(this.comboBox3);
-            this.Controls.Add(this.comboBox2);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.modelo);
+            this.Controls.Add(this.compania);
+            this.Controls.Add(this.servicio);
+            this.Controls.Add(this.marca);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.identificador);
             this.Controls.Add(this.label2);
             this.Name = "AltaCrucero";
             this.Text = "Alta de Crucero";
@@ -208,17 +208,17 @@
         #endregion
 
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox identificador;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.ComboBox comboBox2;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox servicio;
+        private System.Windows.Forms.ComboBox marca;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox comboBox3;
-        private System.Windows.Forms.ComboBox comboBox4;
+        private System.Windows.Forms.ComboBox compania;
+        private System.Windows.Forms.ComboBox modelo;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.DataGridViewButtonColumn borrar;

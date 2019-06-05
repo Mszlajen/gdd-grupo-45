@@ -18,5 +18,10 @@ namespace FrbaCrucero.Entidades
             this.valor = valor;
             this.nombre = nombre;
         }
+
+        public override string ToString()
+        {
+            return this.nombre + "(" + (this.valor * 100 - 100).ToString() + "%)";
+        }
     }
 }

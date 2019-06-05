@@ -80,7 +80,7 @@ namespace FrbaCrucero.Menu
             }
             else if (comboBox1.Text.ToLower().Equals("abm cruceros"))
             {
-                new AbmCrucero.Form1().Show();
+                new AbmCrucero.PantallaInicial().Show();
             }
             else if (comboBox1.Text.ToLower().Equals("generar viaje"))
             {

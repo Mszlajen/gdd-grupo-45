@@ -28,7 +28,6 @@ C:\Users\Mati\Documents\GDD\src\bin\Debug\FrbaCrucero.pdb
 C:\Users\Mati\Documents\GDD\src\obj\Debug\FrbaCrucero.csprojResolveAssemblyReference.cache
 C:\Users\Mati\Documents\GDD\src\obj\Debug\FrbaCrucero.AbmCrucero.AltaCabina.resources
 C:\Users\Mati\Documents\GDD\src\obj\Debug\FrbaCrucero.AbmCrucero.AltaCrucero.resources
-C:\Users\Mati\Documents\GDD\src\obj\Debug\FrbaCrucero.AbmCrucero.AltaTipoCabina.resources
 C:\Users\Mati\Documents\GDD\src\obj\Debug\FrbaCrucero.AbmCrucero.ModificacionCrucero.resources
 C:\Users\Mati\Documents\GDD\src\obj\Debug\FrbaCrucero.AbmRecorrido.Tramo.resources
 C:\Users\Mati\Documents\GDD\src\obj\Debug\FrbaCrucero.AbmRecorrido.Formulario.resources
@@ -55,3 +54,5 @@ C:\Users\Mati\Documents\GDD\src\obj\Debug\FrbaCrucero.Menu.Menu.resources
 C:\Users\Mati\Documents\GDD\src\obj\Debug\FrbaCrucero.PagoReserva.Busqueda.resources
 C:\Users\Mati\Documents\GDD\src\obj\Debug\FrbaCrucero.Properties.Resources.resources
 C:\Users\Mati\Documents\GDD\src\obj\Debug\FrbaCrucero.csproj.GenerateResource.Cache
+C:\Users\Mati\Documents\GDD\src\obj\Debug\FrbaCrucero.AbmCrucero.BajaCrucero.resources
+C:\Users\Mati\Documents\GDD\src\obj\Debug\FrbaCrucero.AbmCrucero.PantallaInicial.resources

@@ -45,7 +45,7 @@ namespace FrbaCrucero.CompraReservaPasaje
 
             foreach (Entidades.Viaje viaje in viajes)
             {
-                Entidades.CrucerosDisponibles crucero = viaje.crucero();
+                Entidades.Crucero crucero = viaje.crucero();
                 List<Entidades.Tramos> paradas = (new SQL.SqlRecorridos()).getTramosRecorrido(viaje.codRecorrido);
                 viajesTable.Rows.Add(new Object[] {
                     viaje.idViaje,

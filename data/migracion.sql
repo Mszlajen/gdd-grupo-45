@@ -22,6 +22,16 @@ INSERT INTO MLJ.Fabricantes
 SELECT DISTINCT CRU_FABRICANTE
 FROM gd_esquema.Maestra
 
+INSERT INTO MLJ.Servicios
+(nombre)
+VALUES
+('No definido')
+
+INSERT INTO MLJ.Marcas
+(nombre)
+VALUES
+('No definido')
+
 -- Coloco en una tabla temporal todos los puertos que aparecen (de salida y de llegada)
 SELECT DISTINCT PUERTO_DESDE puerto
 INTO #PuertosConRepeticiones
@@ -49,10 +59,11 @@ FROM gd_esquema.Maestra
 
 --Migro los cruceros
 INSERT INTO MLJ.Cruceros
-(identificador, cod_fabricante, cod_modelo)
+(identificador, cod_fabricante, cod_modelo, cod_modelo, cod_marca)
 SELECT DISTINCT CRUCERO_IDENTIFICADOR, 
 	(SELECT F.cod_fabricante FROM MLJ.Fabricantes F WHERE M.CRU_FABRICANTE = F.nombre),
-	(SELECT Mo.cod_modelo FROM MLJ.Modelos Mo WHERE M.CRUCERO_MODELO = Mo.nombre)
+	(SELECT Mo.cod_modelo FROM MLJ.Modelos Mo WHERE M.CRUCERO_MODELO = Mo.nombre),
+	1, 1
 FROM gd_esquema.Maestra M
 
 --Migro las cabinas

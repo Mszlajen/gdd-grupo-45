@@ -39,5 +39,18 @@ namespace FrbaCrucero.SQL
             conexion.Close();
             return cabinas;
         }
+
+        public List<TipoCabina> getTiposCabina()
+        {
+            List<TipoCabina> tipos = new List<TipoCabina>();
+            SqlConnection conexion = SqlGeneral.nuevaConexion();
+            SqlCommand consulta = new SqlCommand("SELECT cod_tipo, valor, nombre FROM MLJ.Tipo_cabinas", conexion);
+            conexion.Open();
+            SqlDataReader resultados = consulta.ExecuteReader();
+            while (resultados.Read())
+                tipos.Add(new TipoCabina(resultados.GetInt32(0), resultados.GetDecimal(1), resultados.GetString(2)));
+            conexion.Close();
+            return tipos;
+        }
     }
 }

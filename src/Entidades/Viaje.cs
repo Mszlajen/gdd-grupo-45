@@ -44,7 +44,7 @@ namespace FrbaCrucero.Entidades
             this.retorna = retorna;
         }
 
-        public CrucerosDisponibles crucero()
+        public Crucero crucero()
         {
             return (new SQL.SqlCruceros()).getCrucero(this.codCrucero);
         }

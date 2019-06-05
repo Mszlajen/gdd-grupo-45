@@ -15,7 +15,7 @@ namespace FrbaCrucero.GeneracionViaje
     public partial class GenerarViaje : Form
     {
         Recorridos recorrido=null;
-        CrucerosDisponibles crucero = null;
+        Crucero crucero = null;
         public DateTime fecha_salida;
         public DateTime fecha_llegada;
 
@@ -36,7 +36,7 @@ namespace FrbaCrucero.GeneracionViaje
             textBox1.Text = recorrido.idRecorrido.ToString();
         }
 
-        public void CruceroDisponible(CrucerosDisponibles crucero)
+        public void CruceroDisponible(Crucero crucero)
         {
             this.crucero = crucero;
             textBox3.Text = crucero.identificador;

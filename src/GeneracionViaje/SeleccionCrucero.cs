@@ -25,7 +25,7 @@ namespace FrbaCrucero.GeneracionViaje
 
         public void actualizarGrilla()
         {
-            BindingList<CrucerosDisponibles> cruceros = new BindingList<CrucerosDisponibles>(new SqlCruceros().getCrucerosDisponibles(this.formulario.fecha_salida, this.formulario.fecha_llegada));
+            BindingList<Crucero> cruceros = new BindingList<Crucero>(new SqlCruceros().getCrucerosDisponibles(this.formulario.fecha_salida, this.formulario.fecha_llegada));
             this.dataGridView1.DataSource = new BindingSource(cruceros, null);
         }
 
@@ -33,7 +33,7 @@ namespace FrbaCrucero.GeneracionViaje
         {
             if (e.ColumnIndex == this.Seleccionar.Index)
             {
-                formulario.CruceroDisponible(this.dataGridView1.Rows[e.RowIndex].DataBoundItem as CrucerosDisponibles);
+                formulario.CruceroDisponible(this.dataGridView1.Rows[e.RowIndex].DataBoundItem as Crucero);
                 this.Close();
             }
         }

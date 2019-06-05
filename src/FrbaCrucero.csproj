@@ -57,23 +57,23 @@
     <Compile Include="AbmCrucero\AltaCrucero.Designer.cs">
       <DependentUpon>AltaCrucero.cs</DependentUpon>
     </Compile>
-    <Compile Include="AbmCrucero\AltaTipoCabina.cs">
+    <Compile Include="AbmCrucero\BajaCrucero.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AbmCrucero\AltaTipoCabina.Designer.cs">
-      <DependentUpon>AltaTipoCabina.cs</DependentUpon>
-    </Compile>
-    <Compile Include="AbmCrucero\Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="AbmCrucero\Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="AbmCrucero\BajaCrucero.Designer.cs">
+      <DependentUpon>BajaCrucero.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmCrucero\ModificacionCrucero.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="AbmCrucero\ModificacionCrucero.Designer.cs">
       <DependentUpon>ModificacionCrucero.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AbmCrucero\PantallaInicial.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmCrucero\PantallaInicial.Designer.cs">
+      <DependentUpon>PantallaInicial.cs</DependentUpon>
     </Compile>
     <Compile Include="AbmPuerto\Form1.cs">
       <SubType>Form</SubType>
@@ -174,15 +174,20 @@
     </Compile>
     <Compile Include="Entidades\Cabina.cs" />
     <Compile Include="Entidades\Cliente.cs" />
-    <Compile Include="Entidades\CrucerosDisponibles.cs" />
+    <Compile Include="Entidades\Crucero.cs" />
+    <Compile Include="Entidades\Fabricante.cs" />
     <Compile Include="Entidades\Funcionalidad.cs" />
+    <Compile Include="Entidades\InfoCrucero.cs" />
+    <Compile Include="Entidades\Marca.cs" />
     <Compile Include="Entidades\MedioDePago.cs" />
+    <Compile Include="Entidades\Modelo.cs" />
     <Compile Include="Entidades\Pago.cs" />
     <Compile Include="Entidades\Pasaje.cs" />
     <Compile Include="Entidades\Puertos.cs" />
     <Compile Include="Entidades\Recorridos.cs" />
     <Compile Include="Entidades\Reserva.cs" />
     <Compile Include="Entidades\Rol.cs" />
+    <Compile Include="Entidades\Servicio.cs" />
     <Compile Include="Entidades\TipoCabina.cs" />
     <Compile Include="Entidades\TipoPasaje.cs" />
     <Compile Include="Entidades\Tramos.cs" />
@@ -248,6 +253,7 @@
     <Compile Include="SQL\SqlClientes.cs" />
     <Compile Include="SQL\SqlCruceros.cs" />
     <Compile Include="SQL\SqlGeneral.cs" />
+    <Compile Include="SQL\SqlInfoCrucero.cs" />
     <Compile Include="SQL\SqlPagos.cs" />
     <Compile Include="SQL\SqlPasaje.cs" />
     <Compile Include="SQL\SqlPuertos.cs" />
@@ -262,11 +268,14 @@
     <EmbeddedResource Include="AbmCrucero\AltaCrucero.resx">
       <DependentUpon>AltaCrucero.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AbmCrucero\AltaTipoCabina.resx">
-      <DependentUpon>AltaTipoCabina.cs</DependentUpon>
+    <EmbeddedResource Include="AbmCrucero\BajaCrucero.resx">
+      <DependentUpon>BajaCrucero.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmCrucero\ModificacionCrucero.resx">
       <DependentUpon>ModificacionCrucero.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmCrucero\PantallaInicial.resx">
+      <DependentUpon>PantallaInicial.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRecorrido\Tramo.resx">
       <DependentUpon>Tramo.cs</DependentUpon>
