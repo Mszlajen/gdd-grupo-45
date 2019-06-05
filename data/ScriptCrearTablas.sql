@@ -722,7 +722,7 @@ CREATE PROCEDURE MLJ.eliminarReservasVencidas(@hoy DATE)
 AS BEGIN
 	SELECT cod_pasaje
 	INTO #borrar
-	FROM MLJ.ReservasPendientes
+	FROM MLJ.Reservas_pendientes
 	WHERE DATEADD(DAY, 3, fecha_reserva) <= @hoy
 
 	BEGIN TRANSACTION

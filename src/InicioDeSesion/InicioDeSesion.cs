@@ -27,7 +27,7 @@ namespace FrbaCrucero.InicioDeSesion
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (textBox1.Text != "" && textBox2.Text != "")
+            if (!String.IsNullOrWhiteSpace(textBox1.Text) && !String.IsNullOrWhiteSpace(textBox2.Text))
             {
                 username = textBox1.Text;
                 password = textBox2.Text;
@@ -61,6 +61,7 @@ namespace FrbaCrucero.InicioDeSesion
         private void habilitarSeleccionDeRoles(String username)
         {
             Usuario usuario = new Usuario(username, new SqlRoles().getRolUsuario(username));
+            new SqlReservas().limpiarReservasVencidas();
             _menuForm.agregarFuncionalidadDeRoles(usuario);
         }
 

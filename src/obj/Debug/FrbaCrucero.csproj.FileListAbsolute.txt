@@ -53,6 +53,5 @@ C:\Users\Mati\Documents\GDD\src\obj\Debug\FrbaCrucero.InicioDeSesion.InicioDeSes
 C:\Users\Mati\Documents\GDD\src\obj\Debug\FrbaCrucero.ListadoEstadistico.ListadoTop5.resources
 C:\Users\Mati\Documents\GDD\src\obj\Debug\FrbaCrucero.Menu.Menu.resources
 C:\Users\Mati\Documents\GDD\src\obj\Debug\FrbaCrucero.PagoReserva.Busqueda.resources
-C:\Users\Mati\Documents\GDD\src\obj\Debug\FrbaCrucero.PagoReserva.PantallaFinal.resources
 C:\Users\Mati\Documents\GDD\src\obj\Debug\FrbaCrucero.Properties.Resources.resources
 C:\Users\Mati\Documents\GDD\src\obj\Debug\FrbaCrucero.csproj.GenerateResource.Cache

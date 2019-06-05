@@ -83,5 +83,26 @@ namespace FrbaCrucero.SQL
             }
             return reserva;
         }
+
+        public void limpiarReservasVencidas()
+        {
+            SqlConnection conexion = SqlGeneral.nuevaConexion();
+            try
+            {
+                SqlCommand consulta = new SqlCommand("MLJ.eliminarReservasVencidas", conexion);
+                consulta.CommandType = CommandType.StoredProcedure;
+                consulta.Parameters.AddWithValue("@hoy", Program.ObtenerFechaActual());
+                conexion.Open();
+                consulta.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conexion.Close();
+            }
+        }
     }
 }

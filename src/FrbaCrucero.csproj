@@ -242,12 +242,6 @@
     <Compile Include="PagoReserva\Busqueda.Designer.cs">
       <DependentUpon>Busqueda.cs</DependentUpon>
     </Compile>
-    <Compile Include="PagoReserva\PantallaFinal.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PagoReserva\PantallaFinal.Designer.cs">
-      <DependentUpon>PantallaFinal.cs</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQL\SqlCabinas.cs" />
@@ -342,9 +336,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="PagoReserva\Busqueda.resx">
       <DependentUpon>Busqueda.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="PagoReserva\PantallaFinal.resx">
-      <DependentUpon>PantallaFinal.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -24,7 +24,9 @@ namespace FrbaCrucero.PagoReserva
             Int32 cod_reserva = 0;
             if (!String.IsNullOrWhiteSpace(codigo.Text) && Int32.TryParse(codigo.Text, out cod_reserva))
             {
-                Reserva reserva = new SqlReservas().buscarReserva(cod_reserva);
+                SqlReservas queries = new SqlReservas();
+                queries.limpiarReservasVencidas();
+                Reserva reserva = queries.buscarReserva(cod_reserva);
                 if (reserva == null)
                     MessageBox.Show("La reserva no existe o ya fue pagada");
                 else
