@@ -190,6 +190,7 @@
     <Compile Include="Entidades\Servicio.cs" />
     <Compile Include="Entidades\TipoCabina.cs" />
     <Compile Include="Entidades\TipoPasaje.cs" />
+    <Compile Include="Entidades\TopCruceros.cs" />
     <Compile Include="Entidades\Tramos.cs" />
     <Compile Include="Entidades\Usuario.cs" />
     <Compile Include="Entidades\Viaje.cs" />
@@ -260,6 +261,7 @@
     <Compile Include="SQL\SqlRecorridos.cs" />
     <Compile Include="SQL\SqlReservas.cs" />
     <Compile Include="SQL\SqlRoles.cs" />
+    <Compile Include="SQL\SqlTops.cs" />
     <Compile Include="SQL\SqlUsuarios.cs" />
     <Compile Include="SQL\SqlViaje.cs" />
     <EmbeddedResource Include="AbmCrucero\AltaCabina.resx">

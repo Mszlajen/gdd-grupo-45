@@ -736,3 +736,58 @@ AS BEGIN
 		WHERE cod_pasaje IN (SELECT cod_pasaje FROM #borrar)
 	COMMIT TRANSACTION
 END
+
+CREATE FUNCTION MLJ.DiasDeshabilitado(@anio int,@fecha_comienzo_semestre datetime,@fecha_fin_semestre datetime, @cod_crucero INT)
+RETURNS INT
+AS 
+BEGIN
+
+	DECLARE @DiasFueraDeServicio INT
+
+	SELECT @DiasFueraDeServicio = coalesce(SUM(tabla.DiasFueraDeServicio),0) FROM(
+					SELECT 
+					CASE WHEN fecha_baja < @fecha_comienzo_semestre AND YEAR(fecha_alta) = @anio 
+					AND fecha_alta <= @fecha_fin_semestre THEN DATEDIFF(DAY, @fecha_comienzo_semestre, fecha_alta)
+					WHEN fecha_baja >= @fecha_comienzo_semestre AND fecha_alta <= @fecha_fin_semestre THEN DATEDIFF(DAY, fecha_baja, fecha_alta)
+					WHEN YEAR(fecha_baja) = @anio  AND (fecha_baja >= @fecha_comienzo_semestre)
+						AND fecha_alta >= @fecha_fin_semestre THEN DATEDIFF(DAY, fecha_baja, @fecha_fin_semestre)
+					END AS DiasFueraDeServicio
+	FROM MLJ.Bajas_de_servicio
+	WHERE cod_crucero = @cod_crucero AND permanente = 0) AS tabla
+
+	RETURN @DiasFueraDeServicio
+END
+GO
+
+CREATE PROCEDURE MLJ.top5_cruceros @anio int, @semestre int
+AS
+BEGIN	
+	
+DECLARE @mes_comienzo_semestre int
+DECLARE @mes_fin_semestre int
+DECLARE @fecha_comienzo_semestre datetime
+DECLARE @fecha_fin_semestre datetime
+	
+	IF @semestre = 1	
+	BEGIN	
+	SET @mes_comienzo_semestre = 1	
+	SET @mes_fin_semestre = 6
+	SET @fecha_comienzo_semestre = DATETIMEFROMPARTS(@anio, @mes_comienzo_semestre, 1, 0, 0, 0, 0)
+	SET @fecha_fin_semestre = DATETIMEFROMPARTS(@anio, @mes_fin_semestre, 30, 0, 0, 0, 0)		
+	END
+	
+	IF @semestre = 2	
+	BEGIN	
+	SET @mes_comienzo_semestre = 7	
+	SET @mes_fin_semestre = 12	
+	SET @fecha_comienzo_semestre = DATETIMEFROMPARTS(@anio, @mes_comienzo_semestre, 1, 0, 0, 0, 0)
+	SET @fecha_fin_semestre = DATETIMEFROMPARTS(@anio, @mes_fin_semestre, 31, 0, 0, 0, 0)
+	END
+
+SELECT TOP 5 cruceros.cod_crucero,cruceros.identificador,fabricantes.nombre fabricante,modelos.nombre modelo, MLJ.DiasDeshabilitado(@anio,@fecha_comienzo_semestre,@fecha_fin_semestre,cruceros.cod_crucero) dias_fuera_servicio
+FROM MLJ.Cruceros cruceros JOIN MLJ.Fabricantes fabricantes ON (fabricantes.cod_fabricante = cruceros.cod_fabricante)
+JOIN MLJ.Modelos modelos ON (modelos.cod_modelo = cruceros.cod_modelo)
+GROUP BY cruceros.cod_crucero, cruceros.identificador, fabricantes.nombre, modelos.nombre
+ORDER BY dias_fuera_servicio DESC
+END
+GO
