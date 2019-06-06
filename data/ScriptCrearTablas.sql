@@ -787,7 +787,6 @@ DECLARE @fecha_fin_semestre datetime
 SELECT TOP 5 cruceros.cod_crucero,cruceros.identificador,fabricantes.nombre fabricante,modelos.nombre modelo, MLJ.DiasDeshabilitado(@anio,@fecha_comienzo_semestre,@fecha_fin_semestre,cruceros.cod_crucero) dias_fuera_servicio
 FROM MLJ.Cruceros cruceros JOIN MLJ.Fabricantes fabricantes ON (fabricantes.cod_fabricante = cruceros.cod_fabricante)
 JOIN MLJ.Modelos modelos ON (modelos.cod_modelo = cruceros.cod_modelo)
-GROUP BY cruceros.cod_crucero, cruceros.identificador, fabricantes.nombre, modelos.nombre
 ORDER BY dias_fuera_servicio DESC
 END
 GO
