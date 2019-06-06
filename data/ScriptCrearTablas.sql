@@ -747,7 +747,7 @@ BEGIN
 	SELECT @DiasFueraDeServicio = coalesce(SUM(tabla.DiasFueraDeServicio),0) FROM(
 					SELECT 
 					CASE WHEN fecha_baja < @fecha_comienzo_semestre AND YEAR(fecha_alta) = @anio 
-					AND fecha_alta <= @fecha_fin_semestre THEN DATEDIFF(DAY, @fecha_comienzo_semestre, fecha_alta)
+					AND fecha_alta <= @fecha_fin_semestre AND fecha_alta >= @fecha_comienzo_semestre THEN DATEDIFF(DAY, @fecha_comienzo_semestre, fecha_alta)
 					WHEN fecha_baja >= @fecha_comienzo_semestre AND fecha_alta <= @fecha_fin_semestre THEN DATEDIFF(DAY, fecha_baja, fecha_alta)
 					WHEN YEAR(fecha_baja) = @anio  AND (fecha_baja >= @fecha_comienzo_semestre)
 						AND fecha_alta >= @fecha_fin_semestre THEN DATEDIFF(DAY, fecha_baja, @fecha_fin_semestre)
