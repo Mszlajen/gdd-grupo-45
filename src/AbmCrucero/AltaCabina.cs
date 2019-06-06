@@ -14,7 +14,7 @@ namespace FrbaCrucero.AbmCrucero
 {
     public partial class AltaCabina : Form
     {
-        Cabina cabina;
+        public Cabina cabina { get; private set; }
         public AltaCabina()
         {
             InitializeComponent();
@@ -24,21 +24,6 @@ namespace FrbaCrucero.AbmCrucero
         {
             this.cabina = cabina;
             InitializeComponent();
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label6_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void AltaCabina_Load(object sender, EventArgs e)
@@ -51,6 +36,44 @@ namespace FrbaCrucero.AbmCrucero
                 this.piso.Text = cabina.piso.ToString();
                 this.numero.Text = cabina.numero.ToString();
             }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Boolean valido = true;
+            if (String.IsNullOrWhiteSpace(piso.Text) || !checkDecimal18(piso.Text))
+            {
+                valido = false;
+                MessageBox.Show("El piso no es valido");
+            }
+            if (String.IsNullOrWhiteSpace(numero.Text) || !checkDecimal18(numero.Text))
+            {
+                valido = false;
+                MessageBox.Show("El numero no es valido");
+            }
+
+            if (valido)
+            {
+                Decimal pisoValue = Convert.ToDecimal(piso.Text), numeroValue = Convert.ToDecimal(numero.Text);
+                TipoCabina tipo = (TipoCabina)tipoCabina.SelectedItem;
+                if (cabina == null)
+                {
+                    cabina = new Cabina(numeroValue, tipo.codTipo, pisoValue);
+                    cabina.tipo = (TipoCabina)tipoCabina.SelectedItem;
+                }
+                else
+                {
+                    cabina.piso = pisoValue;
+                    cabina.numero = numeroValue;
+                    cabina.codTipo = tipo.codTipo;
+                    cabina.tipo = tipo;
+                }
+                this.DialogResult = DialogResult.OK;
+            }
+        }
+        private Boolean checkDecimal18(String text)
+        {
+            return text.All(c => '0' <= c && c <= '9') && text.Length <= 18;
         }
     }
 }

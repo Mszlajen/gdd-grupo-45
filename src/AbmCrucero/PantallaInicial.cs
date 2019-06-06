@@ -40,5 +40,10 @@ namespace FrbaCrucero.AbmCrucero
                 Program.openPopUpWindow(this, new BajaCrucero());
             }
         }
+
+        private void nuevo_Click(object sender, EventArgs e)
+        {
+            Program.openPopUpWindow(this, new ModificacionCrucero());
+        }
     }
 }

@@ -13,6 +13,63 @@ namespace FrbaCrucero.SQL
     class SqlCruceros
     {
 
+        public Crucero crearCrucero(String identificador, Int32 codServicio, Int32 codMarca, Int32 codFabricante, Int32 codModelo, Nullable<DateTime> fechaAlta, IList<Cabina> cabinas)
+        {
+            Crucero crucero = null;
+            SqlConnection conexion = SqlGeneral.nuevaConexion();
+            SqlTransaction transaction = null;
+            try
+            {
+                SqlCommand consulta = new SqlCommand("MLJ.crearCrucero", conexion);
+                consulta.CommandType = CommandType.StoredProcedure;
+                consulta.Parameters.AddWithValue("@identificador", identificador);
+                consulta.Parameters.AddWithValue("@codServicio", codServicio);
+                consulta.Parameters.AddWithValue("@codMarca", codMarca);
+                consulta.Parameters.AddWithValue("@codFabricante", codFabricante);
+                consulta.Parameters.AddWithValue("@codModelo", codModelo);
+                if(fechaAlta.HasValue)
+                    consulta.Parameters.AddWithValue("@fechaAlta", fechaAlta);
+                else
+                    consulta.Parameters.AddWithValue("@fechaAlta", DBNull.Value);
+                SqlParameter ret = new SqlParameter();
+                ret.Direction = ParameterDirection.ReturnValue;
+                consulta.Parameters.Add(ret);
+                conexion.Open();
+
+                transaction = conexion.BeginTransaction();
+                consulta.Transaction = transaction;
+
+                consulta.ExecuteNonQuery();
+
+                Int32 cod_crucero = Convert.ToInt32(ret.Value);
+                crucero = new Crucero(cod_crucero, identificador, fechaAlta, codMarca, codModelo, codFabricante, codServicio);
+
+                consulta.CommandText = "MLJ.crearCabina";
+                foreach(Cabina cabina in cabinas)
+                {
+                    consulta.Parameters.Clear();
+                    consulta.Parameters.Add(ret);
+                    consulta.Parameters.AddWithValue("@codCrucero", cod_crucero);
+                    consulta.Parameters.AddWithValue("@piso", cabina.piso);
+                    consulta.Parameters.AddWithValue("@numero", cabina.numero);
+                    consulta.Parameters.AddWithValue("@codTipo", cabina.codTipo);
+
+                    consulta.ExecuteNonQuery();
+                }
+                transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conexion.Close();
+            }
+            return crucero;
+        }
+
         public List<Crucero> getCrucerosDisponibles(DateTime salida, DateTime llegada)
         {
             List<Crucero> cruceros = new List<Crucero>();

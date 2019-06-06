@@ -39,11 +39,14 @@
             this.marca = new System.Windows.Forms.ComboBox();
             this.servicio = new System.Windows.Forms.ComboBox();
             this.cabinas = new System.Windows.Forms.DataGridView();
+            this.borrar = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.editar = new System.Windows.Forms.DataGridViewButtonColumn();
             this.agregarCabina = new System.Windows.Forms.Button();
             this.fabricante = new System.Windows.Forms.ComboBox();
             this.modelo = new System.Windows.Forms.ComboBox();
-            this.borrar = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.editar = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.label1 = new System.Windows.Forms.Label();
+            this.fechaAlta = new System.Windows.Forms.DateTimePicker();
+            this.checkFechaAlta = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.cabinas)).BeginInit();
             this.SuspendLayout();
             // 
@@ -64,6 +67,7 @@
             this.guardar.TabIndex = 30;
             this.guardar.Text = "Guardar";
             this.guardar.UseVisualStyleBackColor = true;
+            this.guardar.Click += new System.EventHandler(this.guardar_Click);
             // 
             // label6
             // 
@@ -137,17 +141,31 @@
             // 
             // cabinas
             // 
-            this.cabinas.AllowUserToAddRows = false;
             this.cabinas.AllowUserToDeleteRows = false;
             this.cabinas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.cabinas.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.borrar,
             this.editar});
+            this.cabinas.EditMode = System.Windows.Forms.DataGridViewEditMode.EditOnKeystroke;
             this.cabinas.Location = new System.Drawing.Point(330, 31);
             this.cabinas.Name = "cabinas";
             this.cabinas.Size = new System.Drawing.Size(310, 206);
             this.cabinas.TabIndex = 40;
             this.cabinas.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.cabinas_CellContentClick);
+            // 
+            // borrar
+            // 
+            this.borrar.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.borrar.HeaderText = "Borrar";
+            this.borrar.Name = "borrar";
+            this.borrar.Width = 41;
+            // 
+            // editar
+            // 
+            this.editar.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.editar.HeaderText = "Editar";
+            this.editar.Name = "editar";
+            this.editar.Width = 40;
             // 
             // agregarCabina
             // 
@@ -157,6 +175,7 @@
             this.agregarCabina.TabIndex = 41;
             this.agregarCabina.Text = "Agregar Cabina";
             this.agregarCabina.UseVisualStyleBackColor = true;
+            this.agregarCabina.Click += new System.EventHandler(this.agregarCabina_Click);
             // 
             // fabricante
             // 
@@ -176,25 +195,41 @@
             this.modelo.Size = new System.Drawing.Size(121, 21);
             this.modelo.TabIndex = 43;
             // 
-            // borrar
+            // label1
             // 
-            this.borrar.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.borrar.HeaderText = "Borrar";
-            this.borrar.Name = "borrar";
-            this.borrar.Width = 41;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 139);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(73, 13);
+            this.label1.TabIndex = 44;
+            this.label1.Text = "Fecha de Alta";
             // 
-            // editar
+            // fechaAlta
             // 
-            this.editar.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.editar.HeaderText = "Editar";
-            this.editar.Name = "editar";
-            this.editar.Width = 40;
+            this.fechaAlta.Location = new System.Drawing.Point(9, 156);
+            this.fechaAlta.Name = "fechaAlta";
+            this.fechaAlta.Size = new System.Drawing.Size(200, 20);
+            this.fechaAlta.TabIndex = 45;
+            // 
+            // checkFechaAlta
+            // 
+            this.checkFechaAlta.AutoSize = true;
+            this.checkFechaAlta.Location = new System.Drawing.Point(8, 183);
+            this.checkFechaAlta.Name = "checkFechaAlta";
+            this.checkFechaAlta.Size = new System.Drawing.Size(109, 17);
+            this.checkFechaAlta.TabIndex = 46;
+            this.checkFechaAlta.Text = "Ignorar fecha alta";
+            this.checkFechaAlta.UseVisualStyleBackColor = true;
+            this.checkFechaAlta.CheckedChanged += new System.EventHandler(this.checkFechaAlta_CheckedChanged);
             // 
             // ModificacionCrucero
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(652, 315);
+            this.Controls.Add(this.checkFechaAlta);
+            this.Controls.Add(this.fechaAlta);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.modelo);
             this.Controls.Add(this.fabricante);
             this.Controls.Add(this.agregarCabina);
@@ -236,5 +271,8 @@
         private System.Windows.Forms.ComboBox modelo;
         private System.Windows.Forms.DataGridViewButtonColumn borrar;
         private System.Windows.Forms.DataGridViewButtonColumn editar;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.DateTimePicker fechaAlta;
+        private System.Windows.Forms.CheckBox checkFechaAlta;
     }
 }

@@ -55,6 +55,7 @@
             this.button3.TabIndex = 23;
             this.button3.Text = "Guardar";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // piso
             // 
@@ -71,7 +72,6 @@
             this.label6.Size = new System.Drawing.Size(27, 13);
             this.label6.TabIndex = 21;
             this.label6.Text = "Piso";
-            this.label6.Click += new System.EventHandler(this.label6_Click);
             // 
             // label1
             // 
@@ -81,7 +81,6 @@
             this.label1.Size = new System.Drawing.Size(79, 13);
             this.label1.TabIndex = 25;
             this.label1.Text = "Tipo de Cabina";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label2
             // 

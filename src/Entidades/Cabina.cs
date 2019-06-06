@@ -18,11 +18,20 @@ namespace FrbaCrucero.Entidades
         public Int32 codTipo { get; set; }
         [System.ComponentModel.DisplayName("piso")]
         public Decimal piso { get; set; }
+        [System.ComponentModel.DisplayName("Tipo de Cabina")]
+        public TipoCabina tipo { get; set; }
 
         public Cabina(Int32 codCabina, Int32 codCrucero, Decimal numero, Int32 codTipo, Decimal piso)
         {
             this.codCabina = codCabina;
             this.codCrucero = codCrucero;
+            this.numero = numero;
+            this.codTipo = codTipo;
+            this.piso = piso;
+        }
+
+        public Cabina(Decimal numero, Int32 codTipo, Decimal piso)
+        {
             this.numero = numero;
             this.codTipo = codTipo;
             this.piso = piso;
@@ -42,6 +51,10 @@ namespace FrbaCrucero.Entidades
                 builder.Append(" ");
             }
             return builder.ToString();
+        }
+        public void setTipoCabina()
+        {
+            this.tipo = this.tipoCabina();
         }
     }
 }

@@ -29,12 +29,12 @@
         private void InitializeComponent()
         {
             this.grilla = new System.Windows.Forms.DataGridView();
+            this.modificar = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.bajar = new System.Windows.Forms.DataGridViewButtonColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.identificador = new System.Windows.Forms.TextBox();
             this.buscar = new System.Windows.Forms.Button();
             this.nuevo = new System.Windows.Forms.Button();
-            this.modificar = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.bajar = new System.Windows.Forms.DataGridViewButtonColumn();
             ((System.ComponentModel.ISupportInitialize)(this.grilla)).BeginInit();
             this.SuspendLayout();
             // 
@@ -52,6 +52,24 @@
             this.grilla.Size = new System.Drawing.Size(615, 150);
             this.grilla.TabIndex = 0;
             this.grilla.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grilla_CellContentClick);
+            // 
+            // modificar
+            // 
+            this.modificar.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.modificar.HeaderText = "Modificar";
+            this.modificar.Name = "modificar";
+            this.modificar.ReadOnly = true;
+            this.modificar.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.modificar.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.modificar.Width = 75;
+            // 
+            // bajar
+            // 
+            this.bajar.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
+            this.bajar.HeaderText = "Dar de baja";
+            this.bajar.Name = "bajar";
+            this.bajar.ReadOnly = true;
+            this.bajar.Width = 68;
             // 
             // label1
             // 
@@ -86,24 +104,7 @@
             this.nuevo.TabIndex = 4;
             this.nuevo.Text = "Crear nuevo";
             this.nuevo.UseVisualStyleBackColor = true;
-            // 
-            // modificar
-            // 
-            this.modificar.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.modificar.HeaderText = "Modificar";
-            this.modificar.Name = "modificar";
-            this.modificar.ReadOnly = true;
-            this.modificar.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.modificar.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.modificar.Width = 75;
-            // 
-            // bajar
-            // 
-            this.bajar.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.ColumnHeader;
-            this.bajar.HeaderText = "Dar de baja";
-            this.bajar.Name = "bajar";
-            this.bajar.ReadOnly = true;
-            this.bajar.Width = 68;
+            this.nuevo.Click += new System.EventHandler(this.nuevo_Click);
             // 
             // PantallaInicial
             // 
