@@ -59,7 +59,7 @@ FROM gd_esquema.Maestra
 
 --Migro los cruceros
 INSERT INTO MLJ.Cruceros
-(identificador, cod_fabricante, cod_modelo, cod_modelo, cod_marca)
+(identificador, cod_fabricante, cod_modelo, cod_servicio, cod_marca)
 SELECT DISTINCT CRUCERO_IDENTIFICADOR, 
 	(SELECT F.cod_fabricante FROM MLJ.Fabricantes F WHERE M.CRU_FABRICANTE = F.nombre),
 	(SELECT Mo.cod_modelo FROM MLJ.Modelos Mo WHERE M.CRUCERO_MODELO = Mo.nombre),

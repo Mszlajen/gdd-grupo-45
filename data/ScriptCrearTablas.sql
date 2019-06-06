@@ -202,6 +202,7 @@ BEGIN
 		nro decimal(18,0) NOT NULL,
 		cod_tipo INTEGER NOT NULL,
 		piso decimal(18,0) NOT NULL,
+		habilitado BIT NOT NULL DEFAULT(1),
 		primary key(cod_cabina)
 	);
 
@@ -736,6 +737,7 @@ AS BEGIN
 		WHERE cod_pasaje IN (SELECT cod_pasaje FROM #borrar)
 	COMMIT TRANSACTION
 END
+GO
 
 CREATE FUNCTION MLJ.DiasDeshabilitado(@anio int,@fecha_comienzo_semestre datetime,@fecha_fin_semestre datetime, @cod_crucero INT)
 RETURNS INT

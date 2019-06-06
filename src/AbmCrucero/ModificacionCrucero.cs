@@ -14,6 +14,7 @@ namespace FrbaCrucero.AbmCrucero
     public partial class ModificacionCrucero : Form
     {
         Crucero crucero;
+        List<Cabina> cabinasBorradas = new List<Cabina>();
         public ModificacionCrucero(Crucero crucero)
         {
             InitializeComponent();
@@ -69,8 +70,11 @@ namespace FrbaCrucero.AbmCrucero
             }
             if (e.ColumnIndex == 0)
             {
-                if (listaCabinas[e.RowIndex].codCabina == 0)
+                DialogResult resp = MessageBox.Show("¿Está seguro que desea borrarla?", "", MessageBoxButtons.YesNo);
+                if (resp == DialogResult.Yes)
                 {
+                    if (listaCabinas[e.RowIndex].codCabina != 0)
+                        cabinasBorradas.Add(listaCabinas[e.RowIndex]);
                     listaCabinas.RemoveAt(e.RowIndex);
                 }
             }
@@ -103,14 +107,17 @@ namespace FrbaCrucero.AbmCrucero
 
             if (valido)
             {
+                Marca marcaValue = (Marca)marca.SelectedItem;
+                Modelo modeloValue = (Modelo)modelo.SelectedItem;
+                Fabricante fabricanteValue = (Fabricante)fabricante.SelectedItem;
+                Servicio servicioValue = (Servicio)servicio.SelectedItem;
+                BindingList<Cabina> cabs = (BindingList<Cabina>)cabinas.DataSource;
                 if (crucero == null)
-                {
-                    Marca marcaValue = (Marca)marca.SelectedItem;
-                    Modelo modeloValue = (Modelo)modelo.SelectedItem;
-                    Fabricante fabricanteValue = (Fabricante)fabricante.SelectedItem;
-                    Servicio servicioValue = (Servicio)servicio.SelectedItem;
-                    BindingList<Cabina> cabs = (BindingList<Cabina>)cabinas.DataSource;
                     new SQL.SqlCruceros().crearCrucero(identificador.Text, servicioValue.cod, marcaValue.cod, fabricanteValue.cod, modeloValue.cod, getFechaAlta(), cabs);
+                else
+                {
+                    crucero = new Crucero(crucero.codCrucero, identificador.Text, this.getFechaAlta(), marcaValue.cod, modeloValue.cod, fabricanteValue.cod, servicioValue.cod);
+                    new SQL.SqlCruceros().actualizarCrucero(crucero, cabs, cabinasBorradas);
                 }
                 this.DialogResult = DialogResult.OK;
             }

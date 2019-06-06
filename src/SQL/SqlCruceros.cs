@@ -70,6 +70,60 @@ namespace FrbaCrucero.SQL
             return crucero;
         }
 
+        public void actualizarCrucero(Crucero crucero, IList<Cabina> cabinas, IList<Cabina> cabinasBorradas)
+        {
+            SqlConnection conexion = SqlGeneral.nuevaConexion();
+            SqlTransaction transaction = null;
+            try
+            {
+                SqlCommand consulta = new SqlCommand("UPDATE MLJ.Cruceros SET cod_fabricante = @codFabricante, cod_marca = @codMarca, cod_modelo = @codModelo, cod_servicio = @codServicio, identificador = @identificador, fecha_alta = @fechaAlta WHERE cod_crucero = @codCrucero", conexion);
+                consulta.Parameters.AddWithValue("@identificador", crucero.identificador);
+                consulta.Parameters.AddWithValue("@codServicio", crucero.codServicio);
+                consulta.Parameters.AddWithValue("@codMarca", crucero.codMarca);
+                consulta.Parameters.AddWithValue("@codFabricante", crucero.codFabricante);
+                consulta.Parameters.AddWithValue("@codModelo", crucero.codModelo);
+                if (crucero.fechaAlta.HasValue)
+                    consulta.Parameters.AddWithValue("@fechaAlta", crucero.fechaAlta.Value);
+                else
+                    consulta.Parameters.AddWithValue("@fechaAlta", DBNull.Value);
+                conexion.Open();
+
+                transaction = conexion.BeginTransaction();
+                consulta.Transaction = transaction;
+
+                consulta.ExecuteNonQuery();
+
+                consulta.CommandText = "DELETE FROM MLJ.Cabinas WHERE cod_cabina = @cod";
+                foreach (Cabina cabina in cabinasBorradas)
+                {
+                    consulta.Parameters.Clear();
+                    consulta.Parameters.AddWithValue("@cod", cabina.codCabina);
+                    consulta.ExecuteNonQuery();
+                }
+
+                consulta.CommandText = "UPDATE MLJ.Cabinas SET cod_tipo = @codTipo, nro = @nro, piso = @piso WHERE cod_cabina = @cod";
+                foreach (Cabina cabina in cabinas)
+                {
+                    consulta.Parameters.Clear();
+                    consulta.Parameters.AddWithValue("@cod", cabina.codCabina);
+                    consulta.Parameters.AddWithValue("@codTipo", cabina.codTipo);
+                    consulta.Parameters.AddWithValue("@piso", cabina.piso);
+                    consulta.Parameters.AddWithValue("@nro", cabina.numero);
+                    consulta.ExecuteNonQuery();
+                }
+                transaction.Commit();
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                conexion.Close();
+            }
+        }
+
         public List<Crucero> getCrucerosDisponibles(DateTime salida, DateTime llegada)
         {
             List<Crucero> cruceros = new List<Crucero>();
@@ -166,7 +220,7 @@ namespace FrbaCrucero.SQL
             SqlConnection conexion = SqlGeneral.nuevaConexion();
             try
             {
-                SqlCommand consulta = new SqlCommand("SELECT cod_cabina, nro, cod_tipo, piso FROM MLJ.Cabinas WHERE cod_crucero = @cod", conexion);
+                SqlCommand consulta = new SqlCommand("SELECT cod_cabina, nro, cod_tipo, piso FROM MLJ.Cabinas WHERE cod_crucero = @cod AND habilitado = 1", conexion);
                 consulta.Parameters.AddWithValue("@cod", codCrucero);
                 conexion.Open();
                 SqlDataReader result = consulta.ExecuteReader();

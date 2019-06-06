@@ -21,3 +21,19 @@ AS BEGIN
 
 	RETURN SCOPE_IDENTITY()
 END
+GO
+
+CREATE TRIGGER MLJ.BorradoCabinas ON MLJ.Cabinas
+INSTEAD OF DELETE
+AS BEGIN
+	BEGIN TRANSACTION
+	DELETE FROM MLJ.Cabinas
+	WHERE cod_cabina IN (SELECT cod_cabina FROM deleted) AND cod_cabina NOT IN (SELECT cod_cabina FROM MLJ.Cabinas_reservadas)
+
+	UPDATE MLJ.Cabinas
+	SET habilitado = 0
+	WHERE cod_cabina IN (SELECT cod_cabina FROM deleted)
+
+	COMMIT TRANSACTION
+END
+GO

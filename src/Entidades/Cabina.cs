@@ -21,6 +21,7 @@ namespace FrbaCrucero.Entidades
         [System.ComponentModel.DisplayName("Tipo de Cabina")]
         public TipoCabina tipo { get; set; }
 
+
         public Cabina(Int32 codCabina, Int32 codCrucero, Decimal numero, Int32 codTipo, Decimal piso)
         {
             this.codCabina = codCabina;

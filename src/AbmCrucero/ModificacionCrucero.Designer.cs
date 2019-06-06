@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.limpiar = new System.Windows.Forms.Button();
             this.guardar = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -50,18 +49,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.cabinas)).BeginInit();
             this.SuspendLayout();
             // 
-            // limpiar
-            // 
-            this.limpiar.Location = new System.Drawing.Point(160, 279);
-            this.limpiar.Name = "limpiar";
-            this.limpiar.Size = new System.Drawing.Size(75, 23);
-            this.limpiar.TabIndex = 31;
-            this.limpiar.Text = "Borrar";
-            this.limpiar.UseVisualStyleBackColor = true;
-            // 
             // guardar
             // 
-            this.guardar.Location = new System.Drawing.Point(79, 279);
+            this.guardar.Location = new System.Drawing.Point(91, 214);
             this.guardar.Name = "guardar";
             this.guardar.Size = new System.Drawing.Size(75, 23);
             this.guardar.TabIndex = 30;
@@ -236,7 +226,6 @@
             this.Controls.Add(this.cabinas);
             this.Controls.Add(this.servicio);
             this.Controls.Add(this.marca);
-            this.Controls.Add(this.limpiar);
             this.Controls.Add(this.guardar);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label5);
@@ -255,7 +244,6 @@
 
         #endregion
 
-        private System.Windows.Forms.Button limpiar;
         private System.Windows.Forms.Button guardar;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;

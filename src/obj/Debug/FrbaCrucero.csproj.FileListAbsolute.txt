@@ -27,7 +27,6 @@ C:\Users\Mati\Documents\GDD\src\bin\Debug\FrbaCrucero.exe
 C:\Users\Mati\Documents\GDD\src\bin\Debug\FrbaCrucero.pdb
 C:\Users\Mati\Documents\GDD\src\obj\Debug\FrbaCrucero.csprojResolveAssemblyReference.cache
 C:\Users\Mati\Documents\GDD\src\obj\Debug\FrbaCrucero.AbmCrucero.AltaCabina.resources
-C:\Users\Mati\Documents\GDD\src\obj\Debug\FrbaCrucero.AbmCrucero.AltaCrucero.resources
 C:\Users\Mati\Documents\GDD\src\obj\Debug\FrbaCrucero.AbmCrucero.ModificacionCrucero.resources
 C:\Users\Mati\Documents\GDD\src\obj\Debug\FrbaCrucero.AbmRecorrido.Tramo.resources
 C:\Users\Mati\Documents\GDD\src\obj\Debug\FrbaCrucero.AbmRecorrido.Formulario.resources
