@@ -16,13 +16,14 @@ namespace FrbaCrucero.ListadoEstadistico
     {
 
         List<TopCruceros> cruceros;
+        List<TopRecorridos> recorridos;
         Int32 anio;
         Int32 semestre;
 
         public ListadoTop5()
         {
             InitializeComponent();
-            comboBox1.Items.Add("Recorridos con más pasajes comprados.");
+            comboBox1.Items.Add("Recorridos con más pasajes comprados");
             comboBox1.Items.Add("Recorridos con más cabinas libres en cada uno de los viajes realizados");
             comboBox1.Items.Add("Cruceros con mayor cantidad de días fuera de servicio");
             comboBox2.Items.Add("PRIMER SEMESTRE");
@@ -47,6 +48,11 @@ namespace FrbaCrucero.ListadoEstadistico
 
                 anio = Int32.Parse(textBox1.Text);
                 Semestre();
+                if (comboBox1.Text.Equals("Recorridos con más pasajes comprados"))
+                {
+                    recorridos = new SqlTops().Top5Recorridos(anio, semestre);
+                    dataGridView1.DataSource = recorridos;
+                }
                 if (comboBox1.Text.Equals("Cruceros con mayor cantidad de días fuera de servicio"))
                 {
                     cruceros = new SqlTops().Top5Cruceros(anio, semestre);

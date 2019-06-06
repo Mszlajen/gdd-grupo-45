@@ -790,3 +790,52 @@ JOIN MLJ.Modelos modelos ON (modelos.cod_modelo = cruceros.cod_modelo)
 ORDER BY dias_fuera_servicio DESC
 END
 GO
+
+CREATE FUNCTION MLJ.PasajesVendidosRecorrido(@anio int,@fecha_comienzo_semestre datetime,@fecha_fin_semestre datetime, @cod_recorrido INT)
+RETURNS INT
+AS 
+BEGIN
+
+	DECLARE @PasajesVendidos INT
+
+	SELECT @PasajesVendidos = coalesce(COUNT(cod_pasaje),0)
+					FROM MLJ.Pasajes
+					WHERE cod_viaje IN (SELECT viajes.cod_viaje
+							   FROM MLJ.Viajes viajes
+							   WHERE (viajes.cod_recorrido = @cod_recorrido) AND YEAR(viajes.fecha_inicio) = @anio
+							   AND (viajes.fecha_inicio >= @fecha_comienzo_semestre) AND (viajes.fecha_inicio <= @fecha_fin_semestre))
+	
+	RETURN @PasajesVendidos
+END
+GO
+
+CREATE PROCEDURE MLJ.top5_recorridos @anio int, @semestre int
+AS
+BEGIN	
+	
+DECLARE @mes_comienzo_semestre int
+DECLARE @mes_fin_semestre int
+DECLARE @fecha_comienzo_semestre datetime
+DECLARE @fecha_fin_semestre datetime
+	
+	IF @semestre = 1	
+	BEGIN	
+	SET @mes_comienzo_semestre = 1	
+	SET @mes_fin_semestre = 6
+	SET @fecha_comienzo_semestre = DATETIMEFROMPARTS(@anio, @mes_comienzo_semestre, 1, 0, 0, 0, 0)
+	SET @fecha_fin_semestre = DATETIMEFROMPARTS(@anio, @mes_fin_semestre, 30, 0, 0, 0, 0)		
+	END
+	
+	IF @semestre = 2	
+	BEGIN	
+	SET @mes_comienzo_semestre = 7	
+	SET @mes_fin_semestre = 12	
+	SET @fecha_comienzo_semestre = DATETIMEFROMPARTS(@anio, @mes_comienzo_semestre, 1, 0, 0, 0, 0)
+	SET @fecha_fin_semestre = DATETIMEFROMPARTS(@anio, @mes_fin_semestre, 31, 0, 0, 0, 0)
+	END
+
+SELECT TOP 5 cod_recorrido, habilitado, MLJ.PasajesVendidosRecorrido(@anio,@fecha_comienzo_semestre,@fecha_fin_semestre,cod_recorrido) pasajes_vendidos
+FROM MLJ.recorridos
+ORDER BY pasajes_vendidos DESC
+END
+GO

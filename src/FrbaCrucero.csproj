@@ -191,6 +191,7 @@
     <Compile Include="Entidades\TipoCabina.cs" />
     <Compile Include="Entidades\TipoPasaje.cs" />
     <Compile Include="Entidades\TopCruceros.cs" />
+    <Compile Include="Entidades\TopRecorridos.cs" />
     <Compile Include="Entidades\Tramos.cs" />
     <Compile Include="Entidades\Usuario.cs" />
     <Compile Include="Entidades\Viaje.cs" />
