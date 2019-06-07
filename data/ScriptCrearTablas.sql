@@ -575,6 +575,7 @@ BEGIN
 	SELECT cod_cabina, cod_crucero, nro, cod_tipo, piso
 	FROM MLJ.Cabinas
 	WHERE cod_crucero = (SELECT cod_crucero FROM MLJ.Viajes WHERE cod_viaje = @codViaje)
+		AND habilitado = 1
 		AND NOT cod_cabina IN (SELECT cod_cabina FROM Cabinas_reservadas 
 							   WHERE cod_pasaje IN (SELECT cod_pasaje FROM MLJ.Pasajes 
 													WHERE cod_viaje = @codViaje))
