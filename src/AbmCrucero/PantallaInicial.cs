@@ -34,6 +34,7 @@ namespace FrbaCrucero.AbmCrucero
             if (e.ColumnIndex == 0)
             {
                 Program.openPopUpWindow(this, new ModificacionCrucero(cruceros[e.RowIndex]));
+                grilla.DataSource = new SQL.SqlCruceros().buscarCruceros();
             }
             else if (e.ColumnIndex == 1)
             {

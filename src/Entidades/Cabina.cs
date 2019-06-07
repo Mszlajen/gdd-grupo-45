@@ -40,7 +40,7 @@ namespace FrbaCrucero.Entidades
 
         public TipoCabina tipoCabina()
         {
-            return (new SQL.SqlCabinas()).getTipoCabina(this.codTipo);
+            return new SQL.SqlCabinas().getTipoCabina(this.codCabina);
         }
 
         public static String formatearLista(List<Cabina> cabinas)

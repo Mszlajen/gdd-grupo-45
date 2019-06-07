@@ -640,7 +640,7 @@ AS BEGIN
 
 	SELECT @costoTotal = SUM(@costoRecorrido * tc.valor) 
 	FROM MLJ.Cabinas c JOIN MLJ.Tipo_Cabinas tc ON c.cod_tipo = tc.cod_tipo
-	WHERE c.cod_cabina IN (SELECT * FROM MLJ.SplitList(@cabinas, ' '))
+	WHERE c.cod_cabina IN (SELECT * FROM MLJ.SplitList(@cabinas, ','))
 
 	RETURN @costoTotal
 END

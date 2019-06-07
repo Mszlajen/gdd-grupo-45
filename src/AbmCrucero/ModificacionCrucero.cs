@@ -47,7 +47,17 @@ namespace FrbaCrucero.AbmCrucero
                 marca.SelectedItem = marcas.Find(t => crucero.codMarca == t.cod);
                 fabricante.SelectedItem = fabricantes.Find(t => crucero.codFabricante == t.cod);
                 servicio.SelectedItem = servicios.Find(t => crucero.codServicio == t.cod);
-                fechaAlta.Value = crucero.fechaAlta.HasValue? crucero.fechaAlta.Value : Program.ObtenerFechaActual();
+                if(crucero.fechaAlta.HasValue) 
+                {
+                    fechaAlta.Value = crucero.fechaAlta.Value;
+                    checkFechaAlta.Checked = false;
+                }
+                else
+                {
+                    checkFechaAlta.Checked = true;
+                    fechaAlta.Value = Program.ObtenerFechaActual();
+                    fechaAlta.Enabled = false;
+                }
             }
             else
             {
@@ -63,10 +73,7 @@ namespace FrbaCrucero.AbmCrucero
             BindingList<Cabina> listaCabinas = (BindingList<Cabina>)cabinas.DataSource;
             if (e.ColumnIndex == 1)
             {
-                DialogResult result = Program.openPopUpWindow(this, new AltaCabina(listaCabinas[e.RowIndex]));
-                if (result == DialogResult.OK)
-                {
-                }
+                Program.openPopUpWindow(this, new AltaCabina(listaCabinas[e.RowIndex]));
             }
             if (e.ColumnIndex == 0)
             {

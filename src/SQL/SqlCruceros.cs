@@ -77,6 +77,7 @@ namespace FrbaCrucero.SQL
             try
             {
                 SqlCommand consulta = new SqlCommand("UPDATE MLJ.Cruceros SET cod_fabricante = @codFabricante, cod_marca = @codMarca, cod_modelo = @codModelo, cod_servicio = @codServicio, identificador = @identificador, fecha_alta = @fechaAlta WHERE cod_crucero = @codCrucero", conexion);
+                consulta.Parameters.AddWithValue("@codCrucero", crucero.codCrucero);
                 consulta.Parameters.AddWithValue("@identificador", crucero.identificador);
                 consulta.Parameters.AddWithValue("@codServicio", crucero.codServicio);
                 consulta.Parameters.AddWithValue("@codMarca", crucero.codMarca);
