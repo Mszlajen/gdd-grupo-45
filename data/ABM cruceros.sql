@@ -59,23 +59,45 @@ AS BEGIN
 END
 GO
 
-CREATE PROCEDURE MLJ.bajaCruceroYReemplaza(@fechaBaja DATE, @codCruceroBajado INT, @codCruceroRemplazante INT)
+CREATE PROCEDURE MLJ.bajaCruceroYReemplaza(@fechaBaja DATE, @codCruceroBajado INT, @codCruceroReemplazante INT)
 AS BEGIN
+	DECLARE @codPasaje INT, @codCabinaVieja INT, @codTipo INT, @codViaje INT
+
 	BEGIN TRANSACTION
 	EXEC MLJ.bajaCrucero @fechaBaja, @codCruceroBajado
 
 	UPDATE MLJ.Viajes
-	SET cod_crucero = @codCruceroRemplazante
-	WHERE cod_crucero = @codCruceroBajado AND @fechaBaja <= fecha_inicio
+	SET cod_crucero = @codCruceroReemplazante
+	WHERE cod_crucero = @codCruceroBajado AND (@fechaBaja <= fecha_inicio OR @fechaBaja < fecha_fin)
 
 	--Aca va el reemplazo de cabinas compradas
-	SELECT cod_viaje, cr.cod_pasaje, cr.cod_cabina, c.cod_crucero cod_crucero_viejo, c2.cod_crucero cod_crucero_nuevo
-	INTO #pasajesParaActualizar
-	FROM MLJ.Pasajes p JOIN MLJ.Cabinas_reservadas cr ON p.cod_pasaje = cr.cod_pasaje 
-					   JOIN MLJ.Cabinas c ON cr.cod_cabina = c.cod_cabina 
-					   JOIN MLJ.Cabinas c2 ON c.cod_tipo = c2.cod_tipo 
-	WHERE c.cod_crucero = @codCruceroBajado AND c2.cod_crucero = @codCruceroRemplazante AND
-		cod_viaje IN (SELECT cod_viaje FROM MLJ.Viajes WHERE cod_crucero = @codCruceroRemplazante)
+	DECLARE cur CURSOR FOR SELECT cr.cod_pasaje, c.cod_cabina, c.cod_tipo, v.cod_viaje
+						   FROM MLJ.Viajes v JOIN MLJ.Pasajes p ON v.cod_viaje = p.cod_viaje 
+											 JOIN MLJ.Cabinas_reservadas cr ON p.cod_pasaje = cr.cod_pasaje
+											 JOIN MLJ.Cabinas c ON c.cod_cabina = cr.cod_cabina
+						   WHERE v.cod_crucero = @codCruceroReemplazante 
+
+	OPEN cur
+
+	FETCH NEXT FROM cur INTO @codPasaje, @codCabinaVieja, @codTipo, @codViaje
+
+	WHILE @@FETCH_STATUS = 0
+	BEGIN
+		UPDATE MLJ.Cabinas_reservadas
+		SET cod_cabina = (SELECT TOP 1 cod_cabina
+						  FROM MLJ.Cabinas 
+						  WHERE cod_crucero = @codCruceroReemplazante AND 
+								cod_tipo = @codTipo AND 
+								cod_cabina NOT IN (SELECT cod_cabina 
+												   FROM MLJ.Cabinas_reservadas cr JOIN MLJ.Pasajes p ON cr.cod_pasaje = p.cod_pasaje
+												   WHERE p.cod_viaje = @codViaje))
+		WHERE cod_pasaje = @codPasaje AND cod_cabina = @codCabinaVieja
+
+		FETCH NEXT FROM cur INTO @codPasaje, @codCabinaVieja, @codTipo, @codViaje
+	END
+
+	CLOSE cur
+	DEALLOCATE cur
 
 	COMMIT TRANSACTION
 END
