@@ -59,16 +59,24 @@ AS BEGIN
 END
 GO
 
-CREATE PROCEDURE MLJ.bajaCruceroYReemplaza(@fechaBaja DATE, @codCruceroBajado INT, @codCruceroReemplazante INT)
+CREATE PROCEDURE MLJ.bajaCruceroYReemplaza(@fechaBaja DATE, @codCruceroBajado INT, @codCruceroRemplazante INT)
 AS BEGIN
 	BEGIN TRANSACTION
 	EXEC MLJ.bajaCrucero @fechaBaja, @codCruceroBajado
 
 	UPDATE MLJ.Viajes
-	SET cod_crucero = @codCruceroReemplazante
+	SET cod_crucero = @codCruceroRemplazante
 	WHERE cod_crucero = @codCruceroBajado AND @fechaBaja <= fecha_inicio
 
 	--Aca va el reemplazo de cabinas compradas
+	SELECT cod_viaje, cr.cod_pasaje, cr.cod_cabina, c.cod_crucero cod_crucero_viejo, c2.cod_crucero cod_crucero_nuevo
+	INTO #pasajesParaActualizar
+	FROM MLJ.Pasajes p JOIN MLJ.Cabinas_reservadas cr ON p.cod_pasaje = cr.cod_pasaje 
+					   JOIN MLJ.Cabinas c ON cr.cod_cabina = c.cod_cabina 
+					   JOIN MLJ.Cabinas c2 ON c.cod_tipo = c2.cod_tipo 
+	WHERE c.cod_crucero = @codCruceroBajado AND c2.cod_crucero = @codCruceroRemplazante AND
+		cod_viaje IN (SELECT cod_viaje FROM MLJ.Viajes WHERE cod_crucero = @codCruceroRemplazante)
+
 	COMMIT TRANSACTION
 END
 GO
@@ -93,7 +101,7 @@ AS BEGIN
 END
 GO
 
-CREATE PROCEDURE MLJ.buscarPosibleReemplazos(@codCrucero INT)
+CREATE PROCEDURE MLJ.buscarPosibleReemplazos(@codCrucero INT, @fechaBaja DATE)
 AS BEGIN
 	DECLARE @codMarca INT, @codFabricante INT, @codModelo INT, @codServicio INT
 
@@ -106,13 +114,31 @@ AS BEGIN
 	WHERE cod_crucero = @codCrucero
 	GROUP BY cod_tipo
 
-	-- Crucero reemplazante debe tener mismos datos de tipo (Hecho), cantidad y tipos de cabinas (Hecho creo), y disponibilidad de fecha
-	SELECT DISTINCT crus.cod_crucero
-	FROM MLJ.Cruceros crus JOIN MLJ.Cabinas cabs ON crus.cod_crucero = cabs.cod_crucero
-	WHERE crus.cod_crucero != @codCrucero AND cod_marca = @codMarca AND 
-		  cod_fabricante = @codFabricante AND cod_modelo = @codModelo 
-		  AND cod_servicio = @codServicio
-	GROUP BY crus.cod_crucero, cabs.cod_tipo
-	HAVING COUNT(cod_tipo) >= (SELECT cantidad FROM #cantidadCabinas WHERE cod_tipo = cabs.cod_tipo)
+	SELECT fecha_inicio, fecha_fin
+	INTO #fechaNecesario
+	FROM MLJ.Viajes
+	WHERE cod_crucero = @codCrucero AND fecha_inicio >= @fechaBaja
 
+	-- Crucero reemplazante debe tener mismos datos de tipo (Hecho), cantidad y tipos de cabinas, y disponibilidad de fecha (Hecho)
+	SELECT c.cod_crucero, cod_tipo, COUNT(cod_tipo) cantidad_tipo
+	INTO #crucerosDisponiblesDeMismoTipo
+	FROM MLJ.Cruceros c JOIN MLJ.Cabinas cabs ON cabs.cod_crucero = c.cod_crucero
+	WHERE c.cod_crucero != @codCrucero AND cod_marca = @codMarca AND 
+		  cod_fabricante = @codFabricante AND cod_modelo = @codModelo 
+		  AND cod_servicio = @codServicio AND 
+		  NOT EXISTS (SELECT TOP 1 *
+					  FROM MLJ.Viajes v 
+					  WHERE v.cod_crucero = c.cod_crucero AND
+							EXISTS (SELECT TOP 1 * 
+									FROM #fechaNecesario f 
+									WHERE f.fecha_inicio BETWEEN v.fecha_inicio AND v.fecha_fin 
+										  OR v.fecha_inicio BETWEEN f.fecha_inicio AND f.fecha_fin)) 
+	GROUP BY c.cod_crucero, cod_tipo
+	
+
+	SELECT DISTINCT cod_crucero
+	FROM #crucerosDisponiblesDeMismoTipo cd JOIN #cantidadCabinas cc ON cd.cod_tipo = cc.cod_tipo
+	WHERE cd.cantidad_tipo >= cc.cantidad
+	GROUP BY cod_crucero
+	HAVING COUNT(*) = (SELECT COUNT(*) FROM #cantidadCabinas)
 END
