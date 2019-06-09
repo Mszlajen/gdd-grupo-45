@@ -113,13 +113,10 @@ AS BEGIN
 	VALUES
 	(0, @codCrucero, @fechaBaja, @fechaAlta)
 
-	-- Aca puede darse que el viaje inicie antes del periodo de baja
-	-- y termine durante o despues de éste, lo voy a considerar como
-	-- responsabilidad del administrador.
 	UPDATE MLJ.Viajes
 	SET fecha_inicio = DATEADD(day, @corrimiento, fecha_inicio),
 		fecha_fin = DATEADD(day, @corrimiento, fecha_fin)
-	WHERE cod_crucero = @codCrucero AND @fechaBaja <= fecha_inicio
+	WHERE cod_crucero = @codCrucero AND (@fechaBaja <= fecha_inicio OR @fechaBaja < fecha_fin)
 END
 GO
 
