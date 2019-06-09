@@ -20,7 +20,7 @@ namespace FrbaCrucero.AbmCrucero
 
         private void PantallaInicial_Load(object sender, EventArgs e)
         {
-            grilla.DataSource = new SQL.SqlCruceros().buscarCruceros();
+            grilla.DataSource = new BindingList<Crucero>(new SQL.SqlCruceros().buscarCruceros());
             grilla.Columns["codCrucero"].Visible = false;
             grilla.Columns["codMarca"].Visible = false;
             grilla.Columns["codFabricante"].Visible = false;
@@ -30,15 +30,14 @@ namespace FrbaCrucero.AbmCrucero
 
         private void grilla_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            List<Crucero> cruceros = (List<Crucero>)grilla.DataSource;
+            BindingList<Crucero> cruceros = (BindingList<Crucero>)grilla.DataSource;
             if (e.ColumnIndex == 0)
             {
                 Program.openPopUpWindow(this, new ModificacionCrucero(cruceros[e.RowIndex]));
-                grilla.DataSource = new SQL.SqlCruceros().buscarCruceros();
             }
             else if (e.ColumnIndex == 1)
             {
-                Program.openPopUpWindow(this, new BajaCrucero());
+                Program.openPopUpWindow(this, new BajaCrucero(cruceros[e.RowIndex]));
             }
         }
 

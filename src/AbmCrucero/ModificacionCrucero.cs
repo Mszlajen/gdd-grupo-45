@@ -13,7 +13,7 @@ namespace FrbaCrucero.AbmCrucero
 {
     public partial class ModificacionCrucero : Form
     {
-        Crucero crucero;
+        public Crucero crucero {get; private set}
         List<Cabina> cabinasBorradas = new List<Cabina>();
         public ModificacionCrucero(Crucero crucero)
         {

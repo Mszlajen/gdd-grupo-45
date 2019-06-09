@@ -69,6 +69,12 @@
     <Compile Include="AbmCrucero\PantallaInicial.Designer.cs">
       <DependentUpon>PantallaInicial.cs</DependentUpon>
     </Compile>
+    <Compile Include="AbmCrucero\SeleccionReemplazante.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AbmCrucero\SeleccionReemplazante.Designer.cs">
+      <DependentUpon>SeleccionReemplazante.cs</DependentUpon>
+    </Compile>
     <Compile Include="AbmPuerto\Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -270,6 +276,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AbmCrucero\PantallaInicial.resx">
       <DependentUpon>PantallaInicial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AbmCrucero\SeleccionReemplazante.resx">
+      <DependentUpon>SeleccionReemplazante.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="AbmRecorrido\Tramo.resx">
       <DependentUpon>Tramo.cs</DependentUpon>

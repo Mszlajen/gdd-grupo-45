@@ -240,5 +240,61 @@ namespace FrbaCrucero.SQL
             }
             return cabinas;
         }
+
+        public void cancelarCrucero(DateTime fechaBaja, Int32 codCrucero, String razon)
+        {
+            SqlConnection conexion = SqlGeneral.nuevaConexion();
+            SqlCommand consulta = new SqlCommand("MLJ.bajaCruceroYCancela", conexion);
+            consulta.CommandType = CommandType.StoredProcedure;
+            consulta.Parameters.AddWithValue("@fechaBaja", fechaBaja);
+            consulta.Parameters.AddWithValue("@codCrucero", codCrucero);
+            consulta.Parameters.AddWithValue("@razon", razon);
+            conexion.Open();
+            consulta.ExecuteNonQuery();
+            conexion.Close();
+        }
+
+        public void reemplazarCrucero(DateTime fechaBaja, Int32 codCrucero, Int32 codCruceroNuevo)
+        {
+            SqlConnection conexion = SqlGeneral.nuevaConexion();
+            SqlCommand consulta = new SqlCommand("MLJ.bajaCruceroYReemplaza", conexion);
+            consulta.CommandType = CommandType.StoredProcedure;
+            consulta.Parameters.AddWithValue("@fechaBaja", fechaBaja);
+            consulta.Parameters.AddWithValue("@codCruceroBajado", codCrucero);
+            consulta.Parameters.AddWithValue("@codCruceroRemplazante", codCruceroNuevo);
+            conexion.Open();
+            consulta.ExecuteNonQuery();
+            conexion.Close();
+        }
+
+        public void bajarTemporalmenteCrucero(DateTime fechaBaja, DateTime fechaRetorno, Int32 codCrucero, Int32 corrimiento)
+        {
+            SqlConnection conexion = SqlGeneral.nuevaConexion();
+            SqlCommand consulta = new SqlCommand("MLJ.bajaTemporalCrucero", conexion);
+            consulta.CommandType = CommandType.StoredProcedure;
+            consulta.Parameters.AddWithValue("@fechaBaja", fechaBaja);
+            consulta.Parameters.AddWithValue("@codCrucero", codCrucero);
+            consulta.Parameters.AddWithValue("@fechaAlta", fechaRetorno);
+            consulta.Parameters.AddWithValue("@corrimiento", corrimiento);
+            conexion.Open();
+            consulta.ExecuteNonQuery();
+            conexion.Close();
+        }
+
+        public List<Crucero> buscarPosiblesReemplazantes(Int32 codCrucero, DateTime fechaBaja)
+        {
+            List<Crucero> retorno = new List<Crucero>();
+            SqlConnection conexion = SqlGeneral.nuevaConexion();
+            SqlCommand consulta = new SqlCommand("MLJ.bajaTemporalCrucero", conexion);
+            consulta.CommandType = CommandType.StoredProcedure;
+            consulta.Parameters.AddWithValue("@fechaBaja", fechaBaja);
+            consulta.Parameters.AddWithValue("@codCrucero", codCrucero);
+            conexion.Open();
+            SqlDataReader reslt = consulta.ExecuteReader();
+            while(reslt.Read())
+                //retorno.Add(new Crucero())
+            conexion.Close();
+            return retorno;
+        }
     }
 }
