@@ -55,3 +55,4 @@ C:\Users\Mati\Documents\GDD\src\obj\Debug\FrbaCrucero.Properties.Resources.resou
 C:\Users\Mati\Documents\GDD\src\obj\Debug\FrbaCrucero.csproj.GenerateResource.Cache
 C:\Users\Mati\Documents\GDD\src\obj\Debug\FrbaCrucero.AbmCrucero.BajaCrucero.resources
 C:\Users\Mati\Documents\GDD\src\obj\Debug\FrbaCrucero.AbmCrucero.PantallaInicial.resources
+C:\Users\Mati\Documents\GDD\src\obj\Debug\FrbaCrucero.AbmCrucero.SeleccionReemplazante.resources

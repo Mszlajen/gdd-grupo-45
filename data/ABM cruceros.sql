@@ -117,6 +117,8 @@ AS BEGIN
 	SET fecha_inicio = DATEADD(day, @corrimiento, fecha_inicio),
 		fecha_fin = DATEADD(day, @corrimiento, fecha_fin)
 	WHERE cod_crucero = @codCrucero AND (@fechaBaja <= fecha_inicio OR @fechaBaja < fecha_fin)
+
+	COMMIT TRANSACTION
 END
 GO
 
