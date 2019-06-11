@@ -141,7 +141,7 @@ AS BEGIN
 	WHERE cod_crucero = @codCrucero AND fecha_inicio >= @fechaBaja
 
 	-- Crucero reemplazante debe tener mismos datos de tipo (Hecho), cantidad y tipos de cabinas, y disponibilidad de fecha (Hecho)
-	SELECT c.cod_crucero, cod_tipo, COUNT(cod_tipo) cantidad_tipo
+	SELECT c.cod_crucero, c.cod_fabricante, c.cod_marca, c.cod_modelo, c.cod_servicio, c.identificador, c.fecha_alta, cod_tipo, COUNT(cod_tipo) cantidad_tipo
 	INTO #crucerosDisponiblesDeMismoTipo
 	FROM MLJ.Cruceros c JOIN MLJ.Cabinas cabs ON cabs.cod_crucero = c.cod_crucero
 	WHERE c.cod_crucero != @codCrucero AND cod_marca = @codMarca AND 
@@ -154,12 +154,12 @@ AS BEGIN
 									FROM #fechaNecesario f 
 									WHERE f.fecha_inicio BETWEEN v.fecha_inicio AND v.fecha_fin 
 										  OR v.fecha_inicio BETWEEN f.fecha_inicio AND f.fecha_fin)) 
-	GROUP BY c.cod_crucero, cod_tipo
+	GROUP BY c.cod_crucero, c.cod_fabricante, c.cod_marca, c.cod_modelo, c.cod_servicio, c.identificador, c.fecha_alta, cod_tipo
 	
 
-	SELECT DISTINCT cod_crucero
+	SELECT DISTINCT cod_crucero, cod_fabricante, cod_marca, cod_modelo, cod_servicio, identificador, fecha_alta
 	FROM #crucerosDisponiblesDeMismoTipo cd JOIN #cantidadCabinas cc ON cd.cod_tipo = cc.cod_tipo
 	WHERE cd.cantidad_tipo >= cc.cantidad
-	GROUP BY cod_crucero
+	GROUP BY cod_crucero, cod_fabricante, cod_marca, cod_modelo, cod_servicio, identificador, fecha_alta
 	HAVING COUNT(*) = (SELECT COUNT(*) FROM #cantidadCabinas)
 END

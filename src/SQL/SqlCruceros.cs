@@ -27,7 +27,7 @@ namespace FrbaCrucero.SQL
                 consulta.Parameters.AddWithValue("@codMarca", codMarca);
                 consulta.Parameters.AddWithValue("@codFabricante", codFabricante);
                 consulta.Parameters.AddWithValue("@codModelo", codModelo);
-                if(fechaAlta.HasValue)
+                if (fechaAlta.HasValue)
                     consulta.Parameters.AddWithValue("@fechaAlta", fechaAlta);
                 else
                     consulta.Parameters.AddWithValue("@fechaAlta", DBNull.Value);
@@ -45,7 +45,7 @@ namespace FrbaCrucero.SQL
                 crucero = new Crucero(cod_crucero, identificador, fechaAlta, codMarca, codModelo, codFabricante, codServicio);
 
                 consulta.CommandText = "MLJ.crearCabina";
-                foreach(Cabina cabina in cabinas)
+                foreach (Cabina cabina in cabinas)
                 {
                     consulta.Parameters.Clear();
                     consulta.Parameters.Add(ret);
@@ -167,7 +167,7 @@ namespace FrbaCrucero.SQL
                 SqlDataReader cruceroResult = consulta.ExecuteReader();
                 while (cruceroResult.Read())
                 {
-                    if(cruceroResult.GetValue(2) == DBNull.Value)
+                    if (cruceroResult.GetValue(2) == DBNull.Value)
                         crucero = new Crucero(cruceroResult.GetInt32(0), cruceroResult.GetString(1));
                     else
                         crucero = new Crucero(cruceroResult.GetInt32(0), cruceroResult.GetString(1), cruceroResult.GetDateTime(2));
@@ -197,7 +197,7 @@ namespace FrbaCrucero.SQL
                 SqlDataReader crucerosResultados = consulta.ExecuteReader();
                 while (crucerosResultados.Read())
                 {
-                    if(crucerosResultados.GetValue(2) == DBNull.Value)
+                    if (crucerosResultados.GetValue(2) == DBNull.Value)
                         cruceros.Add(new Crucero(crucerosResultados.GetInt32(0), crucerosResultados.GetString(1), null, crucerosResultados.GetInt32(3), crucerosResultados.GetInt32(6), crucerosResultados.GetInt32(4), crucerosResultados.GetInt32(5)));
                     else
                         cruceros.Add(new Crucero(crucerosResultados.GetInt32(0), crucerosResultados.GetString(1), crucerosResultados.GetDateTime(2), crucerosResultados.GetInt32(3), crucerosResultados.GetInt32(6), crucerosResultados.GetInt32(4), crucerosResultados.GetInt32(5)));
@@ -285,14 +285,19 @@ namespace FrbaCrucero.SQL
         {
             List<Crucero> retorno = new List<Crucero>();
             SqlConnection conexion = SqlGeneral.nuevaConexion();
-            SqlCommand consulta = new SqlCommand("MLJ.bajaTemporalCrucero", conexion);
+            SqlCommand consulta = new SqlCommand("MLJ.buscarPosibleReemplazos", conexion);
             consulta.CommandType = CommandType.StoredProcedure;
             consulta.Parameters.AddWithValue("@fechaBaja", fechaBaja);
             consulta.Parameters.AddWithValue("@codCrucero", codCrucero);
             conexion.Open();
             SqlDataReader reslt = consulta.ExecuteReader();
-            while(reslt.Read())
-                //retorno.Add(new Crucero())
+            while (reslt.Read())
+            {
+                if(reslt.GetValue(6) == DBNull.Value)
+                    retorno.Add(new Crucero(reslt.GetInt32(0), reslt.GetString(5), null, reslt.GetInt32(2), reslt.GetInt32(3), reslt.GetInt32(1), reslt.GetInt32(4)));
+                else
+                    retorno.Add(new Crucero(reslt.GetInt32(0), reslt.GetString(5), reslt.GetDateTime(6), reslt.GetInt32(2), reslt.GetInt32(3), reslt.GetInt32(1), reslt.GetInt32(4)));
+            }
             conexion.Close();
             return retorno;
         }
