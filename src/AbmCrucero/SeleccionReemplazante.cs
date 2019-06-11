@@ -36,7 +36,14 @@ namespace FrbaCrucero.AbmCrucero
                 this.DialogResult = DialogResult.OK;
             }
             else
+            {
                 grilla.DataSource = cruceros;
+                grilla.Columns["codCrucero"].Visible = false;
+                grilla.Columns["codFabricante"].Visible = false;
+                grilla.Columns["codMarca"].Visible = false;
+                grilla.Columns["codModelo"].Visible = false;
+                grilla.Columns["codServicio"].Visible = false;
+            }
         }
 
         private void grilla_CellContentClick(object sender, DataGridViewCellEventArgs e)

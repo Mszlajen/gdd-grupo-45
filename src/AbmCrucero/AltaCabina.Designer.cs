@@ -40,7 +40,7 @@
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(139, 111);
+            this.button4.Location = new System.Drawing.Point(124, 101);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 23);
             this.button4.TabIndex = 24;
@@ -49,7 +49,7 @@
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(58, 111);
+            this.button3.Location = new System.Drawing.Point(30, 101);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 23;
@@ -111,7 +111,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(296, 161);
+            this.ClientSize = new System.Drawing.Size(242, 138);
             this.Controls.Add(this.tipoCabina);
             this.Controls.Add(this.numero);
             this.Controls.Add(this.label2);

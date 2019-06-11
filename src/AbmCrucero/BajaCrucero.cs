@@ -35,8 +35,9 @@ namespace FrbaCrucero.AbmCrucero
             fechaRegreso.Enabled = !permanente.Checked;
             corrimiento.Enabled = !permanente.Checked;
             fechaBaja.Enabled = !(permanente.Checked && bajaPermanente.HasValue);
-            if (fechaBaja.Enabled)
-                fechaBaja.Value = bajaPermanente.Value;
+            fechaBaja.Value = bajaPermanente.HasValue ? bajaPermanente.Value : fechaBaja.Value;
+            if (!fechaBaja.Enabled)
+                MessageBox.Show("Este crucero ya tiene una fecha de baja permanente");
         }
 
         private void fechaBaja_ValueChanged(object sender, EventArgs e)
