@@ -66,16 +66,18 @@ AS BEGIN
 	BEGIN TRANSACTION
 	EXEC MLJ.bajaCrucero @fechaBaja, @codCruceroBajado
 
+	SELECT cr.cod_pasaje, c.cod_cabina, c.cod_tipo, v.cod_viaje
+	INTO #cabinasAReemplazar
+	FROM MLJ.Viajes v JOIN MLJ.Pasajes p ON v.cod_viaje = p.cod_viaje 
+						JOIN MLJ.Cabinas_reservadas cr ON p.cod_pasaje = cr.cod_pasaje
+						JOIN MLJ.Cabinas c ON c.cod_cabina = cr.cod_cabina
+	WHERE v.cod_crucero = @codCruceroBajado AND (@fechaBaja <= fecha_inicio OR @fechaBaja < fecha_fin)
+
 	UPDATE MLJ.Viajes
 	SET cod_crucero = @codCruceroReemplazante
-	WHERE cod_crucero = @codCruceroBajado AND (@fechaBaja <= fecha_inicio OR @fechaBaja < fecha_fin)
-
-	--Aca va el reemplazo de cabinas compradas
-	DECLARE cur CURSOR FOR SELECT cr.cod_pasaje, c.cod_cabina, c.cod_tipo, v.cod_viaje
-						   FROM MLJ.Viajes v JOIN MLJ.Pasajes p ON v.cod_viaje = p.cod_viaje 
-											 JOIN MLJ.Cabinas_reservadas cr ON p.cod_pasaje = cr.cod_pasaje
-											 JOIN MLJ.Cabinas c ON c.cod_cabina = cr.cod_cabina
-						   WHERE v.cod_crucero = @codCruceroReemplazante 
+	WHERE cod_viaje IN (SELECT DISTINCT cod_viaje FROM #cabinasAReemplazar)
+	
+	DECLARE cur CURSOR FOR SELECT cod_pasaje, cod_cabina, cod_tipo, cod_viaje FROM #cabinasAReemplazar
 
 	OPEN cur
 
