@@ -261,7 +261,7 @@ namespace FrbaCrucero.SQL
             consulta.CommandType = CommandType.StoredProcedure;
             consulta.Parameters.AddWithValue("@fechaBaja", fechaBaja);
             consulta.Parameters.AddWithValue("@codCruceroBajado", codCrucero);
-            consulta.Parameters.AddWithValue("@codCruceroRemplazante", codCruceroNuevo);
+            consulta.Parameters.AddWithValue("@codCruceroReemplazante", codCruceroNuevo);
             conexion.Open();
             consulta.ExecuteNonQuery();
             conexion.Close();
