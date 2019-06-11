@@ -15,10 +15,12 @@ namespace FrbaCrucero.AbmCrucero
     {
         public Crucero crucero { get; private set; }
         List<Cabina> cabinasBorradas = new List<Cabina>();
-        public ModificacionCrucero(Crucero crucero)
+        Boolean paraReemplazar;
+        public ModificacionCrucero(Crucero crucero, Boolean paraReemplazar = false)
         {
             InitializeComponent();
             this.crucero = crucero;
+            this.paraReemplazar = paraReemplazar;
         }
         public ModificacionCrucero()
         {
@@ -44,9 +46,11 @@ namespace FrbaCrucero.AbmCrucero
                     cabina.setTipoCabina();
                 cabinas.DataSource = listaCabinas;
                 modelo.SelectedItem = modelos.Find(t => crucero.codModelo == t.cod);
+                modelo.Enabled = !this.paraReemplazar;
                 marca.SelectedItem = marcas.Find(t => crucero.codMarca == t.cod);
                 fabricante.SelectedItem = fabricantes.Find(t => crucero.codFabricante == t.cod);
                 servicio.SelectedItem = servicios.Find(t => crucero.codServicio == t.cod);
+                servicio.Enabled = !this.paraReemplazar;
                 if(crucero.fechaAlta.HasValue) 
                 {
                     fechaAlta.Value = crucero.fechaAlta.Value;
@@ -73,7 +77,7 @@ namespace FrbaCrucero.AbmCrucero
             BindingList<Cabina> listaCabinas = (BindingList<Cabina>)cabinas.DataSource;
             if (e.ColumnIndex == 1)
             {
-                Program.openPopUpWindow(this, new AltaCabina(listaCabinas[e.RowIndex]));
+                Program.openPopUpWindow(this, new AltaCabina(listaCabinas[e.RowIndex], this.paraReemplazar));
             }
             if (e.ColumnIndex == 0)
             {
@@ -81,7 +85,12 @@ namespace FrbaCrucero.AbmCrucero
                 if (resp == DialogResult.Yes)
                 {
                     if (listaCabinas[e.RowIndex].codCabina != 0)
-                        cabinasBorradas.Add(listaCabinas[e.RowIndex]);
+                    {
+                        if (this.paraReemplazar)
+                            MessageBox.Show("Esta cabina no puede borrarse ya que es necesaria para reemplazar al crucero.");
+                        else
+                            cabinasBorradas.Add(listaCabinas[e.RowIndex]);
+                    }
                     listaCabinas.RemoveAt(e.RowIndex);
                 }
             }
@@ -119,8 +128,10 @@ namespace FrbaCrucero.AbmCrucero
                 Fabricante fabricanteValue = (Fabricante)fabricante.SelectedItem;
                 Servicio servicioValue = (Servicio)servicio.SelectedItem;
                 BindingList<Cabina> cabs = (BindingList<Cabina>)cabinas.DataSource;
-                if (crucero == null)
-                    new SQL.SqlCruceros().crearCrucero(identificador.Text, servicioValue.cod, marcaValue.cod, fabricanteValue.cod, modeloValue.cod, getFechaAlta(), cabs);
+                if (crucero == null || paraReemplazar)
+                {
+                    this.crucero = new SQL.SqlCruceros().crearCrucero(identificador.Text, servicioValue.cod, marcaValue.cod, fabricanteValue.cod, modeloValue.cod, getFechaAlta(), cabs);
+                }
                 else
                 {
                     crucero = new Crucero(crucero.codCrucero, identificador.Text, this.getFechaAlta(), marcaValue.cod, modeloValue.cod, fabricanteValue.cod, servicioValue.cod);

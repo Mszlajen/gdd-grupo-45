@@ -33,6 +33,7 @@ namespace FrbaCrucero.AbmCrucero
                     reemplazarPorNuevo();
                 else
                     new SqlCruceros().cancelarCrucero(fecha, crucero.codCrucero, "Crucero fue dado de baja permanentemente");
+                this.DialogResult = DialogResult.OK;
             }
             else
                 grilla.DataSource = cruceros;
@@ -44,6 +45,7 @@ namespace FrbaCrucero.AbmCrucero
             {
                 List<Crucero> cruceros = (List<Crucero>) grilla.DataSource;
                 new SqlCruceros().reemplazarCrucero(fecha, crucero.codCrucero, cruceros[e.RowIndex].codCrucero);
+                this.DialogResult = DialogResult.OK;
             }
         }
 
@@ -54,10 +56,11 @@ namespace FrbaCrucero.AbmCrucero
 
         private void reemplazarPorNuevo()
         {
-            ModificacionCrucero form = new ModificacionCrucero();
+            ModificacionCrucero form = new ModificacionCrucero(this.crucero, true);
             if (DialogResult.OK == Program.openPopUpWindow(this, form))
             {
                 new SqlCruceros().reemplazarCrucero(fecha, crucero.codCrucero, form.crucero.codCrucero);
+                this.DialogResult = DialogResult.OK;
             }
         }
     }

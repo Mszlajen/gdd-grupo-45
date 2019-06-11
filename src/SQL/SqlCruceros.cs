@@ -301,5 +301,19 @@ namespace FrbaCrucero.SQL
             conexion.Close();
             return retorno;
         }
+
+        public Nullable<DateTime> fechaDeBajaPermanente(Int32 codCrucero)
+        {
+            Nullable<DateTime> retorno = null;
+            SqlConnection conexion = SqlGeneral.nuevaConexion();
+            SqlCommand consulta = new SqlCommand("SELECT fecha_baja FROM MLJ.Bajas_de_servicio WHERE cod_crucero = @cod AND permanente = 1", conexion);
+            consulta.Parameters.AddWithValue("@cod", codCrucero);
+            conexion.Open();
+            SqlDataReader reslt = consulta.ExecuteReader();
+            if (reslt.Read())
+                retorno = reslt.GetDateTime(0);
+            conexion.Close();
+            return retorno;
+        }
     }
 }

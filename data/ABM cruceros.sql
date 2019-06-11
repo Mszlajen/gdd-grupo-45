@@ -40,10 +40,19 @@ GO
 
 CREATE PROCEDURE MLJ.bajaCrucero(@fechaBaja DATE, @codCrucero INT)
 AS BEGIN
-	INSERT INTO MLJ.Bajas_de_servicio
-	(permanente, cod_crucero, fecha_baja)
-	VALUES
-	(1, @codCrucero, @fechaBaja)
+	IF EXISTS (SELECT * FROM MLJ.Bajas_de_servicio WHERE cod_crucero = @codCrucero)
+	BEGIN
+		UPDATE MLJ.Bajas_de_servicio
+		SET fecha_baja = @fechaBaja
+		WHERE cod_crucero = @codCrucero AND permanente = 1
+	END
+	ELSE
+	BEGIN
+		INSERT INTO MLJ.Bajas_de_servicio
+		(permanente, cod_crucero, fecha_baja)
+		VALUES
+		(1, @codCrucero, @fechaBaja)
+	END
 END
 GO
 

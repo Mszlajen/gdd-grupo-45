@@ -15,14 +15,17 @@ namespace FrbaCrucero.AbmCrucero
     public partial class AltaCabina : Form
     {
         public Cabina cabina { get; private set; }
+        public Boolean paraReemplazar { get; private set; }
         public AltaCabina()
         {
             InitializeComponent();
+            paraReemplazar = false;
         }
 
-        public AltaCabina(Cabina cabina)
+        public AltaCabina(Cabina cabina, Boolean paraReemplazar)
         {
             this.cabina = cabina;
+            this.paraReemplazar = paraReemplazar;
             InitializeComponent();
         }
 
@@ -30,6 +33,7 @@ namespace FrbaCrucero.AbmCrucero
         {
             List<TipoCabina> tipos = new SqlCabinas().getTiposCabina();
             this.tipoCabina.DataSource = tipos;
+            this.tipoCabina.Enabled = !this.paraReemplazar;
             if (cabina != null)
             {
                 this.tipoCabina.SelectedItem = tipos.Find(cab => cab.codTipo == cabina.codTipo);
