@@ -77,7 +77,7 @@ namespace FrbaCrucero.AbmCrucero
             BindingList<Cabina> listaCabinas = (BindingList<Cabina>)cabinas.DataSource;
             if (e.ColumnIndex == 1)
             {
-                Program.openPopUpWindow(this, new AltaCabina(listaCabinas[e.RowIndex], this.paraReemplazar));
+                Program.openPopUpWindow(this, new AltaCabina(listaCabinas[e.RowIndex], this.paraReemplazar && listaCabinas[e.RowIndex].codCabina != 0));
             }
             if (e.ColumnIndex == 0)
             {

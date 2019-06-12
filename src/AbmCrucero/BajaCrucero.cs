@@ -47,20 +47,27 @@ namespace FrbaCrucero.AbmCrucero
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (permanente.Checked)
+            if (permanente.Checked && !bajaPermanente.HasValue)
             {
-                if (DialogResult.Yes == MessageBox.Show("¿Desea reemplazar el crucero en sus viajes? \n(En caso negativo se suspenderan)", "", MessageBoxButtons.YesNo))
+                DialogResult res = MessageBox.Show("¿Desea reemplazar el crucero en sus viajes? \n(En caso negativo se suspenderan)", "", MessageBoxButtons.YesNoCancel);
+                if (DialogResult.Yes == res)
+                {
                     Program.openPopUpWindow(this, new SeleccionReemplazante(crucero, fechaBaja.Value));
-                else
+                    this.DialogResult = DialogResult.OK;
+                }
+                else if (DialogResult.No == res)
+                {
                     new SqlCruceros().cancelarCrucero(fechaBaja.Value, crucero.codCrucero, "Crucero fue dado de baja permanentemente");
+                    this.DialogResult = DialogResult.OK;
+                }
             }
             else
             {
                 Int32 diasCorrimientos = 0;
                 if (Int32.TryParse(corrimiento.Text, out diasCorrimientos))
                     new SqlCruceros().bajarTemporalmenteCrucero(fechaBaja.Value, fechaRegreso.Value, crucero.codCrucero, diasCorrimientos);
+                this.DialogResult = DialogResult.OK;
             }
-            this.DialogResult = DialogResult.OK;
         }
     }
 }
