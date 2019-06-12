@@ -91,6 +91,7 @@
             // 
             this.dni.Location = new System.Drawing.Point(16, 118);
             this.dni.Name = "dni";
+            this.dni.ReadOnly = true;
             this.dni.Size = new System.Drawing.Size(100, 20);
             this.dni.TabIndex = 5;
             // 
@@ -164,7 +165,7 @@
             this.pagarButton.Name = "pagarButton";
             this.pagarButton.Size = new System.Drawing.Size(75, 23);
             this.pagarButton.TabIndex = 14;
-            this.pagarButton.Text = "Pagar";
+            this.pagarButton.Text = "Comprar";
             this.pagarButton.UseVisualStyleBackColor = true;
             this.pagarButton.Click += new System.EventHandler(this.pagarButton_Click);
             // 

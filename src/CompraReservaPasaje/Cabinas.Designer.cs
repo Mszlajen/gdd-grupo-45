@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.grilla = new System.Windows.Forms.DataGridView();
+            this.comprar = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.comprar = new System.Windows.Forms.DataGridViewCheckBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.grilla)).BeginInit();
             this.SuspendLayout();
             // 
@@ -47,6 +47,18 @@
             this.grilla.Size = new System.Drawing.Size(259, 236);
             this.grilla.TabIndex = 0;
             this.grilla.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.grilla_CellContentClick);
+            // 
+            // comprar
+            // 
+            this.comprar.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.comprar.FalseValue = "f";
+            this.comprar.HeaderText = "Comprar";
+            this.comprar.IndeterminateValue = "f";
+            this.comprar.Name = "comprar";
+            this.comprar.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.comprar.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.comprar.TrueValue = "t";
+            this.comprar.Width = 71;
             // 
             // button1
             // 
@@ -66,18 +78,7 @@
             this.button2.TabIndex = 2;
             this.button2.Text = "Cancelar";
             this.button2.UseVisualStyleBackColor = true;
-            // 
-            // comprar
-            // 
-            this.comprar.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.comprar.FalseValue = "f";
-            this.comprar.HeaderText = "Comprar";
-            this.comprar.IndeterminateValue = "f";
-            this.comprar.Name = "comprar";
-            this.comprar.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.comprar.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.comprar.TrueValue = "t";
-            this.comprar.Width = 71;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // Cabinas
             // 

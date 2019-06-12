@@ -28,14 +28,6 @@ namespace FrbaCrucero.CompraReservaPasaje
             this.cabinasSeleccionadas = cabinasSeleccionadas;
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            DialogResult result = Program.openNextWindow(this, new Datos_Cliente(this.viaje, this.cabinasSeleccionadas, clientes.First().dni));
-            if (result == DialogResult.OK)
-                this.DialogResult = DialogResult.OK;
-
-        }
-
         private void grilla_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.ColumnIndex == 0)

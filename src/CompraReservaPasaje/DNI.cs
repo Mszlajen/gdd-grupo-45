@@ -37,27 +37,27 @@ namespace FrbaCrucero.CompraReservaPasaje
                 return;
             }
             List<Cliente> clientes = new SqlClientes().buscarClientePorDNI(dni);
+            DialogResult res = DialogResult.Cancel;
             if (clientes.Count == 0)
             {
-                Program.openNextWindow(this, new Datos_Cliente(this.viaje, this.cabinasSeleccionadas, dni));
+                res = Program.openNextWindow(this, new Datos_Cliente(this.viaje, this.cabinasSeleccionadas, dni));
             }
             else if (clientes.Count == 1)
             {
                 Cliente cliente = clientes.First();
                 if (new SqlClientes().validarDisponibilidad(cliente.idCliente, this.viaje.fechaInicio, this.viaje.fechaLlegada))
                 {
-                    DialogResult result = Program.openNextWindow(this, new Datos_Cliente(this.viaje, this.cabinasSeleccionadas, cliente));
-                    if (result == DialogResult.OK)
-                        this.DialogResult = DialogResult.OK;
-
+                    res = Program.openNextWindow(this, new Datos_Cliente(this.viaje, this.cabinasSeleccionadas, cliente));
                 }
                 else
                     MessageBox.Show("Usted ya posee un viaje en esa fecha");
             }
             else
             {
-                Program.openNextWindow(this, new SeleccionCliente(this.viaje, this.cabinasSeleccionadas, clientes));
+                res = Program.openNextWindow(this, new SeleccionCliente(this.viaje, this.cabinasSeleccionadas, clientes));
             }
+            if (res == DialogResult.OK)
+                this.DialogResult = DialogResult.OK;
         }
     }
 }
