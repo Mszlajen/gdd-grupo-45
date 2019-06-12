@@ -403,9 +403,13 @@ BEGIN
 		BEGIN
 		SET @resultado = -3
 		END
-	ELSE IF EXISTS(SELECT * FROM MLJ.Recorridos WHERE cod_recorrido = @codigo_recorrido AND habilitado = 0)
+	ELSE IF @cod_crucero NOT IN (SELECT cod_crucero FROM MLJ.Cruceros WHERE cod_crucero NOT IN (select cod_crucero FROM MLJ.Bajas_de_servicio WHERE (permanente = 1 OR fecha_alta >= @fechaSalida)) AND cod_crucero NOT IN (SELECT viajes.cod_crucero FROM MLJ.Viajes viajes WHERE (viajes.fecha_inicio BETWEEN @fechaSalida AND @fechaLlegada) OR (viajes.fecha_fin BETWEEN @fechaSalida AND @fechaLlegada)))
 		BEGIN
 		SET @resultado = -4
+		END
+	ELSE IF EXISTS(SELECT * FROM MLJ.Recorridos WHERE cod_recorrido = @codigo_recorrido AND habilitado = 0)
+		BEGIN
+		SET @resultado = -5
 		END
 	ELSE 
 		BEGIN
