@@ -127,8 +127,26 @@ AS BEGIN
 	UPDATE MLJ.Viajes
 	SET fecha_inicio = DATEADD(day, @corrimiento, fecha_inicio),
 		fecha_fin = DATEADD(day, @corrimiento, fecha_fin)
-	WHERE cod_crucero = @codCrucero AND (@fechaBaja <= fecha_inicio OR @fechaBaja < fecha_fin)
+	WHERE cod_crucero = @codCrucero AND (@fechaBaja <= fecha_inicio OR fecha_inicio <= @fechaAlta)
+	
+	COMMIT TRANSACTION
+END
+GO
 
+CREATE PROCEDURE MLJ.cancelacionPorBajaTemporal(@fechaBaja DATE, @fechaAlta DATE, @codCrucero INT, @razon VARCHAR(255))
+AS BEGIN
+	
+	BEGIN TRANSACTION
+
+	INSERT INTO MLJ.Bajas_de_servicio
+	(permanente, cod_crucero, fecha_baja, fecha_alta)
+	VALUES
+	(0, @codCrucero, @fechaBaja, @fechaAlta)
+
+	UPDATE MLJ.Viajes
+	SET razon_de_cancelacion = @razon
+	WHERE cod_crucero = @codCrucero AND (@fechaBaja <= fecha_inicio OR fecha_inicio <= @fechaAlta)
+	
 	COMMIT TRANSACTION
 END
 GO

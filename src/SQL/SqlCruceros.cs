@@ -281,6 +281,20 @@ namespace FrbaCrucero.SQL
             conexion.Close();
         }
 
+        public void bajarTemporalmenteCruceroYCancela(DateTime fechaBaja, DateTime fechaRetorno, Int32 codCrucero, String razon)
+        {
+            SqlConnection conexion = SqlGeneral.nuevaConexion();
+            SqlCommand consulta = new SqlCommand("MLJ.cancelacionPorBajaTemporal", conexion);
+            consulta.CommandType = CommandType.StoredProcedure;
+            consulta.Parameters.AddWithValue("@fechaBaja", fechaBaja);
+            consulta.Parameters.AddWithValue("@codCrucero", codCrucero);
+            consulta.Parameters.AddWithValue("@fechaAlta", fechaRetorno);
+            consulta.Parameters.AddWithValue("@razon", razon);
+            conexion.Open();
+            consulta.ExecuteNonQuery();
+            conexion.Close();
+        }
+
         public List<Crucero> buscarPosiblesReemplazantes(Int32 codCrucero, DateTime fechaBaja)
         {
             List<Crucero> retorno = new List<Crucero>();

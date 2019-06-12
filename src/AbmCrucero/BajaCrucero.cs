@@ -47,27 +47,33 @@ namespace FrbaCrucero.AbmCrucero
 
         private void button1_Click(object sender, EventArgs e)
         {
+            DialogResult res = DialogResult.Cancel;
             if (permanente.Checked && !bajaPermanente.HasValue)
             {
-                DialogResult res = MessageBox.Show("¿Desea reemplazar el crucero en sus viajes? \n(En caso negativo se suspenderan)", "", MessageBoxButtons.YesNoCancel);
+                res = MessageBox.Show("¿Desea reemplazar el crucero en sus viajes? \n(En caso negativo se suspenderan)", "", MessageBoxButtons.YesNoCancel);
                 if (DialogResult.Yes == res)
                 {
-                    Program.openPopUpWindow(this, new SeleccionReemplazante(crucero, fechaBaja.Value));
-                    this.DialogResult = DialogResult.OK;
+                    res = Program.openPopUpWindow(this, new SeleccionReemplazante(crucero, fechaBaja.Value));
                 }
                 else if (DialogResult.No == res)
                 {
                     new SqlCruceros().cancelarCrucero(fechaBaja.Value, crucero.codCrucero, "Crucero fue dado de baja permanentemente");
-                    this.DialogResult = DialogResult.OK;
                 }
             }
             else
             {
-                Int32 diasCorrimientos = 0;
-                if (Int32.TryParse(corrimiento.Text, out diasCorrimientos))
-                    new SqlCruceros().bajarTemporalmenteCrucero(fechaBaja.Value, fechaRegreso.Value, crucero.codCrucero, diasCorrimientos);
-                this.DialogResult = DialogResult.OK;
+                res = MessageBox.Show("¿Desea desplazar los viajes en el periodo indicado? \n(En caso negativo se cancelaran)", "", MessageBoxButtons.YesNoCancel);
+                if(DialogResult.Yes == res)
+                {
+                    Int32 diasCorrimientos = 0;
+                    if (Int32.TryParse(corrimiento.Text, out diasCorrimientos))
+                        new SqlCruceros().bajarTemporalmenteCrucero(fechaBaja.Value, fechaRegreso.Value, crucero.codCrucero, diasCorrimientos);
+                }
+                else if(DialogResult.No == res)
+                    new SqlCruceros().bajarTemporalmenteCruceroYCancela(fechaBaja.Value, fechaRegreso.Value, crucero.codCrucero, "Crucero fue dado de baja temporalmente");
             }
+            if (DialogResult.Cancel != res)
+                this.DialogResult = DialogResult.OK;
         }
     }
 }
