@@ -74,9 +74,12 @@ namespace FrbaCrucero.GeneracionViaje
                             MessageBox.Show("No hay Cruceros Disponibles");
                             break;
                         case -3:
-                            MessageBox.Show("Crucero NO DISPONIBLE");
+                            MessageBox.Show("Crucero dado de Baja o en Mantenimiento");
                             break;
                         case -4:
+                            MessageBox.Show("Crucero Asignado no Disponible, Se Encuentra en un Viaje");
+                            break;
+                        case -5:
                             MessageBox.Show("Recorrido Deshabilitado");
                             break;
                         case 1:
