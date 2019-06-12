@@ -42,5 +42,21 @@ namespace FrbaCrucero.SQL
             conexion.Close();
             return recorridos;
         }
+
+        public List<TopRecorridosLibres> Top5RecorridosLibres(Int32 anio, Int32 semestre)
+        {
+            List<TopRecorridosLibres> recorridosLibres = new List<TopRecorridosLibres>();
+            SqlConnection conexion = SqlGeneral.nuevaConexion();
+            SqlCommand consulta = new SqlCommand("MLJ.top5_recorridosLibres", conexion);
+            consulta.CommandType = CommandType.StoredProcedure;
+            consulta.Parameters.AddWithValue("@anio", anio);
+            consulta.Parameters.AddWithValue("@semestre", semestre);
+            conexion.Open();
+            SqlDataReader resultados = consulta.ExecuteReader();
+            while (resultados.Read())
+                recorridosLibres.Add(new TopRecorridosLibres(resultados.GetInt32(0), resultados.GetBoolean(1), resultados.GetInt32(2)));
+            conexion.Close();
+            return recorridosLibres;
+        }
     }
 }

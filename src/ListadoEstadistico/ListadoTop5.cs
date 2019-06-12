@@ -17,6 +17,7 @@ namespace FrbaCrucero.ListadoEstadistico
 
         List<TopCruceros> cruceros;
         List<TopRecorridos> recorridos;
+        List<TopRecorridosLibres> recorridosLibres;
         Int32 anio;
         Int32 semestre;
 
@@ -52,6 +53,11 @@ namespace FrbaCrucero.ListadoEstadistico
                 {
                     recorridos = new SqlTops().Top5Recorridos(anio, semestre);
                     dataGridView1.DataSource = recorridos;
+                }
+                if (comboBox1.Text.Equals("Recorridos con más cabinas libres en cada uno de los viajes realizados"))
+                {
+                    recorridosLibres = new SqlTops().Top5RecorridosLibres(anio, semestre);
+                    dataGridView1.DataSource = recorridosLibres;
                 }
                 if (comboBox1.Text.Equals("Cruceros con mayor cantidad de días fuera de servicio"))
                 {

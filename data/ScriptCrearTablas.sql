@@ -842,3 +842,55 @@ FROM MLJ.recorridos
 ORDER BY pasajes_vendidos DESC
 END
 GO
+
+CREATE FUNCTION MLJ.CabinasLibresRecorrido(@anio int,@fecha_comienzo_semestre datetime,@fecha_fin_semestre datetime, @cod_recorrido INT)
+RETURNS INT
+AS 
+BEGIN
+
+	DECLARE @CabinasLibres INT
+
+	SELECT @CabinasLibres = coalesce(MAX(tabla.CabinasLibres),0) FROM(
+	SELECT ((SELECT COUNT(cabinas.cod_cabina)
+    				FROM MLJ.Cabinas cabinas WHERE cabinas.cod_crucero = (SELECT cod_crucero FROM MLJ.Viajes WHERE cod_viaje = pasajes.cod_viaje)) - COUNT(cabinas_reservadas.cod_cabina)) AS CabinasLibres
+	FROM MLJ.Pasajes pasajes JOIN MLJ.Cabinas_reservadas cabinas_reservadas ON (pasajes.cod_pasaje = cabinas_reservadas.cod_pasaje)
+	WHERE pasajes.cod_viaje IN (SELECT viajes.cod_viaje
+							   FROM MLJ.Viajes viajes
+							   WHERE (viajes.cod_recorrido = @cod_recorrido) AND YEAR(viajes.fecha_inicio) = @anio
+							   AND (viajes.fecha_inicio >= @fecha_comienzo_semestre) AND (viajes.fecha_inicio <= @fecha_fin_semestre))
+	GROUP BY pasajes.cod_viaje) AS tabla
+
+	RETURN @CabinasLibres
+END
+GO
+
+CREATE PROCEDURE MLJ.top5_recorridosLibres @anio int, @semestre int
+AS
+BEGIN	
+	
+DECLARE @mes_comienzo_semestre int
+DECLARE @mes_fin_semestre int
+DECLARE @fecha_comienzo_semestre datetime
+DECLARE @fecha_fin_semestre datetime
+	
+	IF @semestre = 1	
+	BEGIN	
+	SET @mes_comienzo_semestre = 1	
+	SET @mes_fin_semestre = 6
+	SET @fecha_comienzo_semestre = DATETIMEFROMPARTS(@anio, @mes_comienzo_semestre, 1, 0, 0, 0, 0)
+	SET @fecha_fin_semestre = DATETIMEFROMPARTS(@anio, @mes_fin_semestre, 30, 0, 0, 0, 0)		
+	END
+	
+	IF @semestre = 2	
+	BEGIN	
+	SET @mes_comienzo_semestre = 7	
+	SET @mes_fin_semestre = 12	
+	SET @fecha_comienzo_semestre = DATETIMEFROMPARTS(@anio, @mes_comienzo_semestre, 1, 0, 0, 0, 0)
+	SET @fecha_fin_semestre = DATETIMEFROMPARTS(@anio, @mes_fin_semestre, 31, 0, 0, 0, 0)
+	END
+
+SELECT TOP 5 cod_recorrido, habilitado, MLJ.CabinasLibresRecorrido(@anio,@fecha_comienzo_semestre,@fecha_fin_semestre,cod_recorrido) pasajes_vendidos
+FROM MLJ.recorridos
+ORDER BY pasajes_vendidos DESC
+END
+GO
