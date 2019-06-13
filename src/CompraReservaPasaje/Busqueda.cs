@@ -24,6 +24,7 @@ namespace FrbaCrucero.CompraReservaPasaje
                 origen.Items.Add(puerto.nombrePuerto);
                 destino.Items.Add(puerto.nombrePuerto);
             }
+            fecha.MinDate = Program.ObtenerFechaActual();
             fecha.Value = Program.ObtenerFechaActual();
             viajesTable.Columns.Add("idViaje");
             viajesTable.Columns.Add("fecha inicio");
