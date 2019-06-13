@@ -552,7 +552,7 @@ BEGIN
 		END
 END
 GO
-
+--Inicio de sesion
 --Este procedure se encarga de comprobar la password, el estado del usuario y devuelve el resultado
 CREATE PROCEDURE MLJ.login @usuario varchar(50), @password varchar(256), @resultado int OUTPUT
 AS
@@ -586,6 +586,7 @@ BEGIN
 END
 GO 
 
+--ABM de rol
 CREATE TRIGGER MLJ.BajaLogicaROL 
 ON MLJ.Roles INSTEAD OF UPDATE
 AS
@@ -605,6 +606,7 @@ BEGIN
 END
 GO
 
+--Compra/reserva de pasaje
 CREATE FUNCTION MLJ.cruceroDeshabilitado(@fecha DATE, @cod_crucero INT)
 RETURNS INT
 AS 
@@ -758,6 +760,8 @@ AS BEGIN
 END
 GO
 
+--Pago de reservas
+
 CREATE PROCEDURE MLJ.pagarReserva(@cod_reserva INT, @numTarjeta CHAR(16), @pin CHAR(4), @cod_medio INT, @fecha DATE)
 AS BEGIN
 	INSERT INTO MLJ.Pagos
@@ -806,6 +810,8 @@ AS BEGIN
 	COMMIT TRANSACTION
 END
 GO
+
+--Listado estadistico
 
 CREATE FUNCTION MLJ.DiasDeshabilitado(@anio int,@fecha_comienzo_semestre datetime,@fecha_fin_semestre datetime, @cod_crucero INT)
 RETURNS INT
@@ -961,6 +967,9 @@ FROM MLJ.recorridos
 ORDER BY pasajes_vendidos DESC
 END
 GO
+
+
+--ABM de Cruceros
 
 CREATE PROCEDURE MLJ.crearCrucero(@identificador VARCHAR(50), @codServicio INT, @codMarca INT, @codFabricante INT, @codModelo INT, @fechaAlta DATE)
 AS BEGIN
