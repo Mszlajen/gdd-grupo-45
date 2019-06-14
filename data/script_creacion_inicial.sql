@@ -62,7 +62,7 @@ CREATE TABLE MLJ.Recorridos (
 
 --Sentencia crea tabla Tramos
 CREATE TABLE MLJ.Tramos (
-	cod_recorrido INTEGER, --Se coloca luego el constraint NOT NULL, se necesita que permita NULL durante la migracion
+	cod_recorrido INTEGER NOT NULL,
 	nro_tramo TINYINT NOT NULL,
 	cod_puerto_salida INTEGER NOT NULL,
 	cod_puerto_llegada INTEGER NOT NULL,
